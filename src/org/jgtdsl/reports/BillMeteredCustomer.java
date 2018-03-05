@@ -1073,7 +1073,6 @@ public class BillMeteredCustomer extends BaseAction implements ServletContextAwa
 		return null;		
 	}
 	/////////////////////bill preview ends//////////
-	
 	public String getBill_id() {
 		return bill_id;
 	}
