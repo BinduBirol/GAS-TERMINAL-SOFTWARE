@@ -730,6 +730,12 @@ public class BillingService {
 		Connection conn = ConnectionManager.getConnection();
 		String sql="";
 		String orderByQuery="";
+		
+		if(sortFieldName.equalsIgnoreCase("non_collected_payable_amount"))
+		{
+			sortFieldName="actual_payable_amount-nvl(collected_payable_amount,0)";
+		}
+		
 		if(sortFieldName!=null && !sortFieldName.equalsIgnoreCase(""))
 			orderByQuery=" ORDER BY "+sortFieldName+" " +sortOrder+" ";
 		if(total==0)

@@ -151,6 +151,9 @@ public class BillNonMeteredCustomer extends BaseAction implements
 			img.setAbsolutePosition(150f, 767f); // rotate
 
 			document.add(img);
+			
+			PdfPTable ApplianceTable = new PdfPTable(4);
+			ApplianceTable.setWidthPercentage(90);
 
 			PdfPTable mTable = new PdfPTable(1);
 			mTable.setWidthPercentage(100);
@@ -190,44 +193,13 @@ public class BillNonMeteredCustomer extends BaseAction implements
 
 			// ////////////////appliance table heads
 
-			PdfPTable ApplianceTable = new PdfPTable(4);
-			ApplianceTable.setWidthPercentage(90);
+			
 
 			PdfPTable cusTable = new PdfPTable(4);
 			cusTable.setWidthPercentage(90);
 			cusTable.setWidths(new int[] { 30, 100, 30, 30 });
-
-			pcell = new PdfPCell(new Paragraph(" ", ReportUtil.f8B));
-			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			pcell.setBorder(Rectangle.NO_BORDER);
-			pcell.setPadding(10);
-			pcell.setColspan(4);
-			ApplianceTable.addCell(pcell);
-
-			pcell = new PdfPCell(new Paragraph("Apliance Name", ReportUtil.f8B));
-			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			pcell.setBorder(Rectangle.BOX);
-			pcell.setPadding(5);
-			ApplianceTable.addCell(pcell);
-
-			pcell = new PdfPCell(new Paragraph("Apliance Quantity",
-					ReportUtil.f8B));
-			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			pcell.setBorder(Rectangle.BOX);
-			pcell.setPadding(5);
-			ApplianceTable.addCell(pcell);
-
-			pcell = new PdfPCell(new Paragraph("Apliance Rate", ReportUtil.f8B));
-			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			pcell.setBorder(Rectangle.BOX);
-			pcell.setPadding(5);
-			ApplianceTable.addCell(pcell);
-
-			pcell = new PdfPCell(new Paragraph("Amount", ReportUtil.f8B));
-			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			pcell.setBorder(Rectangle.BOX);
-			pcell.setPadding(5);
-			ApplianceTable.addCell(pcell);
+			
+			
 
 			for (MBillDTO x : billList) {
 
@@ -339,7 +311,42 @@ public class BillNonMeteredCustomer extends BaseAction implements
 				cusTable.addCell(pcell);
 
 				applianceList = ms.getCustomerApplianceList(x.getCustomer_id());
+				
+				
+				pcell = new PdfPCell(new Paragraph(" ", ReportUtil.f8B));
+				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pcell.setBorder(Rectangle.NO_BORDER);
+				pcell.setPadding(10);
+				pcell.setColspan(4);
+				ApplianceTable.addCell(pcell);
 
+				pcell = new PdfPCell(new Paragraph("Apliance Name", ReportUtil.f8B));
+				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pcell.setBorder(Rectangle.BOX);
+				pcell.setPadding(5);
+				ApplianceTable.addCell(pcell);
+
+				pcell = new PdfPCell(new Paragraph("Apliance Quantity",
+						ReportUtil.f8B));
+				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pcell.setBorder(Rectangle.BOX);
+				pcell.setPadding(5);
+				ApplianceTable.addCell(pcell);
+
+				pcell = new PdfPCell(new Paragraph("Apliance Rate", ReportUtil.f8B));
+				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pcell.setBorder(Rectangle.BOX);
+				pcell.setPadding(5);
+				ApplianceTable.addCell(pcell);
+
+				pcell = new PdfPCell(new Paragraph("Amount", ReportUtil.f8B));
+				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pcell.setBorder(Rectangle.BOX);
+				pcell.setPadding(5);
+				ApplianceTable.addCell(pcell);
+
+				int i =1;
+				
 				for (CustomerApplianceDTO a : applianceList) {
 
 					pcell = new PdfPCell(new Paragraph(a.getApplianc_name(),
@@ -363,25 +370,21 @@ public class BillNonMeteredCustomer extends BaseAction implements
 					pcell.setPadding(5);
 					ApplianceTable.addCell(pcell);
 
-					double amount = Integer.parseInt(a.getApplianc_qnt())
-							* Integer.parseInt(a.getApplianc_rate());
-
-					pcell = new PdfPCell(new Paragraph(Double.toString(amount),
-							ReportUtil.f8));
-					pcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-					pcell.setPaddingRight(30);
+					//double amount = Integer.parseInt(a.getApplianc_qnt())* Integer.parseInt(a.getApplianc_rate());
+					
+					if(i==1)
+					{
+					pcell = new PdfPCell(new Paragraph(x.getBilled_amount(),ReportUtil.f8));
+					pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					pcell.setVerticalAlignment(Element.ALIGN_CENTER);					
+					pcell.setRowspan(applianceList.size());
 					pcell.setBorder(Rectangle.BOX);					
 					ApplianceTable.addCell(pcell);
-
+					}
+					
+					i++;
 				}
-				/*
-				 * pcell = new PdfPCell(new Paragraph(x.getBilled_amount(),
-				 * ReportUtil.f8));
-				 * pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				 * pcell.setBorder(Rectangle.BOX);
-				 * pcell.setRowspan(applianceList.size());
-				 * ApplianceTable.addCell(pcell);
-				 */
+				
 				pcell = new PdfPCell(new Paragraph("Total Amount: ",
 						ReportUtil.f8B));
 				pcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -392,9 +395,9 @@ public class BillNonMeteredCustomer extends BaseAction implements
 
 				pcell = new PdfPCell(new Paragraph(
 						x.getBilled_amount() + ".00", ReportUtil.f8B));
-				pcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-				pcell.setBorder(Rectangle.BOX);
-				pcell.setPaddingRight(30);
+				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				pcell.setBorder(Rectangle.BOX);	
+				pcell.setPadding(5);
 				ApplianceTable.addCell(pcell);
 
 				pcell = new PdfPCell(new Paragraph(" ", ReportUtil.f8B));
