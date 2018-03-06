@@ -734,6 +734,8 @@ public class BillingService {
 		if(sortFieldName.equalsIgnoreCase("non_collected_payable_amount"))
 		{
 			sortFieldName="actual_payable_amount-nvl(collected_payable_amount,0)";
+		}else if(sortFieldName.equalsIgnoreCase("full_name")){
+			sortFieldName="customer_name";
 		}
 		
 		if(sortFieldName!=null && !sortFieldName.equalsIgnoreCase(""))

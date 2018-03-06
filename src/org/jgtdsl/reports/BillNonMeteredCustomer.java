@@ -376,7 +376,7 @@ public class BillNonMeteredCustomer extends BaseAction implements
 					{
 					pcell = new PdfPCell(new Paragraph(x.getBilled_amount(),ReportUtil.f8));
 					pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					pcell.setVerticalAlignment(Element.ALIGN_CENTER);					
+					pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);					
 					pcell.setRowspan(applianceList.size());
 					pcell.setBorder(Rectangle.BOX);					
 					ApplianceTable.addCell(pcell);
