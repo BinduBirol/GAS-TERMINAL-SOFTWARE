@@ -20,8 +20,8 @@
 				<interceptor-ref name="authenticationInterceptor">
 					<param name="excludeActions">CustomError,index,userList,gridRecordFetcher,addNewForm,dashBoard,
 					checkValidity,logout,login,getServerMessage,fetchAllRoleTypes,fetchCustomerCategory,fetchBanks,fetchBranches,fetchZones,
-					fetchZone,fetchDistrict,fetchUpazila,downloadMeteredBill, downloadNonMeteredBill,BillPreview,
-					getCustomerBillInfo,downloadMeteredBill, downloadNonMeteredBill,clearnessCertificateHome,clearnessCertificateInfo,
+					fetchZone,fetchDistrict,fetchUpazila,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,
+					getCustomerBillInfo,downloadMeteredBill, downloadNonMeteredBill, printLedger,clearnessCertificateHome,clearnessCertificateInfo,
 					getBillInfo,payInfo,getIpgConfirmationPage,receiveIpgResponse,getiPgDetailInfo,payIpgBill
 					</param>
 				</interceptor-ref>
@@ -31,7 +31,7 @@
 												 fetchBanks,fetchBranches,fetchZones,fetchAccounts,fetchMohollahs,
 												 fileUploader,addNewForm,dashBoard,checkValidity,logout,login,
 												 valiateCategoryId,getServerMessage,crudOperations,fetchZone,fetchDivision,fetchDistrict,fetchUpazila,
-												 getCustomerBillInfo,downloadMeteredBill, downloadNonMeteredBill,BillPreview,
+												 getCustomerBillInfo,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,
 												 getBillInfo,payInfo,getIpgConfirmationPage,receiveIpgResponse,getiPgDetailInfo,payIpgBill;
 												 
 					Super Admin: dashBoard,userDashBoard,dashBoardContent,setUserArea,
@@ -85,7 +85,7 @@
 								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveAdvancedCollection,saveMultiMonthCollection,
 								 getBillingInfo,getGasPrice,currentMonthBillCollection,saveCurrentMonthBillWithCollection,
 								 getOpeningBalance,
-								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
+								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
 								 holidayHome,getHolidays,getNewHolidayForm,saveHoliday,fetchHolidayList,deleteHoliday,
 								 updateHome,updateHoliday,fetchAreas,fetchDesignations,fetchOrgDivisions,fetchOrgDepartments,
 								 fetchOrgSections,
@@ -182,7 +182,7 @@
 								 getBillingInfo,getGasPrice,currentMonthBillCollection,saveCurrentMonthBillWithCollection,installmentBillingHome,saveInstallments,getBillInstallments,
 								 installmentCollection,saveInstallmentCollection,
 								 
-								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
+								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
 								 holidayHome,getHolidays,getNewHolidayForm,saveHoliday,fetchHolidayList,deleteHoliday,
 								 updateHome,updateHoliday,fetchAreas,fetchDesignations,fetchOrgDivisions,fetchOrgDepartments,
 								 fetchOrgSections,
@@ -269,7 +269,7 @@
 								 getBillingInfo,getGasPrice,currentMonthBillCollection,saveCurrentMonthBillWithCollection,installmentBillingHome,saveInstallments,getBillInstallments,
 								 installmentCollection,saveInstallmentCollection,
 								 
-								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
+								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
 								 holidayHome,getHolidays,getNewHolidayForm,saveHoliday,fetchHolidayList,deleteHoliday,
 								 updateHome,updateHoliday,fetchAreas,fetchDesignations,fetchOrgDivisions,fetchOrgDepartments,
 								 fetchOrgSections,
@@ -1268,6 +1268,13 @@
 	</action>
 	
 	<action name="downloadNonMeteredBill" class="org.jgtdsl.reports.BillNonMeteredCustomer" method="downloadBill">
+		<result type="stream">
+			<param name="contentType">application/pdf</param>
+			<param name="inputName">inputStream</param>
+		</result>
+	</action>
+	
+	<action name="printLedger" class="org.jgtdsl.reports.LedgerPrinting" method="downloadLedger">
 		<result type="stream">
 			<param name="contentType">application/pdf</param>
 			<param name="inputName">inputStream</param>
