@@ -193,15 +193,10 @@ $('#customer_ledger_grid').jqGrid('navGrid','#customer_ledger_grid_pager')
     buttonicon:"ui-icon-print", 
     id: "print_ledger",
     onClickButton: function(){
-    	printLedger();
+    	window.location='printLedger.action?customer_id='+$("#customer_id").val();
     }
 });
 
-//print ledger
-function printLedger(){
-
-	window.location='printLedger.action?customer_id='+$("#customer_id").val();
-}
 
 //processCustomerLedgerBalance
 function showDuesBill(){

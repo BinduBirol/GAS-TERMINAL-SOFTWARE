@@ -276,6 +276,9 @@
 
 
  $(document).ready(function () {
+ 		//document.getElementById("customer_code").value="<s:property value="area_id" />";
+ 		
+ 		 $("#customer_code").val($("#area_id").val()+"01");
         document.getElementById("customer_code").focus();
     });
     

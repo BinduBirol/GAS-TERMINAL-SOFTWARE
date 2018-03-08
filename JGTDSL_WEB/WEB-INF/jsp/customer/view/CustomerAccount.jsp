@@ -105,7 +105,7 @@ column1="Single";column2="Double";
 name1="single_burner";index1="single_burner";
 name2="double_burner";index2="double_burner";
 $("#connection_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
-	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method='+jsEnum.BURNER_QNT_CHANGE_LIST+'&extraFilter=area',
+	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method='+jsEnum.BURNER_QNT_CHANGE_LIST,//+'&extraFilter=area',
    	jsonReader: {
             repeatitems: false,
             id: "pid"

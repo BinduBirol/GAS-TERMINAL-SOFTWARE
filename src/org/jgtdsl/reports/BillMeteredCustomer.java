@@ -708,7 +708,7 @@ public class BillMeteredCustomer extends BaseAction implements ServletContextAwa
 		try {	
 			
 			BillingService bs=new BillingService();
-			ArrayList<MBillDTO> billList=bs.getBill(this.bill_id,this.customer_category,this.area_id,this.customer_id,this.bill_month,this.bill_year,this.download_type);
+			ArrayList<MBillDTO> billList=bs.getBillprev(this.customer_category,this.area_id,this.bill_month,this.bill_year,this.download_type, this.report_for);
 			
 			ReportFormat Event = new ReportFormat(getServletContext());
 			PdfWriter writer = PdfWriter.getInstance(document, baos);

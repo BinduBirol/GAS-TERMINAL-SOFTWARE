@@ -325,8 +325,8 @@ public class BillingService {
 			else if(area_id!=null && !area_id.equalsIgnoreCase(""))
 				where_condition+=" And area_id='"+area_id+"'" ;
 		}
-		else if(download_type.equalsIgnoreCase("prev")) //preview
-			where_condition= " AND   (bill.status is null or bill.status=0) And Bill_Month="+bill_month+" and Bill_Year="+bill_year;
+		else if(download_type.equalsIgnoreCase("area")) //preview
+			where_condition= " AND   (bill.status is null or bill.status=0) And area_id='"+area_id+"' And Bill_Month="+bill_month+" and Bill_Year="+bill_year;
 			
 		else if(download_type.equalsIgnoreCase("GBCC")) // Group By Customer Category
 			where_condition= " AND bill.bill_id = ? AND bill.CUSTOMER_CATEGORY=? and bill.AREA_ID=?";
@@ -596,6 +596,184 @@ public class BillingService {
 	 		return billList;
 
 	}
+	
+	
+	////prev
+	public ArrayList<MBillDTO> getBillprev(String customer_category,String area_id,String bill_month,String bill_year,String download_type, String report_for)
+	{
+		MBillDTO bill=null;
+		ArrayList<MBillDTO> billList=new ArrayList<MBillDTO>();
+		MBillGovtMarginDTO govtMarginDTO=null;
+		MeterReadingDTO readingDTO=null;
+		MBillPbMarginDTO pgMarginDTO=null;
+		ArrayList<MeterReadingDTO> readingList=new ArrayList<MeterReadingDTO>();
+		Connection conn = ConnectionManager.getConnection();	
+		String where_condition="";
+				
+		if(download_type.equalsIgnoreCase("prev")&&!(area_id==null))				 
+			where_condition=" And area_id='"+area_id+"' "+" AND bill.status=0 And Bill_Month="+bill_month+" and Bill_Year="+bill_year ;
+		
+		if(download_type.equalsIgnoreCase("prev")&&!(area_id==null)&&!(customer_category==null)&&report_for.equalsIgnoreCase("category_wise")){
+			where_condition=" And area_id='"+area_id+"' "+"And customer_category='"+customer_category+"'"+" AND bill.status=0 And Bill_Month="+bill_month+" and Bill_Year="+bill_year ;
+		} else if(download_type.equalsIgnoreCase("prev")&&!(area_id==null)&&report_for.equalsIgnoreCase("area_wise")){
+			where_condition=" And area_id='"+area_id+"' AND bill.status=0 And Bill_Month="+bill_month+" and Bill_Year="+bill_year ;
+		}	 
+		
+		
+		String sql="SELECT brm.READING_ID,  " +
+				"       mr.READING_PURPOSE,  " +
+				"       mr.PREV_READING,  " +
+				"       mr.CURR_READING,  " +
+				"       mr.DIFFERENCE,  " +
+				"       mr.PRESSURE_FACTOR,  " +
+				"       mr.HHV_NHV,  " +
+				"       mr.RATE, " +
+				"       tmp1.*  " +
+				"  FROM BILLING_READING_MAP brm,  " +
+				"       METER_READING mr,  " +
+				"       (SELECT bill.bill_id,  " +
+				"               bill_month,  " +
+				"               bill_year,  " +
+				"               bill.customer_id,  " +
+				"               initcap(customer_name) CUSTOMER_NAME,  " +
+				"               proprietor_name,  " +
+				"               customer_category,  " +
+				"               customer_category_name,  " +
+				"               area_id,  " +
+				"               INITCAP(area_name) area_name,  " +
+				"               address,  " +
+				"               PHONE,MOBILE,  " +
+				"               to_char(issue_date,'dd-MM-YYYY') issue_date,  " +
+				"               to_char(last_pay_date_wo_sc_view,'dd-MM-YYYY') last_pay_date_wo_sc_view ,  " +
+				"               to_char(last_pay_date_w_sc_view,'dd-MM-YYYY') last_pay_date_w_sc_view ,  " +
+				"               to_char(last_pay_date_w_sc_view+1,'dd-MM-YYYY') last_disconn_reconn_date,  " +
+				"               minimum_load,  " +
+				"               other_consumption,  " +
+				"               mixed_consumption,  " +
+				"               billed_consumption,  " +
+				"               payable_amount,  " +
+				"               amount_in_word,  " +
+				"               govt.VAT_AMOUNT govt_total,  " +
+				"               gas_bill,  " +
+				"               min_load_bill,  " +
+				"               bill.meter_rent,  " +
+				"               hhv_nhv_bill,  " +
+				"               adjustment_amount, " +
+				"               ADJUSTMENT_COMMENTS,  " +
+				"               SURCHARGE_PERCENTAGE,  " +
+				"               bill.SURCHARGE_AMOUNT,  " +
+				"               pb.OTHERS_AMOUNT pb_others,   pb.OTHERS_COMMENTS pb_others_comments, " +
+				"		        PB.Gas_Bill+govt.SD_AMOUNT INDIVIDUAL_GAS_BILL, "+
+				"               vat_rebate_percent,  " +
+				"               vat_rebate_amount,  " +
+				"               pb.total_amount pb_total,bill.status ,  to_char(bill.SURCHARGE_ISSUE_DATE,'dd-MM-YYYY') SURCHARGE_ISSUE_DATE,tm.pmin_load " +
+				"          FROM bill_metered bill,  " +
+				"               summary_margin_govt govt,  " +
+				"               summary_margin_pb pb ,(Select customer_id,billing_month,billing_year, sum(NVL(PMIN_LOAD,0)) pmin_load      " +
+				"          From VIEW_METER_READING  " +
+				"          group by customer_id,billing_month,billing_year) tm " +
+				"         WHERE     bill.bill_id = govt.bill_id  " +
+				"               AND bill.bill_id = pb.bill_id  " +
+				"               and BILL.CUSTOMER_ID=tm.CUSTOMER_ID " +
+				"               and BILL.BILL_MONTH=tm.billing_month " +
+				"               and BILL.BILL_YEAR=tm.billing_year " +
+						where_condition+ " ) tmp1  " +
+				" WHERE     BRM.BILL_ID = +tmp1.BILL_ID  " +
+				"       AND BRM.READING_ID = +MR.READING_ID  " +
+				" Order by tmp1.CUSTOMER_CATEGORY,tmp1.CUSTOMER_ID " ;
+				
+				
+		
+		Statement stmt = null;
+		ResultSet r = null;
+			try
+			{
+				 stmt = conn.createStatement();
+				
+				 r = stmt.executeQuery(sql);
+				while (r.next())
+				{			
+					System.out.println("bill id: "+r.getString("BILL_ID"));	
+					bill=new MBillDTO();
+					bill.setBill_id(r.getString("BILL_ID"));
+					bill.setBill_month(r.getInt("BILL_MONTH"));
+					bill.setBill_month_name(Month.values()[r.getInt("BILL_MONTH")-1].getLabel());
+					bill.setBill_year(r.getInt("BILL_Year"));
+					bill.setCustomer_id(r.getString("CUSTOMER_ID"));
+					bill.setCustomer_name(r.getString("CUSTOMER_NAME"));
+					bill.setProprietor_name(r.getString("PROPRIETOR_NAME"));
+					bill.setCustomer_category(r.getString("CUSTOMER_CATEGORY"));
+					bill.setCustomer_category_name(r.getString("CUSTOMER_CATEGORY_NAME"));
+					bill.setArea_id(r.getString("AREA_ID"));
+					bill.setArea_name(r.getString("AREA_NAME"));
+					bill.setAddress(r.getString("ADDRESS"));
+					bill.setPhone(r.getString("PHONE"));
+					bill.setMobile(r.getString("MOBILE"));
+					bill.setIssue_date(r.getString("ISSUE_DATE")); 
+					bill.setLast_pay_date_wo_sc(r.getString("LAST_PAY_DATE_WO_SC_VIEW"));
+					bill.setLast_pay_date_w_sc(r.getString("SURCHARGE_ISSUE_DATE")==null?r.getString("LAST_PAY_DATE_W_SC_VIEW"):r.getString("SURCHARGE_ISSUE_DATE"));
+					bill.setLast_disconn_reconn_date(r.getString("last_disconn_reconn_date"));
+					bill.setMinimum_load(r.getDouble("minimum_load"));
+					bill.setOther_consumption(r.getDouble("OTHER_CONSUMPTION"));
+					bill.setMixed_consumption(r.getDouble("MIXED_CONSUMPTION"));
+					bill.setBilled_consumption(r.getDouble("BILLED_CONSUMPTION"));
+					bill.setPayable_amount(r.getDouble("PAYABLE_AMOUNT"));
+					bill.setAmount_in_word(r.getString("AMOUNT_IN_WORD"));
+					bill.setBill_status(BillStatus.values()[r.getInt("STATUS")]);
+					bill.setBill_status_name(BillStatus.values()[r.getInt("STATUS")].getLabel());
+					bill.setBill_status_str(BillStatus.values()[r.getInt("STATUS")].getLabel().toString());
+										 
+					govtMarginDTO=new MBillGovtMarginDTO();
+					pgMarginDTO=new MBillPbMarginDTO();
+					govtMarginDTO.setTotal_amount(r.getDouble("GOVT_TOTAL"));
+					
+					bill.setGovtMarginDTO(govtMarginDTO);
+					
+					pgMarginDTO.setGas_bill(r.getDouble("GAS_BILL"));
+					pgMarginDTO.setMin_load_bill(r.getDouble("MIN_LOAD_BILL"));
+					pgMarginDTO.setMeter_rent(r.getDouble("METER_RENT"));
+					pgMarginDTO.setHhv_nhv_bill(r.getDouble("HHV_NHV_BILL"));
+					pgMarginDTO.setAdjustment(r.getDouble("ADJUSTMENT_AMOUNT"));
+					pgMarginDTO.setAdjustment_comments(r.getString("ADJUSTMENT_COMMENTS"));
+					pgMarginDTO.setSurcharge_amount(r.getDouble("SURCHARGE_AMOUNT"));
+					pgMarginDTO.setOthers(r.getDouble("PB_OTHERS"));
+					pgMarginDTO.setOther_comments(r.getString("pb_others_comments"));
+					pgMarginDTO.setVat_rebate_percent(r.getDouble("VAT_REBATE_PERCENT"));
+					pgMarginDTO.setVat_rebate_amount(r.getDouble("VAT_REBATE_AMOUNT"));
+					pgMarginDTO.setTotal_amount(r.getDouble("PB_TOTAL"));
+					
+					
+
+					bill.setPbMarginDTO(pgMarginDTO);
+					
+					readingDTO=new MeterReadingDTO();
+					readingDTO.setReading_purpose_str(r.getString("READING_PURPOSE"));
+					readingDTO.setReading_purpose_name(ReadingPurpose.values()[r.getInt("READING_PURPOSE")].getLabel());
+					readingDTO.setCurr_reading(r.getLong("CURR_READING"));
+					readingDTO.setPrev_reading(r.getLong("PREV_READING"));
+					readingDTO.setDifference(r.getLong("DIFFERENCE"));
+					readingDTO.setPressure_factor(r.getFloat("PRESSURE_FACTOR"));
+					readingDTO.setHhv_nhv(r.getFloat("HHV_NHV"));
+					readingDTO.setRate(r.getFloat("RATE"));
+					readingDTO.setIndividual_gas_bill(r.getDouble("INDIVIDUAL_GAS_BILL"));
+					readingList.add(readingDTO);
+					
+				}
+				//if(i>0)
+					
+				
+				bill.setReadingList(readingList);
+				billList.add(bill);
+			} 
+			catch (Exception e){e.printStackTrace();
+			}
+	 		finally{try{stmt.close();ConnectionManager.closeConnection(conn);} catch (Exception e)
+				{e.printStackTrace();}stmt = null;conn = null;}
+	 		
+	 		return billList;
+
+	}
+	///prev
 	
 	public ArrayList<MBillGridDTO> getMeteredBilledCustomerList(int index, int offset,String whereClause,String sortFieldName,String sortOrder,int total)
 	{
