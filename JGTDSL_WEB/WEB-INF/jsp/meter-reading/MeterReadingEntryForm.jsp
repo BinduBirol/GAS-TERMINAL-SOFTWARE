@@ -156,13 +156,21 @@
 </div>
 
 
-<div class="row-fluid"> 
+<div class="row-fluid" style="display: ;"> 
     							   
    <div class="span6">
-       <label class="mr_lable">Act./Total Cons.</label>
-       <input type="text" name="reading.actual_consumption" id="actual_consumption"  class="mr_text1" onchange="calculateTotalConsumption()" style="width: 29%;font-weight: bold;color: #3b5894; background: transparent;"/>       									      
-       <input type="text" name="reading.total_consumption" id="total_consumption"  class="mr_text2"  style="width: 25%; font-weight: bold;color: #3b5894; background: transparent;"/>
+   		<label class="mr_lable">Act./Total Cons.</label>
+       <input type="text"  id="actual_consumption_t"   class="mr_text1" onchange="calculateTotalConsumption()" style="width: 29%;font-weight: bold;color: #3b5894; background: transparent;"/>       									      
+       <input type="text" style="display:none; width:29%;font-weight: bold; background: transparent;"  name="reading.actual_consumption" id="actual_consumption"  >
+       <input type="text"  id="total_consumption_t"   class="mr_text2"  style="width: 25%; font-weight: bold;color: #3b5894; background: transparent;"/>
+		<input type="text" style="display:none"  name="reading.total_consumption" id="total_consumption"  >   
    </div>
+   
+   <div class="span6">
+       <label class="mr_lable">Unit</label>
+       <input type="text" name="unit" id="unit"  class="mr_text1" disabled="disabled"  style="width: 29%;font-weight: bold;color: #3b5894;"/>       									      
+   </div>
+   
 </div>
 
 <div class="row-fluid">    

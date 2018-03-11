@@ -50,7 +50,6 @@
 var column1,column2;
 var name1,index1,name2,index2;
 
-
 <s:if test="%{customer.connectionInfo.isMetered != null}">
 
 <s:if test="customer.connectionInfo.isMetered.label == @org.jgtdsl.enums.MeteredStatus@METERED.label">
@@ -104,8 +103,11 @@ $("#connection_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
 column1="Single";column2="Double";
 name1="single_burner";index1="single_burner";
 name2="double_burner";index2="double_burner";
+
 $("#connection_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
-	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method='+jsEnum.BURNER_QNT_CHANGE_LIST,//+'&extraFilter=area',
+	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method='+jsEnum.BURNER_QNT_CHANGE_LIST+'&extraFilter=customer'+$("#customer_id").val(),
+   //	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method=getBurnerQntChangeListGrid&customer_id='+$("#customer_id").val(),
+   	//url:"getConnectionLedgerGrid.action?customer_id="+$("#customer_id").val(),
    	jsonReader: {
             repeatitems: false,
             id: "pid"
@@ -180,11 +182,12 @@ $("#connection_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
 	caption: "Connection Ledger",
 	sortname: 'effective_date,pid',
     sortorder: "asc",
-    datatype: 'json',
+    datatype: 'json'
 
 }));
 setInterval(reloadBurnerQntChangeHistory($("#customer_id").val()),10000);
 
+//$("ledger_div").onclick(reloadBurnerQntChangeHistory($("#customer_id").val()));
 
 function reloadBurnerQntChangeHistory(customer_id){
     var ruleArray=[["BQC.CUSTOMER_ID"],["eq"],[customer_id]];

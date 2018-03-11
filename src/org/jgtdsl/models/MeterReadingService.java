@@ -418,6 +418,8 @@ public class MeterReadingService {
 					reading.setMeasurement_type_name(MeterMeasurementType.values()[r.getInt("MEASUREMENT_TYPE")].getLabel());
 					reading.setMeasurement_type_str(r.getString("MEASUREMENT_TYPE"));
 					reading.setReading_purpose_str(r.getString("MR_READING_PURPOSE"));
+					reading.setUnit(r.getString("UNIT"));
+					
 					if(!Utils.isNullOrEmpty(r.getString("tariff_id_price"))){
 						String[] id_price_arr=r.getString("tariff_id_price").split(",");
 						if(id_price_arr.length>0){
@@ -477,6 +479,7 @@ public class MeterReadingService {
 						reading.setTariff_id(r.getInt("MR_TARIFF_ID"));
 						reading.setLatest_tariff_id(r.getInt("MR_TARIFF_ID"));
 						reading.setRate(r.getFloat("MR_RATE"));
+						reading.setUnit(r.getString("UNIT"));
 						  
 					}
 					
@@ -494,7 +497,7 @@ public class MeterReadingService {
 					
 					reading.setBill_id(r.getString("BILL_ID"));
 					reading.setRemarks(r.getString("MR_REMARKS"));
-					//reading.setUnit(r.getString("UNIT"));
+					reading.setUnit(r.getString("UNIT"));
 					CustomerConnectionDTO connection =new CustomerConnectionDTO();
 					connection.setMin_load(r.getString("MIN_LOAD"));
 					connection.setMax_load(r.getString("MAX_LOAD"));
@@ -521,7 +524,7 @@ public class MeterReadingService {
 		
 		if(reading_id!=null && !reading_id.equalsIgnoreCase(""))
 			return "Select tmp1.*,BILL_ID From (  " +
-			"Select MR.READING_ID,MR.CUSTOMER_ID,AREA_ID,AREA_NAME,CATEGORY_ID,CI.CATEGORY_NAME,FULL_NAME,MOBILE, CM,UNIT,  " +
+			"Select MR.READING_ID,MR.CUSTOMER_ID,AREA_ID,AREA_NAME,CATEGORY_ID,CI.CATEGORY_NAME,FULL_NAME,MOBILE, CM.UNIT,  " +
 			"CI.CONNECTION_STATUS,CM.STATUS,CI.ISMETERED,METER_TYPE,CM.METER_SL_NO,MEASUREMENT_TYPE,CI.MIN_LOAD,CI.MAX_LOAD,CI.HHV_NHV,  " +
 			"MR.METER_ID,MR.READING_PURPOSE MR_READING_PURPOSE,  " +
 			"MR.TARIFF_ID MR_TARIFF_ID,MR.RATE MR_RATE,  " +
@@ -585,7 +588,7 @@ public class MeterReadingService {
 		"       CM.meter_sl_no, " +
 		"       CM.MEASUREMENT_TYPE, " +
 		"       CM.meter_id, " +
-		"       MR.READING_PURPOSE, " +
+		"       MR.READING_PURPOSE, CM.UNIT, " +
 		"       getTariffInfo(CI.customer_id,'"+reading_date+"') tariff_id_price, " +
 		"       getPrevReadingInfo(CM.meter_id,'"+reading_date+"') pre_reading, " +
 		"       BRM.BILL_ID, " +

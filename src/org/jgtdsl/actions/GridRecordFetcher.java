@@ -214,6 +214,9 @@ public class GridRecordFetcher extends BaseAction {
 			return "Area_Id='" + ((UserDTO) session.get("user")).getArea_id()
 					+ "'";
 		}
+		if (filterType.equalsIgnoreCase("customer")) {
+			return filterType;
+		}
 
 		return "";
 	}
