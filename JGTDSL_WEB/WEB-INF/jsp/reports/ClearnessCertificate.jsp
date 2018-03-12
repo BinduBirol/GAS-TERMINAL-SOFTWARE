@@ -91,7 +91,7 @@ font-size: 12px;
 						<div class="row-fluid" id="individual_code_div" >
 							<div class="span12" style="margin-top: 4px;">
 								<label style="width: 40%">Customer ID <m class='man'/></label>
-								<input type="text" name="customer_id" id="customer_id" style="font-weight: bold;color: #3b5894;position: absolute; z-index: 2; background: transparent;width: 10%;margin-top: -4px;" value="<s:property value='customer_id' />" tabindex="1"/>
+								<input type="text" name="customer_id" id="customer_id" style="font-weight: bold;color: #3b5894; background: transparent;width: 10%;margin-top: -4px;" value="<s:property value='customer_id' />" tabindex="1"/>
 								
 								
 						  	</div>
@@ -118,13 +118,13 @@ font-size: 12px;
 						<div class="row-fluid" id="range_code_div"  style="display:none;margin-top: 4px;">
 							<div class="span12" style="margin-top: 12px;">
 								<label style="width: 40%">From Cus_Code <m class='man'/></label>
-								<input type="text" name="from_customer_id" id="from_customer_id" style="font-weight: bold;color: #3b5894;position: absolute; z-index: 2; background: transparent;width: 10%;margin-top: -4px;" value="<s:property value='customer_id' />" tabindex="1"/>
+								<input type="text" name="from_customer_id" id="from_customer_id" style="font-weight: bold;color: #3b5894;  background: transparent;width: 10%;margin-top: -4px;" value="<s:property value='customer_id' />" tabindex="1"/>
 								
 								
 						  	</div>
 						  	<div class="span12" style="margin-left: -1px;margin-top: 6px">
 								<label style="width: 40%">To Cus_code <m class='man'/></label>
-								<input type="text" name="to_customer_id" id="to_customer_id" style="font-weight: bold;color: #3b5894;position: absolute; z-index: 2; background: transparent;width: 10%;margin-top: -4px;" value="<s:property value='customer_id' />" tabindex="1"/>
+								<input type="text" name="to_customer_id" id="to_customer_id" style="font-weight: bold;color: #3b5894;  background: transparent;width: 10%;margin-top: -4px;" value="<s:property value='customer_id' />" tabindex="1"/>
 								
 								
 						  	</div>
@@ -152,13 +152,13 @@ font-size: 12px;
 							<div class="row-fluid" id="officer_nsme" >
 								<div class="span12" style="margin-top: 4px;">
 									<label style="width: 40%">Officer's Name <m class='man'/></label>
-									<input type="text" name="officer_name" id="officer_name" style="font-weight: bold;color: #3b5894;position: absolute; z-index: 2; background: transparent;width: 10%;margin-top: -4px;" value="" tabindex="1"/>								
+									<input type="text" name="officer_name" id="officer_name" style="font-weight: bold;color: #3b5894;width:100%; background: transparent;width: 10%;margin-top: -4px;" value="" tabindex="1"/>								
 						  		</div>
 							</div>
 							<div class="row-fluid" id="designation" >
 								<div class="span12" style="margin-top: 4px;">
 									<label style="width: 40%">Officer's Designation <m class='man'/></label>
-									<input type="text" name="officer_desig" id="officer_desig" style="font-weight: bold;color: #3b5894;position: absolute; z-index: 2; background: transparent;width: 10%;margin-top: -4px;" value="" tabindex="1"/>								
+									<input type="text" name="officer_desig" id="officer_desig" style="font-weight: bold;color: #3b5894; background: transparent;width: 10%;margin-top: -4px;" value="" tabindex="1"/>								
 						  		</div>
 							</div>
 							 
