@@ -221,7 +221,15 @@
 				<param name="inputName">inputStream</param>
 		</result>	
 	</action>
-	<action name="clearnessCertificateInfo"  class="org.jgtdsl.reports.DefaulterCertificate">
+	
+	<action name="printLedger" class="org.jgtdsl.reports.LedgerPrinting" method="downloadLedger">
+		<result type="stream">
+			<param name="contentType">application/pdf</param>
+			<param name="inputName">inputStream</param>
+		</result>
+	</action>
+	
+	<action name="clearnessCertificateInfo"  class="org.jgtdsl.reports.DefaulterCCertificate">
 	  <result type="stream">
 	    <param name="contentType">application/pdf</param>
 	    <param name="inputName">inputStream</param>

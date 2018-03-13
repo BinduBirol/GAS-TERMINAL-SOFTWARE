@@ -39,7 +39,7 @@
 	                <div>
 						<table id="connection_ledger_grid"></table>
 						<div id="connection_ledger_grid_pager" ></div>
-	                </div>	                
+	                </div>                
 	            </div>
         	</div>
 		</div>
@@ -49,6 +49,7 @@
 <script type="text/javascript">
 var column1,column2;
 var name1,index1,name2,index2;
+
 
 <s:if test="%{customer.connectionInfo.isMetered != null}">
 
@@ -105,9 +106,8 @@ name1="single_burner";index1="single_burner";
 name2="double_burner";index2="double_burner";
 
 $("#connection_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
-	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method='+jsEnum.BURNER_QNT_CHANGE_LIST+'&extraFilter=customer'+$("#customer_id").val(),
-   //	url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method=getBurnerQntChangeListGrid&customer_id='+$("#customer_id").val(),
-   	//url:"getConnectionLedgerGrid.action?customer_id="+$("#customer_id").val(),
+	//url: jsEnum.GRID_RECORED_FETCHER+'?service='+jsEnum.BURNER_QNT_CHANGE_SERVICE+'&method='+jsEnum.BURNER_QNT_CHANGE_LIST,//+'&extraFilter=area',
+   	url:"getConnectionLedgerGrid.action?customer_id="+$("#customer_id").val(),
    	jsonReader: {
             repeatitems: false,
             id: "pid"
@@ -182,12 +182,12 @@ $("#connection_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
 	caption: "Connection Ledger",
 	sortname: 'effective_date,pid',
     sortorder: "asc",
-    datatype: 'json'
+    datatype: 'json',
 
 }));
+/*
 setInterval(reloadBurnerQntChangeHistory($("#customer_id").val()),10000);
-
-//$("ledger_div").onclick(reloadBurnerQntChangeHistory($("#customer_id").val()));
+/*
 
 function reloadBurnerQntChangeHistory(customer_id){
     var ruleArray=[["BQC.CUSTOMER_ID"],["eq"],[customer_id]];
@@ -207,7 +207,7 @@ jQuery("#connection_ledger_grid").jqGrid('navGrid','#connection_ledger_grid_page
 			   modifyGridPostData("meterRent_change_history_this_grid",ruleArray,oldRules,newRules);	
 		   }
 		
-		});
+		});*/
 
 </s:if>
 </s:if>

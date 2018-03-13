@@ -1049,13 +1049,13 @@ public class DefaulterCustomerList extends BaseAction {
 							+ "            FROM CUSTOMER C, MST_ZONE MZ "
 							+ "           WHERE C.AREA = MZ.AREA_ID AND C.ZONE = MZ.ZONE_ID) TMP4 ";
 				}
-				defaulterListSql += " WHERE tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
+				defaulterListSql += " WHERE tmp1.TOTAL_AMOUNT > 0 AND tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
 						+ " AND tmp1.CUSTOMER_ID = TMP3.CUSTOMER_ID";
 				if (moholla_wise.equals("1")) {
 					defaulterListSql += "         AND tmp1.CUSTOMER_ID = TMP4.CUSTOMER_ID "
-							+ "ORDER BY TMP4.ZONE, tmp1.STATUS, tmp1.CUSTOMER_ID ASC ";
+							+ "ORDER BY TMP4.ZONE, tmp1.CUSTOMER_ID ASC ";
 				} else {
-					defaulterListSql += " ORDER BY tmp1.CATEGORY_ID , tmp1.STATUS, tmp1.TOTAL_MONTH DESC";
+					defaulterListSql += " ORDER BY tmp1.CATEGORY_ID , tmp1.CUSTOMER_ID ASC ";
 				}
 
 			} else {
@@ -1122,13 +1122,13 @@ public class DefaulterCustomerList extends BaseAction {
 							+ "            FROM CUSTOMER C, MST_ZONE MZ "
 							+ "           WHERE C.AREA = MZ.AREA_ID AND C.ZONE = MZ.ZONE_ID) TMP4 ";
 				}
-				defaulterListSql += " WHERE tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
+				defaulterListSql += " WHERE tmp1.TOTAL_AMOUNT > 0 AND tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
 						+ " AND tmp1.CUSTOMER_ID = TMP3.CUSTOMER_ID";
 				if (moholla_wise.equals("1")) {
 					defaulterListSql += "         AND tmp1.CUSTOMER_ID = TMP4.CUSTOMER_ID "
-							+ "ORDER BY TMP4.ZONE, tmp1.STATUS, tmp1.CUSTOMER_ID ASC ";
+							+ "ORDER BY TMP4.ZONE, tmp1.CUSTOMER_ID ASC ";
 				} else {
-					defaulterListSql += " ORDER BY tmp1.CATEGORY_ID , tmp1.STATUS, tmp1.TOTAL_MONTH DESC";
+					defaulterListSql += " ORDER BY tmp1.CATEGORY_ID, tmp1.CUSTOMER_ID ASC ";
 				}
 
 			}
