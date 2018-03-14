@@ -6,8 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -16,13 +19,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.util.ServletContextAware;
 import org.jgtdsl.dto.ClearnessDTO;
+import org.jgtdsl.dto.CustomerApplianceDTO;
 import org.jgtdsl.dto.UserDTO;
+import org.jgtdsl.enums.Month;
+import org.jgtdsl.enums.Area;
+import org.jgtdsl.models.MeterService;
 import org.jgtdsl.utils.connection.ConnectionManager;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -38,7 +51,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 	private String customer_id;
 	private String download_type;
 	private String area;
-	private String from_date;
+	private String collection_month;
 	private String from_customer_id;
 	private String to_customer_id;
 	private String customer_category;
@@ -72,6 +85,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 		// left,right,top,bottom
 		String fileName = "";
 		readers = new ArrayList<PdfReader>();
+		BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN,BaseFont.WINANSI,BaseFont.EMBEDDED);
+		BaseFont bfb = BaseFont.createFont(BaseFont.TIMES_BOLD,BaseFont.WINANSI,BaseFont.EMBEDDED);
 
 		try {
 
@@ -85,7 +100,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 			out = new ByteArrayOutputStream();
 			// left,right,top,bottom
 			fileName = "ClearnessCertificate.pdf";
-			ClearnessDTO customerInfo = getCustomerInfo(customer_id, area);
+			ClearnessDTO customerInfo = getCustomerInfo(customer_id, area,calender_year,collection_month);
+			
 			if (customerInfo.getDueAmount() == 0
 					&& customerInfo.getDueMonth().equals("")) {
 				reader = new PdfReader(new FileInputStream(realPathC));
@@ -99,7 +115,139 @@ public class DefaulterCCertificate extends ActionSupport implements
 			over = stamp.getOverContent(1);
 
 			over.beginText();
+			//date
+			//DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
+			Date date = new Date();
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,dateFormat.format(date),487, 660,0);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,dateFormat.format(date),487, 357,0);
+			//customer Id
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,customer_id,190, 645,0);
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,customer_id,190, 342,0);
+			//month			
+			String month_name=(Month.values()[Integer.parseInt(collection_month) - 1].getLabel());			
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,month_name,270, 645,0);
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,month_name,270, 342,0);
+			//due month
+			over.setFontAndSize(bf, 5);
+			
+			String hsi = customerInfo.getDueMonth();
+			if (customerInfo.getDueMonth() != null)
+				hsi = customerInfo.getDueMonth().replaceAll("&#x26;", "&");
+			int size = 65;
+			if (hsi != null && hsi.length() > size) {
+				String[] s1;
+				s1 = spitSrting(hsi, size);
+
+				if (s1[1].length() <= size) {
+					over.setTextMatrix(75, 565);
+					over.showText(s1[0]);
+					over.setTextMatrix(75, 262);
+					over.showText(s1[0]);
+				} else {
+					s1 = spitSrting(s1[1], size);
+					over.setTextMatrix(75, 565);
+					over.showText(s1[0]);
+					over.setTextMatrix(75, 262);
+					over.showText(s1[0]);
+					
+					if (s1[1].length() <= size) {
+						over.setTextMatrix(75, 555);
+						over.showText(s1[1]);
+						over.setTextMatrix(75, 252);
+						over.showText(s1[1]);
+					} else {
+						s1 = spitSrting(s1[1], size);
+						over.setTextMatrix(75, 555);
+						over.showText(s1[0]);
+						over.setTextMatrix(75, 252);
+						over.showText(s1[0]);
+						over.setTextMatrix(75, 545);
+						if (s1[1].length() > size)
+							over.showText(s1[1].substring(size));
+						else
+							over.showText(s1[1]);
+						over.setTextMatrix(75, 242);
+						if (s1[1].length() > size)
+							over.showText(s1[1].substring(size));
+						else
+							over.showText(s1[1]);
+					}
+				}
+			} else {
+				over.setTextMatrix(75, 565);
+				over.showText(hsi);
+				over.setTextMatrix(75, 262);
+				over.showText(hsi);
+			}
+			//appliance
+			MeterService ms=new MeterService();
+			ArrayList<CustomerApplianceDTO> applianceList=ms.getCustomerApplianceList(customer_id);
+			if(applianceList.size()==0){
+				over.setFontAndSize(bfb, 8);
+				over.showTextAligned(PdfContentByte.ALIGN_LEFT,"N/A",260, 555,0);
+				over.showTextAligned(PdfContentByte.ALIGN_LEFT,"N/A",300, 555,0);
+				over.showTextAligned(PdfContentByte.ALIGN_LEFT,"N/A",340, 555,0);
+				
+				over.showTextAligned(PdfContentByte.ALIGN_LEFT,"N/A",260, 252,0);
+				over.showTextAligned(PdfContentByte.ALIGN_LEFT,"N/A",300, 252,0);
+				over.showTextAligned(PdfContentByte.ALIGN_LEFT,"N/A",340, 252,0);
+			}
+			
+			for(CustomerApplianceDTO x: applianceList){
+				over.setFontAndSize(bfb, 8);
+				if(x.getApplianc_id().equalsIgnoreCase("01")){
+					over.showTextAligned(PdfContentByte.ALIGN_LEFT,"0"+x.getApplianc_qnt(),260, 555,0);
+					over.showTextAligned(PdfContentByte.ALIGN_LEFT,"0"+x.getApplianc_qnt(),260, 252,0);
+					
+				}else if(x.getApplianc_id().equalsIgnoreCase("02")){
+					over.showTextAligned(PdfContentByte.ALIGN_LEFT,"0"+x.getApplianc_qnt(),300, 555,0);
+					over.showTextAligned(PdfContentByte.ALIGN_LEFT,"0"+x.getApplianc_qnt(),300, 252,0);
+					
+				}else{
+					over.showTextAligned(PdfContentByte.ALIGN_LEFT,"0"+x.getApplianc_qnt(),340, 555,0);
+					over.showTextAligned(PdfContentByte.ALIGN_LEFT,"0"+x.getApplianc_qnt(),340, 252,0);
+				}
+			}
+			//due amount
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,String.valueOf(customerInfo.getDueAmount()),400, 555,0);
+			over.setFontAndSize(bfb, 8);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,String.valueOf(customerInfo.getDueAmount()),400, 252,0);
+			
+			
+			//area name
+			over.setFontAndSize(bfb, 6);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,Area.values()[ Integer.parseInt(area) - 1].getLabel(),100, 498,0);
+			over.setFontAndSize(bfb, 6);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,Area.values()[ Integer.parseInt(area) - 1].getLabel(),100, 195,0);
+			
+			//name address		
+			
+			over.setFontAndSize(bfb, 6);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,customerInfo.getCustomerName(),115, 458,0);
+			over.setFontAndSize(bfb, 6);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,customerInfo.getCustomerName(),115, 155,0);
+			
+			over.setFontAndSize(bf, 6);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,customerInfo.getCustomerAddress(),115, 448,0);
+			over.setFontAndSize(bf, 6);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,customerInfo.getCustomerAddress(),115, 145,0);
+			
+			//signature
+			over.setFontAndSize(bf, 7);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,officer_name+", "+officer_desig,457, 468,0);
+			over.setFontAndSize(bf, 7);
+			over.showTextAligned(PdfContentByte.ALIGN_LEFT,officer_name+", "+officer_desig,457, 165,0);
+			
 			over.endText();
+			stamp.close();
+			readers.add(new PdfReader(certificate.toByteArray()));
 
 			if (readers.size() > 0) {
 				PdfWriter writer = PdfWriter.getInstance(document, out);
@@ -116,7 +264,6 @@ public class DefaulterCCertificate extends ActionSupport implements
 					page = writer.getImportedPage(pdfReader, 1);
 					cb.addTemplate(page, 0, 0);
 				}
-
 				document.close();
 				ReportUtil rptUtil = new ReportUtil();
 				rptUtil.downloadPdf(out, response, fileName);
@@ -129,8 +276,15 @@ public class DefaulterCCertificate extends ActionSupport implements
 		return null;
 	}
 
-	private ClearnessDTO getCustomerInfo(String customer_id, String area_id) {
+	private ClearnessDTO getCustomerInfo(String customer_id, String area_id, String year, String month) {
 		ClearnessDTO ctrInfo = new ClearnessDTO();
+		String type= customer_id.substring(0,4);
+		String bill_table;
+		if(type.equalsIgnoreCase(area_id+"01")||type.equalsIgnoreCase(area_id+"09")){
+			bill_table="BILL_NON_METERED";
+		}else{
+			bill_table="BILL_METERED";
+		}
 
 		try {
 
@@ -151,15 +305,15 @@ public class DefaulterCCertificate extends ActionSupport implements
 					+ "                                          TO_CHAR (SYSDATE, 'dd-mm-YYYY'))) "
 					+ "                    totalamount, "
 					+ "                 COUNT (*) cnt "
-					+ "            FROM BILL_METERED bi, CUSTOMER_CONNECTION cc "
+					+ "            FROM "+ bill_table+" bi, CUSTOMER_CONNECTION cc "
 					+ "           WHERE     BI.CUSTOMER_ID = CC.CUSTOMER_ID "
 					+ "                 AND CC.STATUS = 1 "
 					+ "                 AND bi.STATUS = 1 "
 					+ "                 AND bi.area_id = ? "
 					+ "                 AND BI.CUSTOMER_ID = ? "
-					+
+					
 					// "                 And bi.CUSTOMER_CATEGORY= " +
-					"                -- AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= 2017030 "
+					+ "                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"+year+month+"' "
 					+ "        GROUP BY BI.CUSTOMER_ID, CUSTOMER_CATEGORY, bi.AREA_ID "
 					+ "          HAVING COUNT (*) > 1) tmp1, "
 					+ "       (SELECT AA.CUSTOMER_ID, "
@@ -172,8 +326,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 					+ " WHERE tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID ";
 
 			PreparedStatement ps1 = conn.prepareStatement(customer_info_sql);
-			ps1.setString(1, customer_id);
-			ps1.setString(2, area_id);
+			ps1.setString(1, area_id);
+			ps1.setString(2, customer_id);
 
 			ResultSet resultSet = ps1.executeQuery();
 
@@ -185,6 +339,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 				ctrInfo.setDueMonth(resultSet.getString("DUEMONTH"));
 				ctrInfo.setDueAmount(Double.parseDouble(resultSet
 						.getString("TOTALAMOUNT")));
+				ctrInfo.setArea(resultSet.getString("AREA_ID"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -234,12 +389,12 @@ public class DefaulterCCertificate extends ActionSupport implements
 		this.area = area;
 	}
 
-	public String getFrom_date() {
-		return from_date;
+	public String getCollection_month() {
+		return collection_month;
 	}
 
-	public void setFrom_date(String from_date) {
-		this.from_date = from_date;
+	public void setCollection_month(String collection_month) {
+		this.collection_month = collection_month;
 	}
 
 	public String getFrom_customer_id() {
@@ -344,6 +499,29 @@ public class DefaulterCCertificate extends ActionSupport implements
 
 	public void setServletContext(ServletContext servlet) {
 		this.servlet = servlet;
+	}
+	
+	public String[] spitSrting(String base, int size) {
+		char[] separator = { ' ', '.', ',', ';', ':' };
+		boolean separatorfound = false;
+		String s1[] = new String[2];
+		outer: for (int j = size; j >= 0; j--) {
+			for (int k = 0; k < separator.length; k++) {
+				if (separator[k] == base.charAt(j)) {
+					s1[0] = base.substring(0, j + 1);
+					s1[1] = base.substring(j + 1, base.length());
+					separatorfound = true;
+					break outer;
+				}
+			}
+
+		}
+		if (!separatorfound) {
+			int x = 0;
+			s1[0] = base.substring(0, size - 10);
+			s1[1] = base.substring(size - 10, base.length());
+		}
+		return s1;
 	}
 
 }

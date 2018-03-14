@@ -313,7 +313,7 @@ $('#surcharge_amount').keyup(function(e){
 //		$('#customer_name').clear();
 //		$('#area_id').clear();
 //		$('#customerType').clear();
-		$('#customer_code').val("0101");
+		$("#customer_code").val($("#area_id").val()+"01");
 		$('#customer_code').focus();
 		
 		var fields = ["customer_name","customer_id","customerType","advanced_amount","from_month","to_month","surcharge_amount"];
