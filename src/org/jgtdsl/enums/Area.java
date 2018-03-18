@@ -20,10 +20,10 @@ public enum  Area {
 	GOLAPGONJ(15,"Golapgonj"),
 	MAULVIBAZAR(16,"Maulvibazar"),
 	SRIMANGAL(17,"Srimangal"),
-	KULAURA(18,"Beanibazar"),
+	BEANIBAZAR(18,"Beanibazar"),
 	SHAHJIBAZAR(19,"Shahjibazar"),
 	HOBIGONJ(20,"Hobigonj"),
-	BEANIBAZAR(21,"Kulaura"),
+	KULAURA(21,"Kulaura"),
 	NOBIGONJ(22,"Nobigonj"),
 	SYLHET_NORTH(23,"Sylhet_North");
 	

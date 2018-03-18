@@ -269,6 +269,7 @@ $('#address').keyup(function(e){
 		$('#from_month').focus();
 		var fields = ["customer_name","customer_id","address","customerType","advanced_amount","from_month","to_month","surcharge_amount"];
     	clearField.apply(this,fields);
+    	$("#customer_id").val($("#area_id").val()+"01");
 	}
 });
 

@@ -1865,6 +1865,7 @@ public class MonthlyCollectionReport extends BaseAction {
 						"                   MST_CUSTOMER_CATEGORY MCC " +
 						"             WHERE     BAL.BRANCH_ID = MBRI.BRANCH_ID " +
 						"                   AND MBI.BANK_ID = MBRI.BANK_ID " +
+						"					AND MBRI.area_id = MBI.area_id" +
 						"                   AND SUBSTR (BAL.CUSTOMER_ID, 3, 2) = MCC.CATEGORY_ID " +
 						"                   AND TO_CHAR (TRANS_DATE, 'MM') = LPAD ("+bill_month+", 2, 0) " +
 						"                   AND TO_CHAR (TRANS_DATE, 'YYYY') = "+bill_year+" " +
@@ -1884,6 +1885,7 @@ public class MonthlyCollectionReport extends BaseAction {
 						"                   MST_CUSTOMER_CATEGORY MCC " +
 						"             WHERE     BAL.BRANCH_ID = MBRI.BRANCH_ID " +
 						"                   AND MBI.BANK_ID = MBRI.BANK_ID " +
+						"					AND MBRI.area_id = MBI.area_id" +
 						"                   AND SUBSTR (BAL.CUSTOMER_ID, 3, 2) = MCC.CATEGORY_ID " +
 						"                   AND TO_CHAR (TRANS_DATE, 'MM') = LPAD ("+bill_month+", 2, 0) " +
 						"                   AND TO_CHAR (TRANS_DATE, 'YYYY') = "+bill_year+" " +
@@ -1903,6 +1905,7 @@ public class MonthlyCollectionReport extends BaseAction {
 						"                   MST_CUSTOMER_CATEGORY MCC " +
 						"             WHERE     BAL.BRANCH_ID = MBRI.BRANCH_ID " +
 						"                   AND MBI.BANK_ID = MBRI.BANK_ID " +
+						"					AND MBRI.area_id = MBI.area_id" +
 						"                   AND SUBSTR (BAL.CUSTOMER_ID, 3, 2) = MCC.CATEGORY_ID " +
 						"                   AND TO_CHAR (TRANS_DATE, 'MM') = LPAD ("+bill_month+", 2, 0) " +
 						"                   AND TO_CHAR (TRANS_DATE, 'YYYY') = "+bill_year+" " +

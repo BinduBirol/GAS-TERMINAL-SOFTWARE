@@ -471,8 +471,9 @@ public class CollectionService {
 					if(customer.getConnectionInfo().getIsMetered_name().equalsIgnoreCase("Metered")){
 						collection.setBilled_amount(r.getDouble("BILLED_AMOUNT"));					
 						collection.setVat_rebate_amount(r.getDouble("VAT_REBATE_AMOUNT"));
-						//collection.setSurcharge_amount(r.getDouble("SURCHARGE_AMOUNT"));
-						collection.setSurcharge_amount(r.getDouble("ACTUAL_SURCHARGE_CAL"));
+						//for fixing sum in form
+						collection.setSurcharge_amount(r.getDouble("SURCHARGE_AMOUNT"));
+						//collection.setSurcharge_amount(r.getDouble("ACTUAL_SURCHARGE_CAL"));
 						collection.setAdjustment_amount(r.getDouble("ADJUSTMENT_AMOUNT"));
 						//collection.setPayable_amount(r.getDouble("PAYABLE_AMOUNT"));
 						collection.setPayable_amount(r.getDouble("ACTUAL_PAYABLE_AMOUNT_CAL"));
