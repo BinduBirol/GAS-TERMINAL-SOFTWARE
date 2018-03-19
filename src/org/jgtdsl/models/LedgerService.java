@@ -216,7 +216,7 @@ public class LedgerService {
 		ArrayList<DepositLedgerDTO> ledger = new ArrayList<DepositLedgerDTO>();
 		Connection conn = ConnectionManager.getConnection();
 		String sql = "select DEPOSIT_ID,to_char(DEPOSIT_DATE,'dd-mm-rrrr') DEPOSIT_DATE,TOTAL_DEPOSIT,decode(DEPOSIT_PURPOSE,2,'Less',1,'Add') particular, "
-				+ "to_char(VALID_TO,'dd-mm-rrrr') VALID_TO,decode(DEPOSIT_TYPE,0,'CASH_BANK',1,'BANH GUARANTEE') deposit_type from mst_deposit "
+				+ "to_char(VALID_TO,'dd-mm-rrrr') VALID_TO,decode(DEPOSIT_TYPE,0,'CASH BANK',1,'BANK GUARANTEE') deposit_type from mst_deposit "
 				+ "where customer_id=? "
 				+ "and DEPOSIT_PURPOSE in (1,2) "
 				+ "order by DEPOSIT_DATE";

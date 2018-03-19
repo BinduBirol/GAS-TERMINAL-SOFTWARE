@@ -448,6 +448,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 				over.endText();
 				stamp.close();
 				readers.add(new PdfReader(certificate.toByteArray()));
+				insertClarificationHistory(customerInfo.getCustomerID(), dateFormat.format(date), officer_name, (int) customerInfo.getDueAmount());
 			}
 			if (readers.size() > 0) {
 				PdfWriter writer = PdfWriter.getInstance(document, out);
@@ -468,9 +469,10 @@ public class DefaulterCCertificate extends ActionSupport implements
 				ReportUtil rptUtil = new ReportUtil();
 				rptUtil.downloadPdf(out, response, fileName);
 				document = null;
+				
+				
 			}
-			insertClarificationHistory(customer_id, dateFormat.format(date),
-					officer_name, (int) customerInfo.getDueAmount());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -787,13 +789,24 @@ public class DefaulterCCertificate extends ActionSupport implements
 		if(collection_month.length()<2){
 			collection_month="0"+collection_month;
 		}
-		String type = from_cus_id.substring(0, 4);
+		String type=null;
+		if(from_cus_id.isEmpty()){
+			type=area+this.customer_category;
+		}else{
+			type = from_cus_id.substring(0, 4);
+		}		
 		String bill_table;
 		if (type.equalsIgnoreCase(area + "01")
 				|| type.equalsIgnoreCase(area + "09")) {
 			bill_table = "BILL_NON_METERED";
 		} else {
 			bill_table = "BILL_METERED";
+		}
+		String whereClause= null;
+		if(from_cus_id.isEmpty()&&to_cus_id.isEmpty()){
+			whereClause= "      AND BI.CUSTOMER_CATEGORY='"+this.customer_category+"'  ";
+		}else{
+			whereClause= "         AND BI.CUSTOMER_ID BETWEEN '"+from_cus_id+"' AND '"+to_cus_id+"' " ;
 		}
 		try {
 			String transaction_sql =
@@ -803,7 +816,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 					"         AND CC.STATUS = 1 " +
 					"         AND bi.STATUS = 1 " +
 					"         AND bi.area_id = '01' " +
-					"         AND BI.CUSTOMER_ID BETWEEN '"+from_cus_id+"' AND '"+to_cus_id+"' " +
+					whereClause+
 					"                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"+ calender_year+collection_month+
 					"'  GROUP BY BI.CUSTOMER_ID, CUSTOMER_CATEGORY, bi.AREA_ID " +
 					"  HAVING COUNT (*) >= 1 " ;
