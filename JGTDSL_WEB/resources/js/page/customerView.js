@@ -283,7 +283,8 @@ $("#deposit_ledger_grid").jqGrid($.extend(true, {}, scrollPagerGridOptions, {
 	                width:40
             	}
         ],   	
-	height: $("#wizard").height(),
+	//height: $("#wizard").height(),
+    height:500,    
 	width: $("#sw-basic-step-5").width(),
    	pager: '#deposit_ledger_grid_pager',
 	caption: "Deposit Ledger",	
