@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.apache.struts2.ServletActionContext;
 import org.jgtdsl.dto.BurnerQntChangeDTO;
 import org.jgtdsl.dto.CustomerDTO;
 import org.jgtdsl.dto.CustomerGridDTO;
@@ -12,6 +13,7 @@ import org.jgtdsl.dto.DepositDTO;
 import org.jgtdsl.dto.DepositDtlDTO;
 import org.jgtdsl.dto.DepositTypeDTO;
 import org.jgtdsl.dto.ResponseDTO;
+import org.jgtdsl.dto.UserDTO;
 import org.jgtdsl.enums.Area;
 import org.jgtdsl.enums.BankAccountTransactionType;
 import org.jgtdsl.enums.ConnectionStatus;
@@ -29,6 +31,9 @@ import com.google.gson.Gson;
 
 public class DepositService {
 
+	UserDTO loggedInUser=(UserDTO) ServletActionContext.getRequest().getSession().getAttribute("user");
+	String area_id = loggedInUser.getArea_id();
+	
 	public ArrayList<DepositTypeDTO> getDepositTypeList(int index, int offset,
 			String whereClause, String sortFieldName, String sortOrder,
 			int total) {
@@ -809,11 +814,13 @@ public class DepositService {
 			sql = "Select deposit.deposit_id,deposit.customer_id,CUSTOMER_CATEGORY,CATEGORY_NAME,FULL_NAME ,bank.bank_id,branch.branch_id,account.account_no,bank_name,branch_name,account_name,total_deposit,to_char(valid_to,'dd-MM-YYYY') valid_to,valid_to -trunc(sysdate) expire_in "
 					+ " From MST_DEPOSIT deposit,CUSTOMER_PERSONAL_INFO CUSTOMER,MST_BANK_INFO bank,MST_BRANCH_INFO branch,MST_ACCOUNT_INFO account,CUSTOMER CUS,MST_CUSTOMER_CATEGORY MCC"
 					+ " Where bank.bank_id=deposit.bank_id And deposit.customer_id=CUSTOMER.CUSTOMER_ID"
+					+ " And BANK.AREA_ID = BRANCH.AREA_ID"
 					+ " And branch.branch_id=deposit.branch_id "
 					+ " And account.account_no=deposit.account_no "
 					+ " AND CUS.CUSTOMER_ID=deposit.customer_id "
 					+ " AND MCC.CATEGORY_ID=CUS.CUSTOMER_CATEGORY"
-					+ " And Deposit_Type=1" 
+					+ " And Deposit_Type=1"
+					+ " and BRANCH.AREA_ID='"+area_id+"'"
 					+ (whereClause.equalsIgnoreCase("") ? "" : (" And ( "
 							+ whereClause + ")")) + " " + orderByQuery;
 		else
@@ -822,11 +829,13 @@ public class DepositService {
 					+ " ( Select deposit.deposit_id,deposit.customer_id,CUSTOMER_CATEGORY,CATEGORY_NAME,FULL_NAME ,bank.bank_id,branch.branch_id,account.account_no,bank_name,branch_name,account_name,total_deposit,to_char(valid_to,'dd-MM-YYYY') valid_to,valid_to -trunc(sysdate) expire_in "
 					+ " From MST_DEPOSIT deposit,CUSTOMER_PERSONAL_INFO CUSTOMER,MST_BANK_INFO bank,MST_BRANCH_INFO branch,MST_ACCOUNT_INFO account,CUSTOMER CUS,MST_CUSTOMER_CATEGORY MCC "
 					+ " Where bank.bank_id=deposit.bank_id And deposit.customer_id=CUSTOMER.CUSTOMER_ID"
+					+ " AND BANK.AREA_ID = BRANCH.AREA_ID"
 					+ " And branch.branch_id=deposit.branch_id "
 					+ " And account.account_no=deposit.account_no "
 					+ " AND CUS.CUSTOMER_ID=deposit.customer_id "
 					+ " AND MCC.CATEGORY_ID=CUS.CUSTOMER_CATEGORY"
 					+ " And Deposit_Type=1"
+					+ " and BRANCH.AREA_ID='"+area_id+"'"
 					+ (whereClause.equalsIgnoreCase("") ? "" : (" And ( "
 							+ whereClause + ")")) + " " + orderByQuery
 					+ "    )tmp1 " + "    )tmp2   "
