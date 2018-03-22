@@ -200,11 +200,13 @@ public class LedgerPrinting extends BaseAction implements ServletContextAware {
 				
 				pcell=new PdfPCell(new Paragraph(x.getApplianc_name(),font4));
 				pcell.setPadding(5);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				burnerTable.addCell(pcell);
 				
 				pcell=new PdfPCell(new Paragraph(x.getApplianc_qnt(),font4));
 				pcell.setPadding(5);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				burnerTable.addCell(pcell);			
 								
@@ -237,17 +239,20 @@ public class LedgerPrinting extends BaseAction implements ServletContextAware {
 				
 				pcell=new PdfPCell(new Paragraph(x.getMeter_sl_no(),font3));
 				pcell.setPadding(3);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				meterTable.addCell(pcell);
 				
 				pcell=new PdfPCell(new Paragraph(x.getMeter_rent(),font3));
 				pcell.setPadding(3);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				meterTable.addCell(pcell);		
 				
 				
 				pcell=new PdfPCell(new Paragraph(String.valueOf(x.getStatus()),font3));
 				pcell.setPadding(3);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				meterTable.addCell(pcell);
 			}
@@ -277,16 +282,19 @@ public class LedgerPrinting extends BaseAction implements ServletContextAware {
 			for(BurnerQntChangeDTO x: connledger){
 				pcell=new PdfPCell(new Paragraph(x.getOld_double_burner_qnt(),font3));
 				pcell.setPadding(5);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				connLdgr.addCell(pcell);
 				
 				pcell=new PdfPCell(new Paragraph(x.getNew_double_burner_qnt(),font3));
 				pcell.setPadding(5);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				connLdgr.addCell(pcell);
 				
 				pcell=new PdfPCell(new Paragraph(x.getEffective_date(),font3));
 				pcell.setPadding(5);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				connLdgr.addCell(pcell);
 			}
@@ -313,11 +321,13 @@ public class LedgerPrinting extends BaseAction implements ServletContextAware {
 			pcell=new PdfPCell(new Paragraph("Cash Bank",font4));
 			pcell.setPadding(3);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			secLedMetered.addCell(pcell);
 			
 			pcell=new PdfPCell(new Paragraph("BG",font4));
 			pcell.setPadding(3);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			secLedMetered.addCell(pcell);
 			
 			for(int i=0; i<depositAmount.size();i++){
@@ -336,10 +346,12 @@ public class LedgerPrinting extends BaseAction implements ServletContextAware {
 			pcell=new PdfPCell(new Paragraph(String.valueOf(totalCB),font4));
 			pcell.setPadding(3);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			secLedMetered.addCell(pcell);			
 			
 			pcell=new PdfPCell(new Paragraph(String.valueOf(totalBG),font4));
 			pcell.setPadding(3);
+			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			secLedMetered.addCell(pcell);
 			
