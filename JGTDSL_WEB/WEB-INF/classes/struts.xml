@@ -20,8 +20,8 @@
 				<interceptor-ref name="authenticationInterceptor">
 					<param name="excludeActions">CustomError,index,userList,gridRecordFetcher,addNewForm,dashBoard,
 					checkValidity,logout,login,getServerMessage,fetchAllRoleTypes,fetchCustomerCategory,fetchBanks,fetchBranches,fetchZones,
-					fetchZone,fetchDistrict,fetchUpazila,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,
-					getCustomerBillInfo,downloadMeteredBill, downloadNonMeteredBill, printLedger,clearnessCertificateHome,clearnessCertificateInfo,
+					fetchZone,fetchDistrict,fetchUpazila,downloadMeteredBill, printLedger, downloadNonMeteredBill,BillPreview,
+					getCustomerBillInfo,downloadMeteredBill, printLedger, downloadNonMeteredBill,clearnessCertificateHome,clearnessCertificateInfo,
 					getBillInfo,payInfo,getIpgConfirmationPage,receiveIpgResponse,getiPgDetailInfo,payIpgBill
 					</param>
 				</interceptor-ref>
@@ -31,7 +31,7 @@
 												 fetchBanks,fetchBranches,fetchZones,fetchAccounts,fetchMohollahs,
 												 fileUploader,addNewForm,dashBoard,checkValidity,logout,login,
 												 valiateCategoryId,getServerMessage,crudOperations,fetchZone,fetchDivision,fetchDistrict,fetchUpazila,
-												 getCustomerBillInfo,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,
+												 getCustomerBillInfo,downloadMeteredBill, printLedger, downloadNonMeteredBill,BillPreview,
 												 getBillInfo,payInfo,getIpgConfirmationPage,receiveIpgResponse,getiPgDetailInfo,payIpgBill;
 												 
 					Super Admin: dashBoard,userDashBoard,dashBoardContent,setUserArea,
@@ -44,13 +44,13 @@
 								 saveDisconnInfo,saveReconnInfo,
 -								 getMeterWithDisconnectInfoAsJson,downloadDemandNote,
 								 demandNoteDataEntry,saveDemandNote,viewCustomer,
-								 saveDeposit,editDeposit,deleteDeposit,getDepositLedger,getConnectionLedger,getConnectionLedgerGrid,
+								 saveDeposit,editDeposit,deleteDeposit,getDepositLedger,getConnectionLedger,
 								 getSecurityAndOtherDepositList,
 								 getDepositDetail,getNewDepositForm,getDepositFormEditMode,securityDepositExpList,
 								 
 								 saveConnectionInfo,getDefaultSurchargePayWithin,
 								 
-								 getCustomerList,getCustomerLedger,processCustomerLedgerBalance,
+								 getCustomerList,getConnectionLedgerGrid, getCustomerLedger,processCustomerLedgerBalance,
 								 
 								 meterInformationHome,saveMeterInfo,deleteMeter,meterEditStatusCheck,
 								 meterDisconnectionHome,saveMeterDisconnInfo,getMeterDisconnInfo,deleteMeterDisconnInfo,
@@ -85,7 +85,7 @@
 								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveAdvancedCollection,checkDueAmount,saveMultiMonthCollection,
 								 getBillingInfo,getGasPrice,currentMonthBillCollection,saveCurrentMonthBillWithCollection,
 								 getOpeningBalance,
-								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
+								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, printLedger, downloadNonMeteredBill,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
 								 holidayHome,getHolidays,getNewHolidayForm,saveHoliday,fetchHolidayList,deleteHoliday,
 								 updateHome,updateHoliday,fetchAreas,fetchDesignations,fetchOrgDivisions,fetchOrgDepartments,
 								 fetchOrgSections,
@@ -124,8 +124,8 @@
 								 saveReconcilationInfo,deleteReconcilation,
 								 saveAdditonalShurcharge,
 								 getApplianceInfoPlain,getApplianceInfoById,saveNewApplianceInfo,dissconnectRaizer,getRaizerDisconnectionListInfo,reconnectRaizer,
-								 smsHome,smsDefalter,fetchDefaulter,smsAction,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection,getProcessedTotalSMSCount,getTotalCustomerToSendSMS
-								 ;
+								 smsHome,smsDefalter,fetchDefaulter,smsAction,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection,getProcessedTotalSMSCount,getTotalCustomerToSendSMS,
+								 deleteBankGarantieExpireChangeInfo;
 								 
 								 
 								 								 
@@ -140,13 +140,13 @@
 								 saveDisconnInfo,saveReconnInfo,
 -								 getMeterWithDisconnectInfoAsJson,downloadDemandNote,
 								 demandNoteDataEntry,saveDemandNote,viewCustomer,
-								 saveDeposit,editDeposit,deleteDeposit,getDepositLedger,getConnectionLedger,getConnectionLedgerGrid,
+								 saveDeposit,editDeposit,deleteDeposit,getDepositLedger,getConnectionLedger,
 								 getSecurityAndOtherDepositList,
 								 getDepositDetail,getNewDepositForm,getDepositFormEditMode,securityDepositExpList,
 								 
 								 saveConnectionInfo,getDefaultSurchargePayWithin,
 								 
-								 getCustomerList,getCustomerLedger,processCustomerLedgerBalance,
+								 getCustomerList,getConnectionLedgerGrid, getCustomerLedger,processCustomerLedgerBalance,
 								 
 								 meterInformationHome,saveMeterInfo,deleteMeter,meterEditStatusCheck,
 								 meterDisconnectionHome,saveMeterDisconnInfo,getMeterDisconnInfo,deleteMeterDisconnInfo,
@@ -178,11 +178,11 @@
 								 processBill,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
 								 unlockDatabase,billProcessHome,billAdjustmentOtherHome,salesAdjustmentHome,billAdjustmentOtherNonMeterHome,getBillInfoForAdjustment,getBillInfoForNonMeterSalesAdjustment,getOthersAmountInfo,saveAdjustmentInfo,saveNonMeterSalesAdjustmentInfo,saveSalesAdjustmentInfo,saveOthersAmountForBilling,
 								 billCollectionHome,advancedCollectionHome,codelessCollectionHome,adjustmentCollectionHome,installmentCollectionHome,getCustInfo4Collection,getBillInfo4Collection,getBillInfo4CollectionAdj,saveBillCollection,saveBillCollectionAdj,saveMultiCollection,getTotalCollectionByDateAccount,
-								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveMultiMonthCollection,checkDueAmount,checkDueAmount,
+								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveMultiMonthCollection,saveAdvancedCollection,checkDueAmount,
 								 getBillingInfo,getGasPrice,currentMonthBillCollection,saveCurrentMonthBillWithCollection,installmentBillingHome,saveInstallments,getBillInstallments,
 								 installmentCollection,saveInstallmentCollection,
 								 
-								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
+								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, printLedger, downloadNonMeteredBill,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
 								 holidayHome,getHolidays,getNewHolidayForm,saveHoliday,fetchHolidayList,deleteHoliday,
 								 updateHome,updateHoliday,fetchAreas,fetchDesignations,fetchOrgDivisions,fetchOrgDepartments,
 								 fetchOrgSections,
@@ -213,7 +213,7 @@
 								 
 								 bankDepositWithdrawHome,saveBankTransaction,transactionAuthorization,authorizeTransaction,deleteBankTransaction,getTotalDebitCredit,
 								 journalVoucher,saveCustomerAccountCorrection,saveBankAccountCorrection,
-								 getTariffForDomesticCustomer,
+								 getTariffForDomesticCustomer,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,
 								 
 								 
 								 saveReconcilationInfo,deleteReconcilation,
@@ -229,13 +229,13 @@
 								 saveDisconnInfo,saveReconnInfo,
 -								 getMeterWithDisconnectInfoAsJson,downloadDemandNote,
 								 demandNoteDataEntry,saveDemandNote,viewCustomer,
-								 saveDeposit,editDeposit,deleteDeposit,getDepositLedger,getConnectionLedger,getConnectionLedgerGrid,
+								 saveDeposit,editDeposit,deleteDeposit,getDepositLedger,getConnectionLedger,
 								 getSecurityAndOtherDepositList,
 								 getDepositDetail,getNewDepositForm,getDepositFormEditMode,securityDepositExpList,
 								 
 								 saveConnectionInfo,getDefaultSurchargePayWithin,
 								 
-								 getCustomerList,getCustomerLedger,processCustomerLedgerBalance,
+								 getCustomerList,getConnectionLedgerGrid, getCustomerLedger,processCustomerLedgerBalance,
 								 
 								 meterInformationHome,saveMeterInfo,deleteMeter,meterEditStatusCheck,
 								 meterDisconnectionHome,saveMeterDisconnInfo,getMeterDisconnInfo,deleteMeterDisconnInfo,
@@ -265,11 +265,11 @@
 								 processBill,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
 								 unlockDatabase,billProcessHome,billAdjustmentOtherHome,salesAdjustmentHome,billAdjustmentOtherNonMeterHome,getBillInfoForAdjustment,getBillInfoForNonMeterSalesAdjustment,getOthersAmountInfo,saveAdjustmentInfo,saveNonMeterSalesAdjustmentInfo,saveSalesAdjustmentInfo,saveOthersAmountForBilling,
 								 billCollectionHome,advancedCollectionHome,codelessCollectionHome,adjustmentCollectionHome,installmentCollectionHome,getCustInfo4Collection,getBillInfo4Collection,getBillInfo4CollectionAdj,saveBillCollection,saveBillCollectionAdj,saveMultiCollection,getTotalCollectionByDateAccount,
-								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveMultiMonthCollection,checkDueAmount,checkDueAmount,checkDueAmount,
+								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveMultiMonthCollection,saveAdvancedCollection,checkDueAmount,
 								 getBillingInfo,getGasPrice,currentMonthBillCollection,saveCurrentMonthBillWithCollection,installmentBillingHome,saveInstallments,getBillInstallments,
 								 installmentCollection,saveInstallmentCollection,
 								 
-								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, downloadNonMeteredBill, printLedger,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
+								 saveBillingInfo,addNewUser,generateBill,downloadMeteredBill, printLedger, downloadNonMeteredBill,BillPreview,downloadInstallmentBill,approveBillByBillId,approveAllBill,
 								 holidayHome,getHolidays,getNewHolidayForm,saveHoliday,fetchHolidayList,deleteHoliday,
 								 updateHome,updateHoliday,fetchAreas,fetchDesignations,fetchOrgDivisions,fetchOrgDepartments,
 								 fetchOrgSections,
@@ -303,7 +303,7 @@
 								 bankDepositWithdrawHome,saveBankTransaction,transactionAuthorization,authorizeTransaction,deleteBankTransaction,getTotalDebitCredit,
 								 journalVoucher,saveCustomerAccountCorrection,saveBankAccountCorrection,
 								 getTariffForDomesticCustomer,
-								 saveReconcilationInfo,deleteReconcilation,
+								 saveReconcilationInfo,deleteReconcilation,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,
 								 saveAdditonalShurcharge,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
 								 				 	   
 				         admin: dashBoard,userDashBoard,setUserArea;
@@ -1282,13 +1282,6 @@
 		</result>
 	</action>
 	
-	<action name="printLedger" class="org.jgtdsl.reports.LedgerPrinting" method="downloadLedger">
-		<result type="stream">
-			<param name="contentType">application/pdf</param>
-			<param name="inputName">inputStream</param>
-		</result>
-	</action>
-	
 	<action name="BillPreview" class="org.jgtdsl.reports.BillMeteredCustomer" method="PreviewBill">
 		<result type="stream">
 			<param name="contentType">application/pdf</param>
@@ -1322,14 +1315,12 @@
 			</result>
 	</action>
 	
-	
-	<action name="getConnectionLedgerGrid" class="org.jgtdsl.models.BurnerQntChangeService" method="getBurnerQntChangeListGrid">
+	<action name="getConnectionLedgerGrid" class="org.jgtdsl.actions.Customer" method="getConnectionLedgerGrid">
 			<result type="stream">
 				<param name="contentType">json</param>
 				<param name="inputName">inputStream</param>
 			</result>
 	</action>
-	
 	
 	<action name="processCustomerLedgerBalance" class="org.jgtdsl.actions.Ledger" method="processCustomerLedgerBalance">
 			<result type="stream">

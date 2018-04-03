@@ -843,7 +843,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 					"   WHERE     BI.CUSTOMER_ID = CC.CUSTOMER_ID " +
 					"         AND CC.STATUS = 1 " +
 					"         AND bi.STATUS = 1 " +
-					"         AND bi.area_id = '01' " +
+					"         AND bi.area_id = '"+area+"' " +
 					whereClause+
 					"                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"+ calender_year+collection_month+
 					"'  GROUP BY BI.CUSTOMER_ID, CUSTOMER_CATEGORY, bi.AREA_ID " +
