@@ -842,7 +842,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 					"    FROM "+bill_table+" bi, CUSTOMER_CONNECTION cc " +
 					"   WHERE     BI.CUSTOMER_ID = CC.CUSTOMER_ID " +
 					"         AND CC.STATUS = 1 " +
-					"         AND bi.STATUS = 1 " +
+					//"         AND bi.STATUS = 1 " +
 					"         AND bi.area_id = '"+area+"' " +
 					whereClause+
 					"                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"+ calender_year+collection_month+
