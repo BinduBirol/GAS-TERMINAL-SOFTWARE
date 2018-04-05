@@ -72,6 +72,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 	private String officer_name;
 	private String officer_desig;
 	private String certification_id;
+	private String report_type;
 	private ServletContext servlet;
 	String yearsb;
 	ArrayList<ClearnessDTO> CustomerList = new ArrayList<ClearnessDTO>();
@@ -589,6 +590,15 @@ public class DefaulterCCertificate extends ActionSupport implements
 
 	public ClearnessDTO getClearnessDTO() {
 		return clearnessDTO;
+	}
+
+	
+	public String getReport_type() {
+		return report_type;
+	}
+
+	public void setReport_type(String report_type) {
+		this.report_type = report_type;
 	}
 
 	public void setClearnessDTO(ClearnessDTO clearnessDTO) {
