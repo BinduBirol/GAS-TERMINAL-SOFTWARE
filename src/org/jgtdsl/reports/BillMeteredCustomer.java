@@ -113,10 +113,6 @@ public class BillMeteredCustomer extends BaseAction implements ServletContextAwa
 		//document.setPageSize(PageSize.A4);
 		//document.setMargins(10, 10, 25, 30);
 		
-		
-		
-		
-		
 		DecimalFormat taka_format = new DecimalFormat("#,##,##,##,##,##0.00");
 		DecimalFormat consumption_format = new DecimalFormat("##########0.000");
 		DecimalFormat factor_format=new DecimalFormat("##########0.000");

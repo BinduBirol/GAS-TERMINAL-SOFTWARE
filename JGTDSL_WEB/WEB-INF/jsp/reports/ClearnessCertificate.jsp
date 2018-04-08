@@ -192,11 +192,11 @@ input[type="radio"],input[type="checkbox"] {
 										<td style="width: 70%" align="right"><input type="hidden"
 											name="category_name" id="category_name" value="DOMESTIC(PVT)" />
 
-											<button id="under_cirtificate" class="btn" type="submit"  >Generate under certificate
-												 Report</button>
-											<button id="pre_printed" class="btn" type="submit"  >Generate Pre-Printed
-												 Report</button>
-											<button id="printed" class="btn" type="submit"  >Generate
+											<button style="display:none" id="under_cirtificate" class="btn" type="submit">Generate
+												under certificate Report</button>
+											<button id="pre_printed" class="btn" type="submit">Generate
+												Pre-Printed Report</button>
+											<button id="printed" class="btn" type="submit">Generate
 												Printed Report</button>
 											<button class="btn btn-danger" type="button" id="btn_cancel"
 												onclick="callAction('blankPage.action')">Cancel</button></td>
@@ -209,7 +209,7 @@ input[type="radio"],input[type="checkbox"] {
 
 						</form>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -220,65 +220,70 @@ input[type="radio"],input[type="checkbox"] {
 <p style="clear: both;margin-top: 5px;"></p>
 
 <script type="text/javascript">
-//onclick="callAction('clearnessCertificateInfo.action')"
-$("#printed").click(function(){
-$("#billProcessForm").attr('action', 'clearnessCertificateInfo.action');
-});
+	//onclick="callAction('clearnessCertificateInfo.action')"
+	$("#printed").click(
+			function() {
+				$("#billProcessForm").attr('action',
+						'clearnessCertificateInfo.action');
+			});
 
-$("#pre_printed").click(function(){
-$("#billProcessForm").attr('action', 'clearnessCertificateInfoPrePrinted.action');
-});
+	$("#pre_printed").click(
+			function() {
+				$("#billProcessForm").attr('action',
+						'clearnessCertificateInfoPrePrinted.action');
+			});
 
-$("#under_cirtificate").click(function(){
-$("#billProcessForm").attr('action', 'clearnessUnderCertificateInfo.action');
-});
+	$("#under_cirtificate").click(
+			function() {
+				$("#billProcessForm").attr('action',
+						'clearnessUnderCertificateInfo.action');
+			});
 
-
-
-   
-autoSelect("area_id");
-enableField("area_id");
-  Calendar.setup({
-    inputField : "from_date",
-    trigger    : "from_date",
-	eventName : "focus",
-    onSelect   : function() { this.hide();},        
-    showTime   : 12,
-    dateFormat : "%d-%m-%Y",
-	showTime : true
+	autoSelect("area_id");
+	enableField("area_id");
+	Calendar.setup({
+		inputField : "from_date",
+		trigger : "from_date",
+		eventName : "focus",
+		onSelect : function() {
+			this.hide();
+		},
+		showTime : 12,
+		dateFormat : "%d-%m-%Y",
+		showTime : true
 	//onBlur: focusNext		
-  });
-  
-$("#customer_id").unbind();
-$("#customer_id").autocomplete($.extend(true, {}, acMCustomerOption,{
-	    serviceUrl: sBox.CUSTOMER_LIST,
-    	onSelect:function (){
-    		getCustomerInfo("",$('#customer_id').val());
-    	},
-}));
+	});
 
-function checkType(type){
-	if(type=="ccDownload")
-	{
-	 autoSelect("area_id");
-	 enableField("area_id");
-	 hideElement("approve_div");
-	 showElement("download_div");
-	 showElement("print_download");
-	}else if(type=="ccApprove"){
-	 hideElement("download_div");
-	 hideElement("print_download");
-	 showElement("approve_div");
-	}else if(type=="individual_wise")
-	{
-	hideElement("approve_div","category_div","range_code_div","customer_type_div","calender_year_div","report_type_div");
-	showElement("download_div","individual_code_div","print_download");
-	}else if(type=="category_wise"){
-	 hideElement("approve_div","individual_code_div");
-	 showElement("download_div","category_div","range_code_div","customer_type_div","calender_year_div","print_download","report_type_div");
-	 autoSelect("customer_category");
-	 enableField("customer_category");
-	}
-};
+	$("#customer_id").unbind();
+	$("#customer_id").autocomplete($.extend(true, {}, acMCustomerOption, {
+		serviceUrl : sBox.CUSTOMER_LIST,
+		onSelect : function() {
+			getCustomerInfo("", $('#customer_id').val());
+		},
+	}));
 
+	function checkType(type) {
+		if (type == "ccDownload") {
+			autoSelect("area_id");
+			enableField("area_id");
+			hideElement("approve_div");
+			showElement("download_div");
+			showElement("print_download");
+		} else if (type == "ccApprove") {
+			hideElement("download_div");
+			hideElement("print_download");
+			showElement("approve_div");
+		} else if (type == "individual_wise") {
+			hideElement("approve_div", "category_div", "range_code_div",
+					"customer_type_div", "calender_year_div", "report_type_div","under_cirtificate");
+			showElement("download_div", "individual_code_div", "print_download");
+		} else if (type == "category_wise") {
+			hideElement("approve_div", "individual_code_div");
+			showElement("download_div", "category_div", "range_code_div",
+					"customer_type_div", "calender_year_div", "print_download",
+					"report_type_div", "under_cirtificate");
+			autoSelect("customer_category");
+			enableField("customer_category");
+		}
+	};
 </script>
