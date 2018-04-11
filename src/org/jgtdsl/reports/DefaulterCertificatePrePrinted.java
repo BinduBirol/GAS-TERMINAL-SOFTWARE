@@ -165,7 +165,7 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 
 			document.open();
 
-			PdfPTable mainTable = new PdfPTable(6);
+			PdfPTable mainTable = new PdfPTable(8);
 			Rectangle page = document.getPageSize();
 			/*
 			 * headerTable.setTotalWidth(page.getWidth()); float
@@ -237,20 +237,21 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 
 			// //////////headerTable//////////////
 
-			mainTable.setWidths(new float[] { 10, 20, 41, 7, 7, 25 });
+			mainTable.setWidths(new float[] { 8, 15,25, 40, 5, 5, 25, 10 });
+			mainTable.setWidthPercentage(95);
 			
 			
 			mTable.addCell(pcell);	
 
-			pcell = new PdfPCell(new Paragraph(" ", ReportUtil.f10B));
-			pcell.setColspan(6);
+			pcell = new PdfPCell(new Paragraph(" ", ReportUtil.f8B));
+			pcell.setColspan(8);
 			pcell.setPadding(5);
 			pcell.setRowspan(2);
 			pcell.setBorder(0);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mainTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("Sl No.", ReportUtil.f10B));
+			pcell = new PdfPCell(new Paragraph("Sl No.", ReportUtil.f8B));
 			pcell.setRowspan(2);
 			pcell.setPadding(5);
 			// pcell.setMinimumHeight(20f);
@@ -258,7 +259,7 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mainTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("Customer ID", ReportUtil.f10B));
+			pcell = new PdfPCell(new Paragraph("ID", ReportUtil.f8B));
 			pcell.setRowspan(2);
 			pcell.setPadding(5);
 			// pcell.setMinimumHeight(20f);
@@ -267,7 +268,16 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 			mainTable.addCell(pcell);
 
 			pcell = new PdfPCell(
-					new Paragraph("Customer Name", ReportUtil.f10B));
+					new Paragraph("Name", ReportUtil.f8B));
+			pcell.setRowspan(2);
+			pcell.setPadding(5);
+			// pcell.setMinimumHeight(20f);
+			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			mainTable.addCell(pcell);
+			
+			pcell = new PdfPCell(
+					new Paragraph("Address", ReportUtil.f8B));
 			pcell.setRowspan(2);
 			pcell.setPadding(5);
 			// pcell.setMinimumHeight(20f);
@@ -275,25 +285,33 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mainTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("Burner", ReportUtil.f10B));
+			pcell = new PdfPCell(new Paragraph("Burner", ReportUtil.f8B));
 			pcell.setColspan(2);
 			pcell.setPadding(5);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mainTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("Stamp", ReportUtil.f10B));
+			pcell = new PdfPCell(new Paragraph("Stamp", ReportUtil.f8B));
+			pcell.setRowspan(2);
+			pcell.setPadding(5);
+			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			mainTable.addCell(pcell);
+			
+			pcell = new PdfPCell(new Paragraph("Remarks", ReportUtil.f8B));
 			pcell.setRowspan(2);
 			pcell.setPadding(5);
 			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mainTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("S", ReportUtil.f10B));
+
+			pcell = new PdfPCell(new Paragraph("S", ReportUtil.f8B));
 			pcell.setPadding(5);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mainTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("D", ReportUtil.f10B));
+			pcell = new PdfPCell(new Paragraph("D", ReportUtil.f8B));
 			pcell.setPadding(5);
 			pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -336,37 +354,53 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				mainTable.addCell(pcell);
 
-				pcell = new PdfPCell(new Paragraph(info.getCustomerID(), ReportUtil.f10));
+				pcell = new PdfPCell(new Paragraph(info.getCustomerID(), ReportUtil.f8));
 				// pcell.setRowspan(1);
 				pcell.setPadding(5);
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				mainTable.addCell(pcell);
 
-				pcell = new PdfPCell(new Paragraph(info.getCustomerName(), ReportUtil.f10));
+				pcell = new PdfPCell(new Paragraph(info.getCustomerName(), ReportUtil.f8));
+				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				// pcell.setRowspan(1);
+				pcell.setPadding(5);
+				pcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				mainTable.addCell(pcell);
+				
+				pcell = new PdfPCell(new Paragraph(info.getCustomerAddress(), ReportUtil.f8));
 				// pcell.setRowspan(1);
 				pcell.setPadding(5);
 				pcell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				mainTable.addCell(pcell);
 
-				pcell = new PdfPCell(new Paragraph(String.valueOf((info.getSingle_burner() == 0) ? "0" : info.getSingle_burner()), ReportUtil.f10));
+				pcell = new PdfPCell(new Paragraph(String.valueOf((info.getSingle_burner() == 0) ? "0" : info.getSingle_burner()), ReportUtil.f8));
 
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				mainTable.addCell(pcell);
 
-				pcell = new PdfPCell(new Paragraph(String.valueOf((info.getDouble_burner() == 0 ? "0" : info.getDouble_burner())), ReportUtil.f10));
+				pcell = new PdfPCell(new Paragraph(String.valueOf((info.getDouble_burner() == 0 ? "0" : info.getDouble_burner())), ReportUtil.f8));
 
 				pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				pcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				mainTable.addCell(pcell);
 
 				if (w % 3 == 0) {
-					pcell = new PdfPCell(new Paragraph("", ReportUtil.f10));
+					pcell = new PdfPCell(new Paragraph("", ReportUtil.f8));
+					pcell.setRowspan(3);
+					pcell.setPadding(5);
+					pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					mainTable.addCell(pcell);
+					
+					pcell = new PdfPCell(new Paragraph("", ReportUtil.f8));
 					pcell.setRowspan(3);
 					pcell.setPadding(5);
 					pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					mainTable.addCell(pcell);
 				}
+				
+				
 
 			}
 			mainTable.setHeaderRows(4);
