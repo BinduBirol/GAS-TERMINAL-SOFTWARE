@@ -502,6 +502,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 
 	private ClearnessDTO getCustomerInfo(String customer_id, String area_id,
 			String year, String month) {
+		Statement st= null;
+		ResultSet resultSet=null;
 		ClearnessDTO ctrInfo = new ClearnessDTO();
 		String type = customer_id.substring(0, 4);
 		String bill_table;
@@ -565,9 +567,9 @@ public class DefaulterCCertificate extends ActionSupport implements
 					+ "         WHERE AA.CUSTOMER_ID = BB.CUSTOMER_ID) tmp2 "
 					+ " WHERE tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID ";
 
-			Statement st = conn.createStatement();//Statement(customer_info_sql);
+			st = conn.createStatement();//Statement(customer_info_sql);
 
-			ResultSet resultSet = st.executeQuery(customer_info_sql);
+			resultSet = st.executeQuery(customer_info_sql);
 
 			while (resultSet.next()) {
 
@@ -581,8 +583,15 @@ public class DefaulterCCertificate extends ActionSupport implements
 				ctrInfo.setAmountInWords(resultSet.getString("INWORDS"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+		}finally{
+			try{
+				st.close();
+				resultSet.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 
 		return ctrInfo;

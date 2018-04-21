@@ -1187,6 +1187,7 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 		} finally {
 			try {
 				stmt.close();
+				r.close();
 				ConnectionManager.closeConnection(conn);
 			} catch (Exception e) {
 				e.printStackTrace();
