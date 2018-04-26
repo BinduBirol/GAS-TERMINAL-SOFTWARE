@@ -93,7 +93,7 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 
 	UserDTO loggedInUser = (UserDTO) ServletActionContext.getRequest()
 			.getSession().getAttribute("user");
-	Connection conn = ConnectionManager.getConnection();
+	//Connection conn = ConnectionManager.getConnection();
 
 	// ////////////////////////////////////////////////////////
 	public String clearnessCertificateInfoPrePrinted()
@@ -1018,13 +1018,6 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 		this.loggedInUser = loggedInUser;
 	}
 
-	public Connection getConn() {
-		return conn;
-	}
-
-	public void setConn(Connection conn) {
-		this.conn = conn;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -1077,6 +1070,9 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 			String to_cus_id, String cust_cat_id, String area) {
 
 		ArrayList<ClearnessDTO> custList = new ArrayList<ClearnessDTO>();
+		Connection conn = ConnectionManager.getConnection();
+		PreparedStatement ps1=null;
+		ResultSet resultSet=null;
 		if (collection_month.length() < 2) {
 			collection_month = "0" + collection_month;
 		}
@@ -1130,8 +1126,8 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 					"         order by BI.CUSTOMER_ID asc " ;
 
 			
-			PreparedStatement ps1 = conn.prepareStatement(transaction_sql);
-			ResultSet resultSet = ps1.executeQuery();
+			ps1 = conn.prepareStatement(transaction_sql);
+			resultSet = ps1.executeQuery();
 			while (resultSet.next()) {
 				ClearnessDTO ClearnessDTO = new ClearnessDTO();
 				ClearnessDTO.setCustomerID(resultSet.getString("CUSTOMER_ID"));
@@ -1147,6 +1143,15 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		 finally {
+				try {
+					ps1.close();
+					resultSet.close();
+					ConnectionManager.closeConnection(conn);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 
 		return custList;
 
@@ -1202,6 +1207,7 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 
 	private ClearnessDTO getCustomerInfo(String customer_id, String area_id,
 			String year, String month) {
+		Connection conn = ConnectionManager.getConnection();
 		ResultSet resultSet= null;
 		Statement st= null;
 		
@@ -1299,6 +1305,7 @@ public class DefaulterCertificatePrePrinted extends ActionSupport implements
 			try{
 				st.close();
 				resultSet.close();
+				conn.close();
 			}catch(Exception e){
 				e.printStackTrace();
 			}

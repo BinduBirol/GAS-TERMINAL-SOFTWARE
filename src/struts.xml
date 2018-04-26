@@ -78,7 +78,7 @@
 								 meterReadingHome,saveMeterReading,fetchMeterReading,deleteMeterReading,getMeterReadingInfo,
 								 
 								 supplyOffHome,saveSupplyOff,billCreationHome,
-								 processBill,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
+								 processBill,editSurcharge,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
 								 unlockDatabase,editTariffMargin,
 								 billProcessHome,billAdjustmentOtherHome,salesAdjustmentHome,billAdjustmentOtherNonMeterHome,getBillInfoForAdjustment,getBillInfoForNonMeterSalesAdjustment,getOthersAmountInfo,saveAdjustmentInfo,saveNonMeterSalesAdjustmentInfo,saveSalesAdjustmentInfo,saveOthersAmountForBilling,
 								 billCollectionHome,advancedCollectionHome,codelessCollectionHome,adjustmentCollectionHome,installmentCollectionHome,getCustInfo4Collection,getBillInfo4Collection,getBillInfo4CollectionAdj,saveBillCollection,saveBillCollectionAdj,saveMultiCollection,getTotalCollectionByDateAccount,
@@ -122,7 +122,7 @@
 								 addAdjustmentAccountPayableHome,
 								 iBankingXlsUploadHome,iBankingFileUploader,
 								 saveReconcilationInfo,deleteReconcilation,
-								 saveAdditonalShurcharge,
+								 saveAdditonalShurcharge,getNMLedgerByMonthYear,
 								 getApplianceInfoPlain,getApplianceInfoById,saveNewApplianceInfo,dissconnectRaizer,getRaizerDisconnectionListInfo,reconnectRaizer,
 								 smsHome,smsDefalter,fetchDefaulter,smsAction,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection,getProcessedTotalSMSCount,getTotalCustomerToSendSMS,
 								 deleteBankGarantieExpireChangeInfo;
@@ -175,7 +175,7 @@
 								 meterReadingHome,saveMeterReading,fetchMeterReading,deleteMeterReading,getMeterReadingInfo,
 								 
 								 supplyOffHome,saveSupplyOff,billCreationHome,
-								 processBill,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
+								 processBill,editSurcharge,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
 								 unlockDatabase,billProcessHome,billAdjustmentOtherHome,salesAdjustmentHome,billAdjustmentOtherNonMeterHome,getBillInfoForAdjustment,getBillInfoForNonMeterSalesAdjustment,getOthersAmountInfo,saveAdjustmentInfo,saveNonMeterSalesAdjustmentInfo,saveSalesAdjustmentInfo,saveOthersAmountForBilling,
 								 billCollectionHome,advancedCollectionHome,codelessCollectionHome,adjustmentCollectionHome,installmentCollectionHome,getCustInfo4Collection,getBillInfo4Collection,getBillInfo4CollectionAdj,saveBillCollection,saveBillCollectionAdj,saveMultiCollection,getTotalCollectionByDateAccount,
 								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveMultiMonthCollection,saveAdvancedCollection,checkDueAmount,
@@ -217,7 +217,7 @@
 								 
 								 
 								 saveReconcilationInfo,deleteReconcilation,
-								 saveAdditonalShurcharge,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
+								 saveAdditonalShurcharge,getNMLedgerByMonthYear,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
 								 							 
 			Assistant Manager: 	 dashBoard,userDashBoard,dashBoardContent,setUserArea,
 								 addUser,getCustomerCategoryList,getUserList,getCustomerCategoryList,
@@ -262,7 +262,7 @@
 								 meterReadingHome,saveMeterReading,fetchMeterReading,deleteMeterReading,getMeterReadingInfo,
 								 
 								 supplyOffHome,saveSupplyOff,billCreationHome,
-								 processBill,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
+								 processBill,editSurcharge,showBillEvents,getApproxTotalBillingCount,getProcessedTotalBillingCount,
 								 unlockDatabase,billProcessHome,billAdjustmentOtherHome,salesAdjustmentHome,billAdjustmentOtherNonMeterHome,getBillInfoForAdjustment,getBillInfoForNonMeterSalesAdjustment,getOthersAmountInfo,saveAdjustmentInfo,saveNonMeterSalesAdjustmentInfo,saveSalesAdjustmentInfo,saveOthersAmountForBilling,
 								 billCollectionHome,advancedCollectionHome,codelessCollectionHome,adjustmentCollectionHome,installmentCollectionHome,getCustInfo4Collection,getBillInfo4Collection,getBillInfo4CollectionAdj,saveBillCollection,saveBillCollectionAdj,saveMultiCollection,getTotalCollectionByDateAccount,
 								 getCollectionInfo,deleteBillingCollection,getCollectionInfoByCustomerIdBillingMonthYear,multiCollectionDelete,multiCollection,saveMultiMonthCollection,saveAdvancedCollection,checkDueAmount,
@@ -304,7 +304,7 @@
 								 journalVoucher,saveCustomerAccountCorrection,saveBankAccountCorrection,
 								 getTariffForDomesticCustomer,
 								 saveReconcilationInfo,deleteReconcilation,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,
-								 saveAdditonalShurcharge,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
+								 saveAdditonalShurcharge,getNMLedgerByMonthYear,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
 								 				 	   
 				         admin: dashBoard,userDashBoard,setUserArea;
 				    Sales User: dashBoard,userDashBoard,dashBoardContent,newCustomer,fileUploader,validateCustomerId,createNewCustomer,setUserArea,
@@ -349,7 +349,7 @@
 			<result name="authorization_required">/WEB-INF/jsp/security/AuthorizationRequired.jsp</result>
 </global-results>
 
-
+   
 	
 	<action name="deleteCollection">
 		<result name="success">/WEB-INF/jsp/collection/DeleteCollection.jsp</result>
@@ -531,6 +531,11 @@
 				<param name="inputName">inputStream</param>
 		</result>
 	</action>
+	
+	 <action name="editSurcharge">
+		<result name="success">/WEB-INF/jsp/billing/EditSurcharge.jsp</result>
+	</action>
+	
 	<action name="showBillEvents" class="org.jgtdsl.actions.Billing" method="showBillEvents">
 		<result name="success">/WEB-INF/jsp/billing/NonMeterBillingEvents.jsp</result>
 	</action>
@@ -1309,6 +1314,13 @@
 		</result>
 	</action>
 	<action name="getCustomerLedger" class="org.jgtdsl.actions.Customer" method="getCustomerLedger">
+			<result type="stream">
+				<param name="contentType">json</param>
+				<param name="inputName">inputStream</param>
+			</result>
+	</action>
+	
+	<action name="getNMLedgerByMonthYear" class="org.jgtdsl.actions.EditSurcharge" method="getNMLedgerByMonthYear">
 			<result type="stream">
 				<param name="contentType">json</param>
 				<param name="inputName">inputStream</param>
