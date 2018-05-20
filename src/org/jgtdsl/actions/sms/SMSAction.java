@@ -45,7 +45,7 @@ public class SMSAction extends BaseAction{
 			smsSender.setBillMonth(billMonth);
 			smsSender.setBillYear(billYear);
 			
-			smsSender.sendSMSSSL();
+			smsSender.sendSMSGP();
 			//Thread thread = new Thread(smsSender);
 			//thread.start();
 						

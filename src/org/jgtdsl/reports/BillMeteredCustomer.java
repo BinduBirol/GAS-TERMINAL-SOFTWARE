@@ -1015,7 +1015,7 @@ public class BillMeteredCustomer extends BaseAction implements ServletContextAwa
 					prev_category=cur_category;
 					cur_category= bill.getCustomer_id().substring(2,4);
 					for(int i=0;i<readingList.size();i++){
-						
+						average_bill= 0;
 						pcell=new PdfPCell(new Paragraph(bill.getCustomer_id(),font9));
 						pcell.setRowspan(1);
 						pcell.setPadding(5);

@@ -232,8 +232,7 @@ public class LedgerService {
 					"       MON || ', ' || BILL_YEAR DESCRIPTION, " +
 					"       BILLED_AMOUNT, " +
 					"       ACTUAL_SURCHARGE SURCHARGE_AMOUNT, " +
-					"       COLLECTED_PAYABLE_AMOUNT - NVL (COLLECTED_SURCHARGE, 0) " +
-					"          COLLECTED_BILLED_AMOUNT, " +
+					"       COLLECTED_BILLED_AMOUNT, " +
 					"       NVL (COLLECTED_SURCHARGE, 0) COLLECTED_SURCHARGE, " +
 					"       TO_CHAR (DUE_DATE, 'dd-mm-rrrr') DUE_DATE, " +
 					"       getBankBranch (BRANCH_ID) BANK_NAME, " +
@@ -295,6 +294,54 @@ public class LedgerService {
 
 	//end of - editing surcharge
 	
+	
+	//For updating surcharge ~ Prince ~ april 28, 2018
+	
+		public String updateNMSurcharge (CustomerLedgerDTO cl) {
+			
+			String sql = "";
+			String msg = "";
+			
+			Connection conn = ConnectionManager.getConnection();
+				sql = "UPDATE bill_non_metered " +
+						"SET ACTUAL_SURCHARGE = ?, " +
+						"    COLLECTED_SURCHARGE = ?, " +
+						"    ACTUAL_PAYABLE_AMOUNT = BILLED_AMOUNT+ NVL(?,0), " +
+						"    COLLECTED_PAYABLE_AMOUNT = COLLECTED_BILLED_AMOUNT + NVL(?,0) " +
+						"WHERE BILL_ID= ? ";
+				
+			PreparedStatement stmt = null;
+			//ResultSet r = null;
+			int affectedRows =0;
+
+			try {
+				stmt = conn.prepareStatement(sql);
+			
+					stmt.setInt(1, Integer.parseInt(cl.getSurcharge()));
+					stmt.setInt(2, Integer.parseInt(cl.getCredit_surcharge()));
+					stmt.setInt(3, Integer.parseInt(cl.getSurcharge()));
+					stmt.setInt(4, Integer.parseInt(cl.getCredit_surcharge()));
+					stmt.setString(5, cl.getEntry_type());
+					
+					affectedRows = stmt.executeUpdate();
+					msg = "Rows affected : " +affectedRows ;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					stmt.close();
+					ConnectionManager.closeConnection(conn);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				stmt = null;
+				conn = null;
+			}
+
+			return  msg;
+		}
+
+		//end of - updating surcharge
 	
 	
 

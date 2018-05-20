@@ -416,17 +416,33 @@ public class MonthlySalesStatement extends BaseAction {
 		String currnertType="";
 		try {
 		
-			String sql1="select MCC.CATEGORY_ID, CATEGORY_NAME||' ( '||COUNT(SR.CUSTOMER_ID)||' )' CATEGORY_NAME" +
-						",MCC.CATEGORY_TYPE,"+
-						"sum(ACTUAL_EXCEPT_MINIMUM) ACTUAL_EXCEPT_MINIMUM,sum(ACTUAL_WITH_MINIMUM) ACTUAL_WITH_MINIMUM, "+
-						"sum(BILLING_UNIT) BILLING_UNIT, sum(DIFFERENCE) DIFFERENCE,sum(TOTAL_ACTUAL_CONSUMPTION) TOTAL_ACTUAL_CONSUMPTION,RATE ,"+
-						"sum(VALUE_OF_ACTUAL_CONSUMPTION) VALUE_OF_ACTUAL_CONSUMPTION,sum(MINIMUM_CHARGE) MINIMUM_CHARGE,sum(METER_RENT) METER_RENT, "+
-						"sum(SURCHARGE_AMOUNT) SURCHARGE_AMOUNT,sum(HHV_NHV_AMOUNT) HHV_NHV_AMOUNT,sum(TOTAL_AMOUNT) TOTAL_AMOUNT "+
-						"from SALES_REPORT SR,CUSTOMER_CONNECTION conn,MST_CUSTOMER_CATEGORY mcc "+
-						"where SR.customer_id=conn.customer_id and BILLING_MONTH=? and BILLING_YEAR=?"+
-						"and substr(SR.customer_id,3,2)=MCC.CATEGORY_ID and substr(SR.customer_id,1,2)=?"+ 
-						"group by  MCC.CATEGORY_ID,MCC.CATEGORY_NAME,MCC.CATEGORY_TYPE,RATE "+
-						"ORDER BY MCC.CATEGORY_TYPE asc,MCC.CATEGORY_ID ASC";
+			String sql1="SELECT MCC.CATEGORY_ID, " +
+						"         CATEGORY_NAME || ' ( ' || COUNT (SR.CUSTOMER_ID) || ' )' CATEGORY_NAME, " +
+						"         MCC.CATEGORY_TYPE, " +
+						"         SUM (ACTUAL_EXCEPT_MINIMUM) ACTUAL_EXCEPT_MINIMUM, " +
+						"         SUM (ACTUAL_WITH_MINIMUM) ACTUAL_WITH_MINIMUM, " +
+						"         SUM (BILLING_UNIT) BILLING_UNIT, " +
+						"         SUM (DIFFERENCE) DIFFERENCE, " +
+						"         SUM (TOTAL_ACTUAL_CONSUMPTION) TOTAL_ACTUAL_CONSUMPTION, " +
+						"         RATE, " +
+						"         round(SUM (TOTAL_ACTUAL_CONSUMPTION*RATE)) VALUE_OF_ACTUAL_CONSUMPTION, " +
+						"         SUM (MINIMUM_CHARGE) MINIMUM_CHARGE, " +
+						"         SUM (METER_RENT) METER_RENT, " +
+						"         SUM (SURCHARGE_AMOUNT) SURCHARGE_AMOUNT, " +
+						"         SUM (HHV_NHV_AMOUNT) HHV_NHV_AMOUNT, " +
+						"         round(SUM ((TOTAL_ACTUAL_CONSUMPTION*RATE)+nvl(MINIMUM_CHARGE,0)+nvl(METER_RENT,0)+nvl(HHV_NHV_AMOUNT,0))) TOTAL_AMOUNT " +
+						"    FROM SALES_REPORT SR, CUSTOMER_CONNECTION conn, MST_CUSTOMER_CATEGORY mcc " +
+						"   WHERE     SR.customer_id = conn.customer_id " +
+						"         AND BILLING_MONTH = ? " +
+						"         AND BILLING_YEAR = ? " +
+						"         AND SUBSTR (SR.customer_id, 3, 2) = MCC.CATEGORY_ID " +
+						"         AND SUBSTR (SR.customer_id, 1, 2) = ? " +
+						"GROUP BY MCC.CATEGORY_ID, " +
+						"         MCC.CATEGORY_NAME, " +
+						"         MCC.CATEGORY_TYPE, " +
+						"         RATE " +
+						"ORDER BY MCC.CATEGORY_TYPE ASC, MCC.CATEGORY_ID ASC ";
+				
     		PreparedStatement ps1=conn.prepareStatement(sql1);
     		ps1.setString(1, bill_month);
     		ps1.setString(2, bill_year);
@@ -1367,7 +1383,7 @@ public class MonthlySalesStatement extends BaseAction {
 			
 		}else{
 			pcell=new PdfPCell(new Paragraph("Total:",font3));
-			pcell.setColspan(5);
+			pcell.setColspan(3);
 			pcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			datatable1.addCell(pcell);
 		}

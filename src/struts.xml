@@ -122,10 +122,10 @@
 								 addAdjustmentAccountPayableHome,
 								 iBankingXlsUploadHome,iBankingFileUploader,
 								 saveReconcilationInfo,deleteReconcilation,
-								 saveAdditonalShurcharge,getNMLedgerByMonthYear,
+								 saveAdditonalShurcharge,getNMLedgerByMonthYear,updateNMSurcharge,
 								 getApplianceInfoPlain,getApplianceInfoById,saveNewApplianceInfo,dissconnectRaizer,getRaizerDisconnectionListInfo,reconnectRaizer,
 								 smsHome,smsDefalter,fetchDefaulter,smsAction,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection,getProcessedTotalSMSCount,getTotalCustomerToSendSMS,
-								 deleteBankGarantieExpireChangeInfo;
+								 deleteBankGarantieExpireChangeInfo,printBGExpireListWithIn365Days;
 								 
 								 
 								 								 
@@ -213,11 +213,11 @@
 								 
 								 bankDepositWithdrawHome,saveBankTransaction,transactionAuthorization,authorizeTransaction,deleteBankTransaction,getTotalDebitCredit,
 								 journalVoucher,saveCustomerAccountCorrection,saveBankAccountCorrection,
-								 getTariffForDomesticCustomer,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,
+								 getTariffForDomesticCustomer,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,printBGExpireListWithIn365Days,
 								 
 								 
 								 saveReconcilationInfo,deleteReconcilation,
-								 saveAdditonalShurcharge,getNMLedgerByMonthYear,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
+								 saveAdditonalShurcharge,getNMLedgerByMonthYear,updateNMSurcharge,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
 								 							 
 			Assistant Manager: 	 dashBoard,userDashBoard,dashBoardContent,setUserArea,
 								 addUser,getCustomerCategoryList,getUserList,getCustomerCategoryList,
@@ -303,8 +303,8 @@
 								 bankDepositWithdrawHome,saveBankTransaction,transactionAuthorization,authorizeTransaction,deleteBankTransaction,getTotalDebitCredit,
 								 journalVoucher,saveCustomerAccountCorrection,saveBankAccountCorrection,
 								 getTariffForDomesticCustomer,
-								 saveReconcilationInfo,deleteReconcilation,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,
-								 saveAdditonalShurcharge,getNMLedgerByMonthYear,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
+								 saveReconcilationInfo,deleteReconcilation,bankGarantieManagementHome,deleteBankGarantieExpireChangeInfo,saveGankGarantieExpireExtentionInfo,printBGExpireListWithIn365Days,
+								 saveAdditonalShurcharge,getNMLedgerByMonthYear,updateNMSurcharge,deleteCollection,fetchCollection4Delete,ExecuteDeleteCollection;
 								 				 	   
 				         admin: dashBoard,userDashBoard,setUserArea;
 				    Sales User: dashBoard,userDashBoard,dashBoardContent,newCustomer,fileUploader,validateCustomerId,createNewCustomer,setUserArea,
@@ -1321,6 +1321,13 @@
 	</action>
 	
 	<action name="getNMLedgerByMonthYear" class="org.jgtdsl.actions.EditSurcharge" method="getNMLedgerByMonthYear">
+			<result type="stream">
+				<param name="contentType">json</param>
+				<param name="inputName">inputStream</param>
+			</result>
+	</action>
+	
+	<action name="updateNMSurcharge" class="org.jgtdsl.actions.EditSurcharge" method="updateNMSurcharge">
 			<result type="stream">
 				<param name="contentType">json</param>
 				<param name="inputName">inputStream</param>

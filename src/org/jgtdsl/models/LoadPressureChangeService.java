@@ -28,6 +28,10 @@ public class LoadPressureChangeService {
 		ResponseDTO response=new ResponseDTO();
 		TransactionManager transactionManager=new TransactionManager();
 		Connection conn = transactionManager.getConnection();
+		
+		double newMinload = Double.parseDouble(lpChange.getNew_min_load());
+		double newMaxload = Double.parseDouble(lpChange.getNew_max_load());
+		
 		int totalDayDiff=Utils.getDateDiffInDays(reading.getPrev_reading_date(), reading.getCurr_reading_date());
 		double propMinLoad=Utils.getProportionalLoad(reading.getMin_load(), totalDayDiff,reading.getBilling_month(),reading.getBilling_year());
 		double propMaxLoad=Utils.getProportionalLoad(reading.getMax_load(), totalDayDiff,reading.getBilling_month(),reading.getBilling_year());
@@ -60,6 +64,9 @@ public class LoadPressureChangeService {
 		
 		String updateCusConnection="update customer_connection set MIN_LOAD=?,MAX_LOAD=? where customer_id=?";
 		String updateCusMeter="update customer_meter set PRESSURE=? where customer_id=?";
+		
+		
+		
 		
 		PreparedStatement stmt = null;
 			try

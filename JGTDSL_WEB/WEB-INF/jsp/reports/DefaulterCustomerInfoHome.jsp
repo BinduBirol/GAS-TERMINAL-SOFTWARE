@@ -145,6 +145,20 @@ font-size: 12px;
 						</div>
 						
 						
+						<div class="row-fluid">							
+							<div class="span6">
+								<label style="width: 40%">Minimum Amount<m class='man'/></label>
+								<input type="text" style="width: 52%" name="min_amount" id="min_amount"  maxlength="8"/>							      
+							    
+							</div> 
+							<div class="span6">
+								<label style="width: 40%">Maximum Amount<m class='man'/></label>
+								<input type="text" style="width: 52%" name="max_amount" id="max_amount"  maxlength="15"/>							      
+							    
+							</div>  
+						</div>
+						
+						
 						<div class="formSep" style="padding-top: 2px;padding-bottom: 2px;">
 							<div id="aDiv" style="height: 0px;"></div>
 						</div>
@@ -173,4 +187,45 @@ font-size: 12px;
   
 <p style="clear: both;margin-top: 5px;"></p>
 
+<script type="text/javascript">
+
+
+	$("#month_number").val(1);
+	$("#min_amount").val(1);
+	$("#max_amount").val(999999999999999);
+	//month_number can only be a positive integer. 
+	//If user enter any value other than positive integer-
+	// We give an alert and show the prev-surcharge in the input field
+	$("#month_number").keyup(function(e){
+	if(e.keyCode>= 96 && e.keyCode<=105){
+	}else{
+	alert("Plese enter a valid positive number");
+	$("#month_number").val(1);
+	}
+    });
+    
+    $("#min_amount").keyup(function(e){
+	if(e.keyCode>= 96 && e.keyCode<=105){
+	}else{
+	alert("Plese enter a valid positive number");
+	$("#min_amount").val(1);
+	}
+    });
+    
+    $("#max_amount").keyup(function(e){
+	if(e.keyCode>= 96 && e.keyCode<=105){
+	}else{
+	alert("Plese enter a valid positive number");
+	$("#max_amount").val(999999999999999);
+	}
+    });
+    //month_number can only be a positive integer. 
+	//If user enter any value other than positive integer-
+	// We give an alert and show the prev-surcharge in the input field
+    
+    
+
+</script>	
+
 <script type="text/javascript" src="/JGTDSL_WEB/resources/js/page/salesReport.js"></script>	
+

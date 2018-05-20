@@ -116,7 +116,7 @@ public class BurnerQntChangeService {
 						  
 		String insert_sql = "INSERT INTO BURNER_QNT_CHANGE (PID,CUSTOMER_ID,APPLIANCE_TYPE_CODE,NEW_APPLIANCE_QNT,NEW_APPLIANCE_QNT_BILLCAL,EFFECTIVE_DATE,REMARKS,INSERT_BY,INSERT_DATE)" +
 				            "VALUES (SQN_CNG_BURNER_QNT.nextval,?,?,?,?,to_date(?,'dd-mm-yyyy'),?,?,sysdate)";
-		String insert_appliance_sql="INSERT INTO CUSTOMER_APPLIANCE (CUSTOMER_ID, APPLIANCE_ID, QUANTITY) " +
+		String insert_appliance_sql="INSERT INTO NM_CUSTOMER_APPLIANCE (CUSTOMER_ID, APPLIANCE_ID, QUANTITY) " +
 						  "VALUES (?,?,?)";
 		
 		
@@ -510,9 +510,6 @@ public class BurnerQntChangeService {
 		
 		return burnerChangeList;
 	}
-	
-	
-	
 	public BurnerQntChangeDTO getApplianceInfoById(String pid)
 	{		
 		BurnerQntChangeDTO bqChangeDTO=null;

@@ -446,123 +446,134 @@ function getDefaultSurchargePayWithin()
 function submitConnectionInfo()
 {
 
-
-  var isValid=true;
-/*  if($("#ministry_id").length && $.trim($("#ministry_id").val())=="")
-  	{cbColor($("#ministry_id"),"e");isValid=false;}
-  else cbColor($("#ministry_id"),"v");
-*/
-
-//meter 
- if($("#isMetered").length && $("#isMetered").val()==1){
-	  if($("#min_load") && $.trim($("#min_load").val())=="")
-	  	{cbColor($("#min_load"),"e");isValid=false;}
-	  else cbColor($("#min_load"),"v");
-	  if($("#max_load") && $.trim($("#max_load").val())=="")
-	  	{cbColor($("#max_load"),"e");isValid=false;}
-	  else cbColor($("#max_load"),"v");
-	  if($("#hhv_nhv") && $.trim($("#hhv_nhv").val())=="")
-	  	{cbColor($("#hhv_nhv"),"e");isValid=false;}
-	  else cbColor($("#hhv_nhv"),"v");
-	  if($("#pay_within_wo_sc") && $.trim($("#pay_within_wo_sc").val())=="")
-	  	{cbColor($("#pay_within_wo_sc"),"e");isValid=false;}
-	  else cbColor($("#pay_within_wo_sc"),"v");
-  	  if($("#pay_within_w_sc") && $.trim($("#pay_within_w_sc").val())=="")
-	  	{cbColor($("#pay_within_w_sc"),"e");isValid=false;}
-	  else cbColor($("#pay_within_w_sc"),"v"); 
-	  
-	   if(isValid==true)
-  			$('#connectionForm').submit();
-	  
-  }
-//end of meter
-
-
-
-
-
-
-
-	if($("#tblBody tr").size()== 0){
-		cbColor($("#appliance_list"),"e");
-		cbColor($("#appliance_qnt"),"e");
-		
-		isValid=false;
-  	}else{
-  	  isValid=true;
-  	}
+	  var isValid=true;
+	/*  if($("#ministry_id").length && $.trim($("#ministry_id").val())=="")
+	  	{cbColor($("#ministry_id"),"e");isValid=false;}
+	  else cbColor($("#ministry_id"),"v");
+	*/
 	
-	if($("#appliance_qnt").val()!=""){
-	  	cbColor($("#appliance_list"),"v");
-	  	cbColor($("#btnInsert"),"e");
+		//meter 
+		 if($("#isMetered").length && $("#isMetered").val()==1){
+			  if($("#min_load") && $.trim($("#min_load").val())=="")
+			  	{cbColor($("#min_load"),"e");isValid=false;}
+			  else cbColor($("#min_load"),"v");
+			  if($("#max_load") && $.trim($("#max_load").val())=="")
+			  	{cbColor($("#max_load"),"e");isValid=false;}
+			  else cbColor($("#max_load"),"v");
+			  if($("#hhv_nhv") && $.trim($("#hhv_nhv").val())=="")
+			  	{cbColor($("#hhv_nhv"),"e");isValid=false;}
+			  else cbColor($("#hhv_nhv"),"v");
+			  if($("#pay_within_wo_sc") && $.trim($("#pay_within_wo_sc").val())=="")
+			  	{cbColor($("#pay_within_wo_sc"),"e");isValid=false;}
+			  else cbColor($("#pay_within_wo_sc"),"v");
+		  	  if($("#pay_within_w_sc") && $.trim($("#pay_within_w_sc").val())=="")
+			  	{cbColor($("#pay_within_w_sc"),"e");isValid=false;}
+			  else cbColor($("#pay_within_w_sc"),"v"); 
+			  
+			   if(isValid==true)
+		  			$('#connectionForm').submit();
+		  }
+		//end of meter
+	
+	
+/*		if($("#tblBody tr").size()== 0){
+			cbColor($("#appliance_list"),"e");
+			cbColor($("#appliance_qnt"),"e");
+			isValid=false;
+			alert("tblBody "+isValid);
+	  	}else{
+	  	  isValid=true;
+	  	}
+*/
+		
+		if($("#appliance_qnt").val()!=""){
+		  	cbColor($("#appliance_list"),"v");
+		  	cbColor($("#btnInsert"),"e");
+		  	isValid=false;
+		  	alert("appliance_qnt "+isValid);
+	  	}
+	  	
+	  if($("#connection_type").length && $.trim($("#connection_type").val())==""){
+	  	cbColor($("#connection_type"),"e");
 	  	isValid=false;
-  	}
-  	
-
-  if($("#connection_type").length && $.trim($("#connection_type").val())=="")
-  	{cbColor($("#connection_type"),"e");isValid=false;}
-  else cbColor($("#connection_type"),"v");
-  if($("#connection_date").val()=="")
-  	{cbColor($("#connection_date"),"e");isValid=false;}
-  if($("#connection_type").val()==1 && $("#parent_connection").length && $.trim($("#parent_connection").val())=="")
-  	{cbColor($("#parent_connection"),"e");isValid=false;}
-  else cbColor($("#parent_connection"),"v");
-  if($("#isMetered").length && $.trim($("#isMetered").val())=="")
-  	{cbColor($("#isMetered"),"e");isValid=false;}
-  else cbColor($("#isMetered"),"v");
- 
-//     alert(isValid);
-
-	  if(isValid==true)
-  			$('#connectionForm').submit();
+	  	alert("connection_type "+isValid);
+	  	}else {
+	  	cbColor($("#connection_type"),"v");
+	  }
+	  	
+	  if($("#connection_date").val()==""){
+	  	cbColor($("#connection_date"),"e");
+	  	isValid=false;
+	  	alert("connection_date "+isValid);
+	  }
+	  
+	  if($("#connection_type").val()==1 && $("#parent_connection").length && $.trim($("#parent_connection").val())==""){
+	  	cbColor($("#parent_connection"),"e");
+	  	isValid=false;
+	  	alert("connection_type parent_connection "+isValid);
+	  }else {
+	  	cbColor($("#parent_connection"),"v");
+	  } 
+	  if($("#isMetered").length && $.trim($("#isMetered").val())==""){
+	  	cbColor($("#isMetered"),"e");
+	  	isValid=false;
+	  	alert("isMetered "+isValid);
+	  }else {
+	  	cbColor($("#isMetered"),"v");
+	  }
+	 
+	     //alert(isValid);
+	
+		  if(isValid==true)
+	  			$('#connectionForm').submit();
 }
 
 $('#connectionForm').unbind("submit");
 
 $("#connectionForm").submit(function(event){
-	disableButton("btn_save");
-  event.preventDefault();
-  var formData = new FormData($(this)[0]);
- 
-  $.ajax({
-    url: 'saveConnectionInfo.action',
-    type: 'POST',
-    data: formData,
-    async: false,
-    cache: false,
-    contentType: false,
-    processData: false,
-    success: function (response) {
-
-	  if(response.status=="OK")
-	  	enableButton("btn_save");
-      	callAction('viewCustomer.action?customer_id=<s:property value="customer.customer_id" />&selected=3');
-      	
-      $.jgrid.info_dialog(response.dialogCaption,response.message,$.jgrid.edit.bClose, {
-	                    zIndex: 1500,
-	                    width:450,
-	                     beforeOpen: centerInfoDialog,
-	                     afterOpen:disableOnClick,
-	                     onClose: function () {
-	                    	$('.ui-widget-overlay').unbind( "click" );
-	                    	//var customer_id=$("#customer_id").val();
-							//var actionUrl=sBase+"getSecurityAndOtherDepositList.action?customer_id="+customer_id;
-							//$("#depositListTbl").html(jsImg.SETTING).load(actionUrl);	
-							//resetDepositForm();          
-							          	
-	                        return true; // allow closing
-	                    }
-	                    
-    });
-    
-    },
-    error: function (response) {
-		       enableButton("btn_save");
-		      }
-    
-  });
- 
-  return false;
+		disableButton("btn_save");
+	  event.preventDefault();
+	  var formData = new FormData($(this)[0]);
+	 
+	  $.ajax({
+	    url: 'saveConnectionInfo.action',
+	    type: 'POST',
+	    data: formData,
+	    async: false,
+	    cache: false,
+	    contentType: false,
+	    processData: false,
+	    success: function (response) {
+	
+		  if(response.status=="OK")
+		  	enableButton("btn_save");
+	      	callAction('viewCustomer.action?customer_id=<s:property value="customer.customer_id" />&selected=3');
+	      	
+	      $.jgrid.info_dialog(response.dialogCaption,response.message,$.jgrid.edit.bClose, {
+		                    zIndex: 1500,
+		                    width:450,
+		                     beforeOpen: centerInfoDialog,
+		                     afterOpen:disableOnClick,
+		                     onClose: function () {
+		                    	$('.ui-widget-overlay').unbind( "click" );
+		                    	//var customer_id=$("#customer_id").val();
+								//var actionUrl=sBase+"getSecurityAndOtherDepositList.action?customer_id="+customer_id;
+								//$("#depositListTbl").html(jsImg.SETTING).load(actionUrl);	
+								//resetDepositForm();          
+								          	
+		                        return true; // allow closing
+		                    }
+		                    
+	    });
+	    
+	    },
+	    error: function (response) {
+			       enableButton("btn_save");
+			      }
+	    
+	  });
+	 
+	  return false;
 });
 //ajaxLoad('meter_div','newMeter.action?customer_id=<s:property value="customer.customer_id" />')
 </script>

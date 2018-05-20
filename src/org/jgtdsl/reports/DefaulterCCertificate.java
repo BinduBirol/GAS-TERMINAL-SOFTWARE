@@ -79,7 +79,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 	CustomerDTO customer = new CustomerDTO();
 	ClearnessDTO customerInfo;
 	MeterService ms = new MeterService();
-	ArrayList<CustomerApplianceDTO> applianceList= new ArrayList<CustomerApplianceDTO>();
+	ArrayList<CustomerApplianceDTO> applianceList = new ArrayList<CustomerApplianceDTO>();
 	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
 	Date date = new Date();
 
@@ -89,7 +89,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 
 	UserDTO loggedInUser = (UserDTO) ServletActionContext.getRequest()
 			.getSession().getAttribute("user");
-	//Connection conn = ConnectionManager.getConnection();
+
+	// Connection conn = ConnectionManager.getConnection();
 
 	public String execute() throws Exception {
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -126,42 +127,51 @@ public class DefaulterCCertificate extends ActionSupport implements
 			fileName = "ClearnessCertificate.pdf";
 			if (download_type.equalsIgnoreCase("individual_wise")) {
 
-				/*customerInfo = getCustomerInfo(customer_id, area,
-						calender_year, collection_month);
-				customer = getCustomerInfo(customer_id);*/
+				/*
+				 * customerInfo = getCustomerInfo(customer_id, area,
+				 * calender_year, collection_month); customer =
+				 * getCustomerInfo(customer_id);
+				 */
 				ClearnessDTO cDto = new ClearnessDTO();
 				cDto.setCustomerID(customer_id);
 				CustomerList.add(cDto);
 
 			} else if (download_type.equalsIgnoreCase("category_wise")) {
-				CustomerList = getCustomerList(from_customer_id, to_customer_id,customer_category, area);
+				CustomerList = getCustomerList(from_customer_id,
+						to_customer_id, customer_category, area);
 			}
 
 			for (int i = 0; i < CustomerList.size(); i++) {
-				
-				
-				/////////////
+
+				// ///////////
 
 				if (download_type.equals("individual_wise")) {
-					customerInfo = getCustomerInfo(customer_id, area, calender_year, collection_month);
+					customerInfo = getCustomerInfo(customer_id, area,
+							calender_year, collection_month);
 					customer = getCustomerInfo(customer_id);
-					certification_id=customer_id+collection_month+calender_year;
-					
+					certification_id = customer_id + collection_month
+							+ calender_year;
+
 					applianceList = ms.getCustomerApplianceList(customer_id);
 				} else {
 
-					customerInfo = getCustomerInfo(CustomerList.get(i).getCustomerID(), area, calender_year, collection_month);
-					certification_id=CustomerList.get(i).getCustomerID()+collection_month+calender_year;
-					customer = getCustomerInfo(CustomerList.get(i).getCustomerID());					
-					applianceList = ms.getCustomerApplianceList(CustomerList.get(i).getCustomerID());
+					customerInfo = getCustomerInfo(CustomerList.get(i)
+							.getCustomerID(), area, calender_year,
+							collection_month);
+					certification_id = CustomerList.get(i).getCustomerID()
+							+ collection_month + calender_year;
+					customer = getCustomerInfo(CustomerList.get(i)
+							.getCustomerID());
+					applianceList = ms.getCustomerApplianceList(CustomerList
+							.get(i).getCustomerID());
 				}
-				////////////////		
-				
+				// //////////////
+
 				yearsb = calender_year.substring(2, 4);
 				PdfContentByte over = null;
 				PdfStamper stamp = null;
 
-				if (customerInfo.getDueAmount() == 0
+				if (customerInfo.getDueAmount()==0
 						|| customerInfo.getDueMonth().equals("")
 						|| customerInfo.getCustomerID().equals(null)) {
 					reader = new PdfReader(new FileInputStream(realPathC));
@@ -170,14 +180,14 @@ public class DefaulterCCertificate extends ActionSupport implements
 					over = stamp.getOverContent(1);
 
 					over.beginText();
-					//certification ID
-					
+					// certification ID
+
 					over.setFontAndSize(bfb, 8);
 					over.showTextAligned(PdfContentByte.ALIGN_LEFT,
 							certification_id, 95, 660, 0);
 					over.showTextAligned(PdfContentByte.ALIGN_LEFT,
 							certification_id, 95, 354, 0);
-					
+
 					// Date
 
 					over.setFontAndSize(bfb, 8);
@@ -186,7 +196,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 					over.showTextAligned(PdfContentByte.ALIGN_LEFT,
 							dateFormat.format(date), 487, 354, 0);
 					// appliance
-					
+
 					if (applianceList.size() == 0) {
 						over.setFontAndSize(bfb, 8);
 						over.showTextAligned(PdfContentByte.ALIGN_LEFT, "N/A",
@@ -268,7 +278,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 					over.showTextAligned(PdfContentByte.ALIGN_LEFT,
 							officer_name + ", " + officer_desig, 457, 156, 0);
 
-					///////////////////////////////////for defaulter//////////////////////////////////////
+					// /////////////////////////////////for
+					// defaulter//////////////////////////////////////
 
 				} else {
 					reader = new PdfReader(new FileInputStream(realPathD));
@@ -277,15 +288,15 @@ public class DefaulterCCertificate extends ActionSupport implements
 					over = stamp.getOverContent(1);
 
 					over.beginText();
-					
-					//certification ID
-					
+
+					// certification ID
+
 					over.setFontAndSize(bfb, 8);
 					over.showTextAligned(PdfContentByte.ALIGN_LEFT,
 							certification_id, 95, 660, 0);
 					over.showTextAligned(PdfContentByte.ALIGN_LEFT,
 							certification_id, 95, 357, 0);
-					
+
 					// date
 					DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
 					Date date = new Date();
@@ -468,7 +479,9 @@ public class DefaulterCCertificate extends ActionSupport implements
 				over.endText();
 				stamp.close();
 				readers.add(new PdfReader(certificate.toByteArray()));
-				insertClarificationHistory(customer.getCustomer_id(), dateFormat.format(date), officer_name, (int) customerInfo.getDueAmount());
+				insertClarificationHistory(customer.getCustomer_id(),
+						dateFormat.format(date), officer_name,
+						customerInfo.getDueAmount());
 			}
 			if (readers.size() > 0) {
 				PdfWriter writer = PdfWriter.getInstance(document, out);
@@ -489,10 +502,9 @@ public class DefaulterCCertificate extends ActionSupport implements
 				ReportUtil rptUtil = new ReportUtil();
 				rptUtil.downloadPdf(out, response, fileName);
 				document = null;
-				
-				
+
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -503,8 +515,8 @@ public class DefaulterCCertificate extends ActionSupport implements
 	private ClearnessDTO getCustomerInfo(String customer_id, String area_id,
 			String year, String month) {
 		Connection conn = ConnectionManager.getConnection();
-		Statement st= null;
-		ResultSet resultSet=null;
+		Statement st = null;
+		ResultSet resultSet = null;
 		ClearnessDTO ctrInfo = new ClearnessDTO();
 		String type = customer_id.substring(0, 4);
 		String bill_table;
@@ -542,15 +554,18 @@ public class DefaulterCCertificate extends ActionSupport implements
 					+ "                               TO_CHAR (SYSDATE, 'dd-mm-YYYY'))), "
 					+ "                       '99999999999999.99')) "
 					+ "                    inwords, "
-					+ "                 COUNT (*) cnt "
-					+ "            FROM "
+					+ "                 COUNT (*) cnt " + "            FROM "
 					+ bill_table
 					+ " bi, CUSTOMER_CONNECTION cc "
 					+ "           WHERE     BI.CUSTOMER_ID = CC.CUSTOMER_ID "
 					+ "                 AND CC.STATUS = 1 "
 					+ "                 AND bi.STATUS = 1 "
-					+ "                 AND bi.area_id = '"+this.area+"' "
-					+ " AND BI.CUSTOMER_ID = '"+customer_id+"' "
+					+ "                 AND bi.area_id = '"
+					+ this.area
+					+ "' "
+					+ " AND BI.CUSTOMER_ID = '"
+					+ customer_id
+					+ "' "
 
 					// "                 And bi.CUSTOMER_CATEGORY= " +
 					+ "                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"
@@ -568,7 +583,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 					+ "         WHERE AA.CUSTOMER_ID = BB.CUSTOMER_ID) tmp2 "
 					+ " WHERE tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID ";
 
-			st = conn.createStatement();//Statement(customer_info_sql);
+			st = conn.createStatement();// Statement(customer_info_sql);
 
 			resultSet = st.executeQuery(customer_info_sql);
 
@@ -578,20 +593,19 @@ public class DefaulterCCertificate extends ActionSupport implements
 				ctrInfo.setCustomerName(resultSet.getString("FULL_NAME"));
 				ctrInfo.setCustomerAddress(resultSet.getString("ADDRESS_LINE1"));
 				ctrInfo.setDueMonth(resultSet.getString("DUEMONTH"));
-				ctrInfo.setDueAmount(Double.parseDouble(resultSet
-						.getString("TOTALAMOUNT")));
+				ctrInfo.setDueAmount(resultSet.getDouble("TOTALAMOUNT"));
 				ctrInfo.setArea(resultSet.getString("AREA_ID"));
 				ctrInfo.setAmountInWords(resultSet.getString("INWORDS"));
 			}
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
-		}finally{
-			try{
+		} finally {
+			try {
 				st.close();
 				resultSet.close();
 				conn.close();
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -603,7 +617,6 @@ public class DefaulterCCertificate extends ActionSupport implements
 		return clearnessDTO;
 	}
 
-	
 	public String getReport_type() {
 		return report_type;
 	}
@@ -752,8 +765,6 @@ public class DefaulterCCertificate extends ActionSupport implements
 		this.loggedInUser = loggedInUser;
 	}
 
-	
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -829,18 +840,18 @@ public class DefaulterCCertificate extends ActionSupport implements
 			String to_cus_id, String cust_cat_id, String area) {
 
 		ArrayList<ClearnessDTO> custList = new ArrayList<ClearnessDTO>();
-		PreparedStatement ps1=null;
-		ResultSet resultSet=null;
-		Connection conn= null;
-		if(collection_month.length()<2){
-			collection_month="0"+collection_month;
+		PreparedStatement ps1 = null;
+		ResultSet resultSet = null;
+		Connection conn = null;
+		if (collection_month.length() < 2) {
+			collection_month = "0" + collection_month;
 		}
-		String type=null;
-		if(from_cus_id.isEmpty()){
-			type=area+this.customer_category;
-		}else{
+		String type = null;
+		if (from_cus_id.isEmpty()) {
+			type = area + this.customer_category;
+		} else {
 			type = from_cus_id.substring(0, 4);
-		}		
+		}
 		String bill_table;
 		if (type.equalsIgnoreCase(area + "01")
 				|| type.equalsIgnoreCase(area + "09")) {
@@ -848,26 +859,33 @@ public class DefaulterCCertificate extends ActionSupport implements
 		} else {
 			bill_table = "BILL_METERED";
 		}
-		String whereClause= null;
-		if(from_cus_id.isEmpty()&&to_cus_id.isEmpty()){
-			whereClause= "      AND BI.CUSTOMER_CATEGORY='"+this.customer_category+"'  ";
-		}else{
-			whereClause= "         AND BI.CUSTOMER_ID BETWEEN '"+from_cus_id+"' AND '"+to_cus_id+"' " ;
+		String whereClause = null;
+		if (from_cus_id.isEmpty() && to_cus_id.isEmpty()) {
+			whereClause = "      AND BI.CUSTOMER_CATEGORY='"
+					+ this.customer_category + "'  ";
+		} else {
+			whereClause = "         AND BI.CUSTOMER_ID BETWEEN '" + from_cus_id
+					+ "' AND '" + to_cus_id + "' ";
 		}
 		try {
-			String transaction_sql =
-					"  SELECT bi.CUSTOMER_ID, COUNT (*) cnt " +
-					"    FROM "+bill_table+" bi, CUSTOMER_CONNECTION cc " +
-					"   WHERE     BI.CUSTOMER_ID = CC.CUSTOMER_ID " +
-					"         AND CC.STATUS = 1 " +
-					//"         AND bi.STATUS = 1 " +
-					"         AND bi.area_id = '"+area+"' " +
-					whereClause+
-					"                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"+ calender_year+collection_month+
-					"'  GROUP BY BI.CUSTOMER_ID, CUSTOMER_CATEGORY, bi.AREA_ID " +
-					"  HAVING COUNT (*) >= 1 " ;
+			String transaction_sql = "  SELECT bi.CUSTOMER_ID, COUNT (*) cnt "
+					+ "    FROM "
+					+ bill_table
+					+ " bi, CUSTOMER_CONNECTION cc "
+					+ "   WHERE     BI.CUSTOMER_ID = CC.CUSTOMER_ID "
+					+ "         AND CC.STATUS = 1 "
+					+
+					// "         AND bi.STATUS = 1 " +
+					"         AND bi.area_id = '"
+					+ area
+					+ "' "
+					+ whereClause
+					+ "                 AND BILL_YEAR || LPAD (BILL_MONTH, 2, 0) <= '"
+					+ calender_year
+					+ collection_month
+					+ "'  GROUP BY BI.CUSTOMER_ID, CUSTOMER_CATEGORY, bi.AREA_ID "
+					+ "  HAVING COUNT (*) >= 1 ";
 
-			
 			conn = ConnectionManager.getConnection();
 			ps1 = conn.prepareStatement(transaction_sql);
 			resultSet = ps1.executeQuery();
@@ -879,13 +897,12 @@ public class DefaulterCCertificate extends ActionSupport implements
 
 		} catch (Exception e) {
 			// TODO: handle exception
-		}
-		finally{
-			try{
+		} finally {
+			try {
 				ps1.close();
 				resultSet.close();
 				conn.close();
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -896,11 +913,11 @@ public class DefaulterCCertificate extends ActionSupport implements
 
 	// insert into database
 	public void insertClarificationHistory(String cust_id, String issue_date,
-			String insert_by, int dues_status) {
+			String insert_by, Double dues_status) {
 		ResponseDTO response = new ResponseDTO();
-		
-		if(collection_month.length()<2){
-			collection_month="0"+collection_month;
+
+		if (collection_month.length() < 2) {
+			collection_month = "0" + collection_month;
 		}
 		TransactionManager transactionManager = new TransactionManager();
 		Connection conn = transactionManager.getConnection();
@@ -935,7 +952,7 @@ public class DefaulterCCertificate extends ActionSupport implements
 				stmt.setString(1, cust_id);
 				stmt.setString(2, calender_year);
 				stmt.setInt(3, 1); // / 1 means all generated(approved)
-				stmt.setInt(4, dues_status);
+				stmt.setDouble(4, dues_status);
 				stmt.setString(5, insert_by);
 				stmt.setString(6, collection_month);
 				stmt.setString(7, certification_id);

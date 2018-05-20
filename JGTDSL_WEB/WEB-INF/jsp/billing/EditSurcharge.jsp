@@ -1,7 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 	navCache("editSurcharge.action");
-	setTitle("Edit Surcharge");
+	setTitle("Edit Surcharge (Non-meter)");
 </script>
 <link href="/JGTDSL_WEB/resources/css/page/meterReading.css"
 	rel="stylesheet" type="text/css" />
@@ -27,7 +27,7 @@ input[type="radio"],input[type="checkbox"] {
 	<div class="row-fluid">
 		<div class="span9" id="rightSpan">
 			<div class="w-box-header">
-				<h4 id="rightSpan_caption">Edit Surcharge</h4>
+				<h4 id="rightSpan_caption">Edit Surcharge (Non-meter)</h4>
 			</div>
 			<div class="w-box-content" style="padding: 10px;" id="content_div">
 				<div class="row-fluid">
@@ -69,7 +69,7 @@ input[type="radio"],input[type="checkbox"] {
 
 							<td style="width: 60%" align="right">
 								<button class="btn" id="btn_save"
-									onclick="fetchWrongCollectionList()">Search</button>
+									onclick="fetchBillForUpdate()">Search</button>
 								<button class="btn btn-danger" type="button" id="btn_cancel"
 									onclick="callAction('blankPage.action')">Cancel</button>
 							</td>
@@ -86,48 +86,52 @@ input[type="radio"],input[type="checkbox"] {
 				<form id="formForUpdateSurchargeNM" name="formForUpdateSurchargeNM">
 					<table border="10" style="background-color:D1E9EF;">
 						<TR>
-							<TH rowspan="2" >Bill ID</TH>
-							<TH rowspan="2">Description</TH>
+							<TH rowspan="2">Bill ID</TH>
+							<TH rowspan="2" style="width: 8%">Description</TH>
 							<TH rowspan="2">Billed Amount</TH>
 							<TH rowspan="2">Surcharge Amount</TH>
 							<TH rowspan="2">Collected Billed Amount</TH>
 							<TH rowspan="2">Collected Surcharge</TH>
 							<TH rowspan="2">Due Date</TH>
-							<TH rowspan="2">Bank, Branch</TH>
+							<TH rowspan="2" style="width: 18%">Bank, Branch</TH>
 							<TH rowspan="2">Collection Date</TH>
 
 						</TR>
 						<TR></TR>
 						<TR>
-							<TD><INPUT TYPE="TEXT" NAME="entry_type" id="entry_type"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="particulars" id="particulars"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="sales_amount" id="sales_amount"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="surcharge" id="surcharge"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="credit_amount" id="credit_amount"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="credit_surcharge" id="credit_surcharge"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="due_date" id="due_date"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="bank_name" id="bank_name"
-								style="width: 90%"></TD>
-							<TD><INPUT TYPE="TEXT" NAME="issue_paid_date" id="issue_paid_date"
-								style="width: 90%"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.entry_type" id="entry_type"
+								style="width: 90%; text-align:center;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.particulars" id="particulars"
+								style="width: 90%; text-align:center;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.sales_amount" id="sales_amount"
+								style="width: 90%; text-align:center;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.surcharge" id="surcharge"
+								style="width: 90%; text-align:center;background-color: #00cc99;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.credit_amount" id="credit_amount"
+								style="width: 90%; text-align:center;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.credit_surcharge" id="credit_surcharge"
+								style="width: 90%; text-align:center;background-color: #00cc99;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.due_date" id="due_date"
+								style="width: 90%; text-align:center;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.bank_name" id="bank_name"
+								style="width: 95%; text-align:center;"></TD>
+							<TD><INPUT TYPE="TEXT" NAME="cl.issue_paid_date" id="issue_paid_date"
+								style="width: 90%; text-align:center;"></TD>
 
 						</TR>
 						
 					</table>
+					<div style="text-align:center;">
 					<P>
-						<INPUT  class="btn btn-primary" TYPE="SUBMIT" VALUE="Update" NAME="B1">
+						<INPUT  class="btn btn-primary" VALUE="Update" type="button" id="update_nm_ledger" onclick="updateNMSurcharge()">
 					</P>
+					</div>
 				</FORM>
 			</div>
 		</div>
 	</div>
+	
+	<div id="show_msg" style="text-align:center;"></div>
 
 </div>
 
@@ -135,7 +139,8 @@ input[type="radio"],input[type="checkbox"] {
 <p style="clear: both;margin-top: 5px;"></p>
 
 <script type="text/javascript">
-	function fetchWrongCollectionList() {
+	var prev_surcharge=0, prev_coll_surcharge=0;
+	function fetchBillForUpdate() {
 
 		if ($("#customer_id").val() == "") {
 			alert("Please enter customer id");
@@ -151,13 +156,10 @@ input[type="radio"],input[type="checkbox"] {
 			alert("Please enter a valid year");
 			return;
 		}
-
-		$("#detailDiv").html("");
-		$("#stat_div").show();
-		$("#loading_div")
-				.html(
-						jsImg.LOADING_MID
-								+ "<br/><br/><font style='color:white;font-weight:bold'>Please wait. Searching the Collection list </font>");
+		
+		$("#show_msg").html("");
+	
+		
 
 		$.ajax({
 			type : "POST",
@@ -171,16 +173,25 @@ input[type="radio"],input[type="checkbox"] {
 			}
 		}).done(function(msg) {
 		    var info = JSON.parse(msg);
-			alert(info[0]["customer_id"]);
+			
 			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
-			$("#entry_type").val(info[0]["entry_type"]);
+			$("#entry_type").prop('readonly', true);
+			$("#particulars").val(info[0]["particulars"]);
+			$("#particulars").prop('readonly', true);
+			$("#sales_amount").val(info[0]["sales_amount"]);
+			$("#sales_amount").prop('readonly', true);
+			$("#surcharge").val(info[0]["surcharge"]);
+			prev_surcharge=info[0]["surcharge"];
+			$("#credit_amount").val(info[0]["credit_amount"]);
+			$("#credit_amount").prop('readonly', true);
+			$("#credit_surcharge").val(info[0]["credit_surcharge"]);
+			prev_coll_surcharge=info[0]["credit_surcharge"];
+			$("#due_date").val(info[0]["due_date"]);
+			$("#due_date").prop('readonly', true);
+			$("#bank_name").val(info[0]["bank_name"]);
+			$("#bank_name").prop('readonly', true);
+			$("#issue_paid_date").val(info[0]["issue_paid_date"]);
+			$("#issue_paid_date").prop('readonly', true);
 			
 			
 			
@@ -196,4 +207,77 @@ input[type="radio"],input[type="checkbox"] {
 		});
 
 	}
+	
+	//surcharge can only be a positive integer. 
+	//If user enter any value other than positive integer-
+	// We give an alert and show the prev-surcharge in the input field
+	
+	$("#surcharge").keyup(function(e){
+	if(e.keyCode>= 96 && e.keyCode<=105){
+	}else{
+	alert("Plese enter a valid positive number");
+	$("#surcharge").val(prev_surcharge);
+	}
+    });
+    
+    //credit-surcharge can only be a positive integer. 
+	//If user enter any value other than positive integer-
+	// We give an alert and show the prev-collected-surcharge in the input field
+    
+    $("#credit_surcharge").keyup(function(e){
+	if(e.keyCode>= 96 && e.keyCode<=105){
+	}else{
+	alert("Plese enter a valid positive number");
+	$("#credit_surcharge").val(prev_coll_surcharge);
+	}
+    });
+	//checking for paste
+	
+	$("#surcharge").on('paste', function () {
+    //var element = this;
+    setTimeout(function () {
+    //var text = $(element).val();
+    alert("Input number from keyboard");
+    $("#surcharge").val(prev_surcharge);
+    }, 100);
+    });
+	
+	$("#credit_surcharge").on('paste', function () {
+    //var element = this;
+    setTimeout(function () {
+    //var text = $(element).val();
+    alert("Input number from keyboard");
+    $("#credit_surcharge").val(prev_coll_surcharge);
+    }, 100);
+    });
+
+
+
+	//for update surcharge
+	function updateNMSurcharge(){
+		var form = document.getElementById('formForUpdateSurchargeNM');
+		var formData = new FormData(form);
+		  $.ajax({
+		    url: 'updateNMSurcharge.action',
+		    type: 'POST',
+		    data: formData,
+		    async: false,
+		    cache: false,
+		    contentType: false,
+		    processData: false,
+		    success: function (response) {
+		        
+		        
+		        $("#show_msg").html(response);
+		    	
+		    	
+				var fields = ["entry_type","issue_paid_date","sales_amount","surcharge","credit_surcharge","credit_amount","due_date","bank_name","particulars"];
+		    	clearField.apply(this,fields);
+
+		    
+		    	//$("#msg_div").html(response.message);		       
+		   }
+		  });		
+}
+	
 </script>

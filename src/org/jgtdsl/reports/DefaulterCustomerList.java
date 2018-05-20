@@ -55,6 +55,8 @@ public class DefaulterCustomerList extends BaseAction {
 	private String customer_type;
 	private String status;
 	private String moholla_wise="  ";
+	private String min_amount;
+	private String max_amount;
 
 	public String execute() throws Exception {
 
@@ -1049,7 +1051,11 @@ public class DefaulterCustomerList extends BaseAction {
 							+ "            FROM CUSTOMER C, MST_ZONE MZ "
 							+ "           WHERE C.AREA = MZ.AREA_ID AND C.ZONE = MZ.ZONE_ID) TMP4 ";
 				}
-				defaulterListSql += " WHERE tmp1.TOTAL_AMOUNT > 0 AND tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
+				defaulterListSql += " WHERE tmp1.TOTAL_AMOUNT > 0 AND tmp1.TOTAL_AMOUNT >="
+						+ min_amount
+						+" AND tmp1.TOTAL_AMOUNT <="
+				        + max_amount
+						+" AND tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
 						+ " AND tmp1.CUSTOMER_ID = TMP3.CUSTOMER_ID";
 				if (moholla_wise.equals("1")) {
 					defaulterListSql += "         AND tmp1.CUSTOMER_ID = TMP4.CUSTOMER_ID "
@@ -1122,7 +1128,11 @@ public class DefaulterCustomerList extends BaseAction {
 							+ "            FROM CUSTOMER C, MST_ZONE MZ "
 							+ "           WHERE C.AREA = MZ.AREA_ID AND C.ZONE = MZ.ZONE_ID) TMP4 ";
 				}
-				defaulterListSql += " WHERE tmp1.TOTAL_AMOUNT > 0 AND tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
+				defaulterListSql += " WHERE tmp1.TOTAL_AMOUNT > 0 AND tmp1.TOTAL_AMOUNT >="
+						+ min_amount
+						+" AND tmp1.TOTAL_AMOUNT <="
+				        + max_amount
+						+" AND tmp1.CUSTOMER_ID = tmp2.CUSTOMER_ID "
 						+ " AND tmp1.CUSTOMER_ID = TMP3.CUSTOMER_ID";
 				if (moholla_wise.equals("1")) {
 					defaulterListSql += "         AND tmp1.CUSTOMER_ID = TMP4.CUSTOMER_ID "
@@ -1275,6 +1285,24 @@ public class DefaulterCustomerList extends BaseAction {
 
 	public void setMoholla_wise(String moholla_wise) {
 		this.moholla_wise = moholla_wise;
+	}
+
+
+	
+	public String getMin_amount() {
+		return min_amount;
+	}
+
+	public void setMin_amount(String min_amount) {
+		this.min_amount = min_amount;
+	}
+
+	public String getMax_amount() {
+		return max_amount;
+	}
+
+	public void setMax_amount(String max_amount) {
+		this.max_amount = max_amount;
 	}
 
 	

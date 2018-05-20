@@ -31,6 +31,16 @@ public class ClearnessDTO {
 	private int other_burner;
 
 
+
+
+	public double getDueAmount() {
+		return dueAmount;
+	}
+
+	public void setDueAmount(double dueAmount) {
+		this.dueAmount = dueAmount;
+	}
+
 	public int getSingle_burner() {
 		return single_burner;
 	}
@@ -153,13 +163,7 @@ public class ClearnessDTO {
 		this.dueMonth = dueMonth;
 	}
 
-	public double getDueAmount() {
-		return dueAmount;
-	}
-
-	public void setDueAmount(double dueAmount) {
-		this.dueAmount = dueAmount;
-	}
+	
 
 	public String getPriviousYear() {
 		return priviousYear;

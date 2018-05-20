@@ -74,7 +74,7 @@ font-size: 12px;
 						</div>
 						<div class="row-fluid">							
 							<div class="span6">									    
-								<label style="width: 40%">Due Date<m class='man'/></label>
+								<label style="width: 40%">Amount<m class='man'/></label>
 								<input type="text" style="width: 52%" name="due_date" id="due_date"  maxlength="30"/>						      
 							</div>
 							<div class="span6">
