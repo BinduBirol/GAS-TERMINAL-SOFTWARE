@@ -232,7 +232,7 @@ var $dialog = $('<div id="dialog-confirm"></div>')
 		buttons: {
 				"Delete": {text:"Delete","class":'btn btn-danger',click:function() {
 					deleteBankGarantieExpireChangeInfo(); 
-					//$( this ).dialog( "close" );
+					$( this ).dialog( "close" );
 				}},
 				"Cancel": {text:"Cancel","class":'btn btn-beoro-3',click:function() {
 					$( this ).dialog( "close" );
@@ -273,20 +273,35 @@ function deleteBankGarantieExpireChangeInfo(){
 	    data: {deposit_id:$("#deposit_id").val()},
 	    cache: false,
 	    success: function (response) {
-	    		meterRentChangeForm(clearField);	
-		    	$dialog.dialog("close");
-		    	$('#meterReconnForm').trigger("reset");
-		    	//$('#bgCustomerInfo').trigger("reset");
-		    	//alert(response.message);
-		    	reloadGrid("customer_grid");
-		    	reloadGrid("meterRent_change_history_this_grid");
-		    	reloadGrid("meterRent_change_history_all_grid");
-		    	$.jgrid.info_dialog(response.dialogCaption,response.message,jqDialogClose,jqDialogParam);
-	    },
-	    error: function(response) {
+	    		
+		   // 	$.jgrid.info_dialog(response.dialogCaption,response.message,jqDialogClose,jqDialogParam);
+	    	
+		    	if(response.status=="OK"){
+		    		
+			    	  bankGarantieExpireExtentionForm(clearField);
+			    	  bankGarantieExpireExtentionForm(removeReadOnlyField);
+			    	  bankGarantieExpireExtentionForm(disableField);
+			    	  disableButton("btn_save","btn_delete");
+			    	  
+			    	  	meterRentChangeForm(clearField);	
+				    	$dialog.dialog("close");
+				    	$('#meterReconnForm').trigger("reset");
+				    	//$('#bgCustomerInfo').trigger("reset");
+				    	//alert(response.message);
+				    	reloadGrid("customer_grid"); 
+				    	reloadGrid("meterRent_change_history_this_grid");
+				    	reloadGrid("meterRent_change_history_all_grid");
+			    	  
+			    	  reloadMeterRentChangeHistory($("#comm_customer_id").val(),deposit_id);
+			    	  
+			      }
+			   
+			   		$.jgrid.info_dialog(response.dialogCaption,response.message,jqDialogClose,jqDialogParam);	
+	    }
+	 //   error: function(response) {
            // alert("error");
-	    	$.jgrid.info_dialog(response.dialogCaption,response.message,jqDialogClose,jqDialogParam);
-        },
+	  //  	$.jgrid.info_dialog(response.dialogCaption,response.message,jqDialogClose,jqDialogParam);
+      //  },
 	    
 	  });
 }
@@ -314,6 +329,7 @@ function setActiveTabToMeterRentChangeHistory(customer_id,deposit_id){
 }
 
 function reloadMeterRentChangeHistory(customer_id,deposit_id){
+	// need to do another rulearray for MST_DEPOSIT table		-sujon
     var ruleArray=[["BG_EXPIRE_CHANGE_HISTORY.CUSTOMER_ID","DEPOSIT_ID"],["eq","eq"],[customer_id,deposit_id]];
 	var postdata=getPostFilter("meterRent_change_history_this_grid",ruleArray);
     $("#meterRent_change_history_this_grid").jqGrid('setGridParam',{search: true,postData: postdata,page:1,datatype:'json'});    	
