@@ -102,7 +102,7 @@
 								 monthlySalesStmtReport,salesReportHome,nonmeterLoadIncreaseHome,nonmeterLoadIncraseInfo,nonmeterReconnectionHome,nonmeterReconnectionInfo,nonmeterConnectionHome,nonmeterConnectionInfo,
 								 nonmeterDisconnectionHome,nonmeterDisconnectionInfo,meterReadingInfoHome,meterReadingInfo,securityDepositInfo,securityDepositHome,defaulterCustomerInfoHome,
 								 maximumLoadExceedInfo,maximumLoadExceedHome,securityDepositRequiredInfo,securityDepositRequiredHome,advancedPaidCustomerInfoHome,advancePaidCustomerInfo,
-								 monthlyCollectionStmntReport,FeesCollectionStmntReport,collectionReportHome,feesCollectionReportHome,nonMeterBillingSummeryHome,nonMeterBillSummeryReport,salesSummaryHome,monthlySalesSummaryReport,
+								 monthlyCollectionStmntReport,FeesCollectionStmntReport,ministryCollectionDetails, ministryCollectionDetailsView, collectionReportHome,feesCollectionReportHome,nonMeterBillingSummeryHome,nonMeterBillSummeryReport,salesSummaryHome,monthlySalesSummaryReport,
 								 securityAddjustHome,securityAdjustInfo,jvHome,jvInfo,certificationSummeryHome,certificationSummeryReport,billPreviewHome,billPreviewInfo,
 								 
 								 approveCC,
@@ -198,7 +198,7 @@
 								 monthlySalesStmtReport,salesReportHome,nonmeterLoadIncreaseHome,nonmeterLoadIncraseInfo,nonmeterReconnectionHome,nonmeterReconnectionInfo,nonmeterConnectionHome,nonmeterConnectionInfo,
 								 nonmeterDisconnectionHome,nonmeterDisconnectionInfo,meterReadingInfoHome,meterReadingInfo,securityDepositInfo,securityDepositHome,defaulterCustomerInfoHome,
 								 maximumLoadExceedInfo,maximumLoadExceedHome,securityDepositRequiredInfo,securityDepositRequiredHome,advancedPaidCustomerInfoHome,advancePaidCustomerInfo,
-								 monthlyCollectionStmntReport,FeesCollectionStmntReport,collectionReportHome,feesCollectionReportHome,nonMeterBillingSummeryHome,nonMeterBillSummeryReport,vatRebateHome,vatRebateInfo,
+								 monthlyCollectionStmntReport,FeesCollectionStmntReport,ministryCollectionDetails, ministryCollectionDetailsView, collectionReportHome,feesCollectionReportHome,nonMeterBillingSummeryHome,nonMeterBillSummeryReport,vatRebateHome,vatRebateInfo,
 								 securityAddjustHome,securityAdjustInfo,jvHome,jvInfo,securityNoticeHome,securityNoticeInfo,salesSummaryHome,monthlySalesSummaryReport,custListHome,custListInfo,
 								 certificationSummeryHome,certificationSummeryReport,bankBookjvHome,bankBookjvInfo,securitybankBookjvHome,securitybankBookjvInfo,vatRebatejvHome,vatRebatejvInfo,freedomjvHome,freedomjvInfo,
 								 areaSecurityHome,areaSecurityInfo,salesjvHome,salesjvInfo,purchasejvHome,purchasejvInfo,tdsjvHome,tdsjvInfo,totalSecurityHome,totalSecurityInfo,sgHome,sgInfo,bgHome,bgInfo,avalueHome,avalueInfo,
@@ -286,7 +286,7 @@
 								 monthlySalesStmtReport,salesReportHome,nonmeterLoadIncreaseHome,nonmeterLoadIncraseInfo,nonmeterReconnectionHome,nonmeterReconnectionInfo,nonmeterConnectionHome,nonmeterConnectionInfo,
 								 nonmeterDisconnectionHome,nonmeterDisconnectionInfo,meterReadingInfoHome,meterReadingInfo,securityDepositInfo,securityDepositHome,defaulterCustomerInfoHome,
 								 maximumLoadExceedInfo,maximumLoadExceedHome,securityDepositRequiredInfo,securityDepositRequiredHome,advancedPaidCustomerInfoHome,advancePaidCustomerInfo,
-								 monthlyCollectionStmntReport,FeesCollectionStmntReport,collectionReportHome,feesCollectionReportHome,nonMeterBillingSummeryHome,nonMeterBillSummeryReport,
+								 monthlyCollectionStmntReport,FeesCollectionStmntReport,ministryCollectionDetails, ministryCollectionDetailsView, collectionReportHome,feesCollectionReportHome,nonMeterBillingSummeryHome,nonMeterBillSummeryReport,
 								 getDuesListByString,isDefaulterOrNot,marginCalculationInfo,vatRebateHome,vatRebateInfo,custListHome,custListInfo,
 								 saveGasPurchaseInfo,gasPurchaseHome,bankbook,addMoreReconcilationHome,bankBookInfo,bankBookReportHome,variousMarginHome,variousMarginInfo,gasConsumptionHome,gasConsumptionInfo,
 								 reconciliationReport,reconciliationReportHome,isReconiliatedOrNot,getClosingBalance,certificationSummeryHome,certificationSummeryReport,
@@ -626,6 +626,10 @@
 	
 	<action name="collectionReportHome">
 		<result name="success">/WEB-INF/jsp/reports/CollectionReportHome.jsp</result>
+	</action>	
+	
+	<action name="ministryCollectionDetailsView">
+		<result name="success">/WEB-INF/jsp/reports/MinistryCollectionDetails.jsp</result>
 	</action>	
 	
 	<action name="feesCollectionReportHome">

@@ -85,8 +85,8 @@ public class GridRecordFetcher extends BaseAction {
 		if (page > totalPages)
 			page = totalPages;
 
-		JqGridData<?> gridData = new JqGridData(totalPages, page, totalCount,dataList);
-		// System.out.println("Grid Data: " + gridData.getJsonString());
+		JqGridData<?> gridData = new JqGridData(totalPages, page, totalCount,totalList);	// totalList is replaced on dataList	-sujon, for BG
+		//System.out.println("Grid Data: " + gridData.getJsonString());
 		HttpServletResponse response = ServletActionContext.getResponse();
 		try {
 			response.setContentType("json");

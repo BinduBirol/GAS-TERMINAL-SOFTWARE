@@ -33,6 +33,7 @@ public class DepositService {
 
 	UserDTO loggedInUser=(UserDTO) ServletActionContext.getRequest().getSession().getAttribute("user");
 	String area_id = loggedInUser.getArea_id();
+	String user_name = loggedInUser.getUserName();
 	
 	public ArrayList<DepositTypeDTO> getDepositTypeList(int index, int offset,
 			String whereClause, String sortFieldName, String sortOrder,
@@ -257,20 +258,6 @@ public class DepositService {
 				+ " ACCOUNT_NO,DEPOSIT_DATE,TOTAL_DEPOSIT,INSERTED_BY,REMARKS) "
 				+ " Values(?,?,?,?,to_date(?,'dd-MM-YYYY'),to_date(?,'dd-MM-YYYY'),?,?,?,to_date(?,'dd-MM-YYYY'),?,?,?)";
 		
-		//no need for dtl_deposit now
-
-//		String dtlDepositSql = " Insert Into DTL_DEPOSIT(DEPOSIT_ID,TYPE_ID,AMOUNT) "
-//				+ " Values(?,?,?) ";
-
-		
-		//no need for CUSTOMER_SECURITY_LEDGER now
-		
-//		String depositLedgerSql = " Insert Into CUSTOMER_SECURITY_LEDGER(TRANS_ID, TRANS_DATE, DESCRIPTION, SECURITY_AMOUNT,DEBIT, BALANCE, DEPOSIT_ID, "
-//				+ " CUSTOMER_ID,STATUS,INSERTED_BY) "
-//				+ " Values(SQN_DEPOSITID.NEXTVAL,TO_DATE(?,'dd-MM-YYYY'),?,?,?,?,?,?,?,?)";
-//
-//		String depositAccountBalanceQuery = " Select Balance from CUSTOMER_SECURITY_LEDGER Where Trans_Id "
-//				+ " In(Select max(Trans_Id) from CUSTOMER_SECURITY_LEDGER where Customer_Id=?) ";
 
 		String bankAccountLedgerQuery = " Insert Into BANK_ACCOUNT_LEDGER(TRANS_ID,TRANS_DATE,TRANS_TYPE,PARTICULARS,BANK_ID,BRANCH_ID,ACCOUNT_NO,DEBIT,BALANCE,REF_ID, "
 				+ " INSERTED_BY,CUSTOMER_ID,STATUS,MISCELLANEOUS) "
@@ -288,6 +275,11 @@ public class DepositService {
 
 		ResultSet r = null;
 		String deposit_id = null;
+		
+		String bank_id_bg=new String("101032");
+		String branch_id_bg=new String("10103210");
+		String account_id_bg=new String("10103210");
+		
 		double securityMoney = 0;
 		double depositAccountBalance = 0;
 		double bankAccountBalance = 0;
@@ -298,46 +290,6 @@ public class DepositService {
 			if (r.next())
 				deposit_id = r.getString("deposit_id");
 
-			// Insert data in DTL_DEPOSIT Table
-			
-//			deposit_account_balance_stmt = conn
-//					.prepareStatement(depositAccountBalanceQuery);
-//			deposit_account_balance_stmt.setString(1, customer_id);
-//			r = deposit_account_balance_stmt.executeQuery();
-//			if (r.next())
-//				depositAccountBalance = r.getDouble("Balance");
-			
-			//no need for detail_deposit now
-//			dtl_stmt = conn.prepareStatement(dtlDepositSql);
-//			for (DepositDtlDTO item : deposit.getDepositDetail()) {
-//				if (item.getAmount() > 0) {
-//					dtl_stmt.setString(1, deposit_id);
-//					dtl_stmt.setString(2, item.getType_id());
-//					dtl_stmt.setDouble(3, item.getAmount());
-//					dtl_stmt.addBatch();
-//
-//					if (item.getType_id().equalsIgnoreCase("01"))
-//						securityMoney = item.getAmount();
-//				}
-//			}
-//			dtl_stmt.executeBatch();
-
-			// Transaction for Customer's Security/Other Deposit Account Ledger
-//			deposit_ledger_stmt = conn.prepareStatement(depositLedgerSql);
-//			deposit_ledger_stmt.setString(1, deposit.getDeposit_date());
-//			deposit_ledger_stmt.setString(2, String.valueOf(DepositType
-//					.values()[Integer.valueOf(deposit.getStr_deposit_type())]));
-//			deposit_ledger_stmt.setDouble(3, securityMoney);
-//			deposit_ledger_stmt.setString(4, deposit.getTotal_deposit());
-//			deposit_ledger_stmt.setDouble(
-//					5,
-//					depositAccountBalance
-//							+ Double.valueOf(deposit.getTotal_deposit()));
-//			deposit_ledger_stmt.setString(6, deposit_id);
-//			deposit_ledger_stmt.setString(7, customer_id);
-//			deposit_ledger_stmt.setInt(8, 0);
-//			deposit_ledger_stmt.setString(9, deposit.getInserted_by());
-//			deposit_ledger_stmt.execute();
 
 			// Insert data in MST_DEPOSIT Table
 			mst_stmt = conn.prepareStatement(mstDepositSql);
@@ -354,15 +306,37 @@ public class DepositService {
 			mst_stmt.setString(5, deposit.getValid_from());
 			mst_stmt.setString(6, deposit.getValid_to());
 			
-								// BANK_ID
-			mst_stmt.setString(7,(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId() 
-								|| Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.FDR.getId()) ? "": deposit.getBank());
+			// BANK_ID
+			
+			if(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId()){
+				mst_stmt.setString(7, bank_id_bg);
+			}else{
+				mst_stmt.setString(7, deposit.getBank());
+			}
+			
+//			mst_stmt.setString(7,(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId() 
+//								|| Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.FDR.getId()) ? bank_id_bg : deposit.getBank());
+			
 								// BRANCH_ID
-			mst_stmt.setString(8,(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId() 
-								|| Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.FDR.getId()) ? "": deposit.getBranch());
-								// ACCOUNT_NO
-			mst_stmt.setString(9,(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId() 
-								|| Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.FDR.getId()) ? "B.G." : deposit.getAccount_no());
+			if(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId()){
+				mst_stmt.setString(8, branch_id_bg);
+			}else{
+				mst_stmt.setString(8, deposit.getBranch());
+			}
+			
+//			mst_stmt.setString(8,(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId() 
+//								|| Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.FDR.getId()) ? branch_id_bg : deposit.getBranch());
+			
+			// ACCOUNT_NO
+			
+			if(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId()){
+				mst_stmt.setString(9, account_id_bg);
+			}else{
+				mst_stmt.setString(9, deposit.getAccount_no());
+			}
+			
+//			mst_stmt.setString(9,(Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.BANK_GURANTEE.getId() 
+//								|| Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.FDR.getId()) ? account_id_bg : deposit.getAccount_no());
 			
 			mst_stmt.setString(10, deposit.getDeposit_date());
 			mst_stmt.setString(11, deposit.getTotal_deposit());
@@ -372,12 +346,10 @@ public class DepositService {
 
 			// Transaction for Bank Account Ledger
 			
-			if (Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.CASH_BANK
-					.getId()) {
-
+			if (Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.CASH_BANK.getId())
+			{
 				// Find out last balance of the targe bank account
-				bank_account_balance_stmt = conn
-						.prepareStatement(bankAccountBalanceQuery);
+				bank_account_balance_stmt = conn.prepareStatement(bankAccountBalanceQuery);
 				bank_account_balance_stmt.setString(1, customer_id);
 				bank_account_balance_stmt.setString(2, deposit.getBank());
 				bank_account_balance_stmt.setString(3, deposit.getBranch());
@@ -386,8 +358,7 @@ public class DepositService {
 				if (r.next())
 					bankAccountBalance = r.getDouble("Balance");
 
-				bank_account_stmt = conn
-						.prepareStatement(bankAccountLedgerQuery);
+				bank_account_stmt = conn.prepareStatement(bankAccountLedgerQuery);
 				bank_account_stmt.setString(1, deposit.getDeposit_date());
 				
 				//special trans_type for security_deposit
@@ -397,23 +368,18 @@ public class DepositService {
 				}else{
 					bank_account_stmt.setInt(2,7);
 				}
+				
 				bank_account_stmt.setString(3, "Security/Other Deposit");
 				bank_account_stmt.setString(4, deposit.getBank());
 				bank_account_stmt.setString(5, deposit.getBranch());
 				bank_account_stmt.setString(6, deposit.getAccount_no());
 				bank_account_stmt.setString(7, deposit.getTotal_deposit());
-				bank_account_stmt.setDouble(
-						8,
-						bankAccountBalance
-								+ Double.valueOf(deposit.getTotal_deposit()));
+				bank_account_stmt.setDouble(8,bankAccountBalance+ Double.valueOf(deposit.getTotal_deposit()));
 				bank_account_stmt.setString(9, deposit_id);
 				bank_account_stmt.setString(10, deposit.getInserted_by());
 				bank_account_stmt.setString(11, customer_id);
 				bank_account_stmt.setInt(12, 0);
-				bank_account_stmt.setDouble(
-						13,
-						Double.valueOf(deposit.getTotal_deposit())
-								- Double.valueOf(securityMoney));
+				bank_account_stmt.setDouble(13,Double.valueOf(deposit.getTotal_deposit())- Double.valueOf(securityMoney));
 				bank_account_stmt.execute();
 			}
 
@@ -785,9 +751,7 @@ public class DepositService {
 		return deposit;
 	}
 
-	public ArrayList<DepositDTO> getCandidatesForBankGuaranteeExpire(int index,
-			int offset, String whereClause, String sortFieldName,
-			String sortOrder, int total) {
+	public ArrayList<DepositDTO> getCandidatesForBankGuaranteeExpire(int index,int offset, String whereClause, String sortFieldName,String sortOrder, int total) {
 		DepositDTO deposit = null;
 		ArrayList<DepositDTO> expireList = new ArrayList<DepositDTO>();
 		Connection conn = ConnectionManager.getConnection();
@@ -805,16 +769,36 @@ public class DepositService {
 		if (sortFieldName != null && !sortFieldName.equalsIgnoreCase(""))
 			orderByQuery = " ORDER BY " + sortFieldName + " " + sortOrder + " ";
 		if (total == 0)
-			sql = "Select deposit.deposit_id,deposit.customer_id,CUSTOMER_CATEGORY,CATEGORY_NAME,FULL_NAME ,bank.bank_id,branch.branch_id,account.account_no,bank_name,branch_name,account_name,total_deposit,to_char(valid_to,'dd-MM-YYYY') valid_to,valid_to -trunc(sysdate) expire_in "
-					+ " From MST_DEPOSIT deposit,CUSTOMER_PERSONAL_INFO CUSTOMER,MST_BANK_INFO bank,MST_BRANCH_INFO branch,MST_ACCOUNT_INFO account,CUSTOMER CUS,MST_CUSTOMER_CATEGORY MCC"
-					+ " Where bank.bank_id=deposit.bank_id And deposit.customer_id=CUSTOMER.CUSTOMER_ID"
-					+ " And BANK.AREA_ID = BRANCH.AREA_ID"
-					+ " And branch.branch_id=deposit.branch_id "
-					+ " And account.account_no=deposit.account_no "
-					+ " AND CUS.CUSTOMER_ID=deposit.customer_id "
-					+ " AND MCC.CATEGORY_ID=CUS.CUSTOMER_CATEGORY"
-					+ " And Deposit_Type=1"
-					+ " and BRANCH.AREA_ID='"+area_id+"'"
+			sql = "SELECT deposit_id, " +
+					"         DEPOSIT.customer_id, " +
+					"         CUSTOMER_CATEGORY, " +
+					"         CATEGORY_NAME, " +
+					"         FULL_NAME, " +
+					"         deposit.bank_id, " +
+					"         BANK_NAME, " +
+					"         deposit.branch_id, " +
+					"         BRANCH_NAME, " +
+					"         deposit.account_no, " +
+					"         account_name, " +
+					"         total_deposit, " +
+					"         TO_CHAR (valid_to, 'dd-MM-YYYY') valid_to, " +
+					"         valid_to - TRUNC (SYSDATE) expire_in " +
+					"    FROM MST_DEPOSIT deposit, " +
+					"         CUSTOMER_PERSONAL_INFO CUSTOMER, " +
+					"         MST_BANK_INFO bank, " +
+					"         MST_BRANCH_INFO branch, " +
+					"         MST_ACCOUNT_INFO account, " +
+					"         CUSTOMER CUS, " +
+					"         MST_CUSTOMER_CATEGORY MCC " +
+					"   WHERE     DEPOSIT.CUSTOMER_ID LIKE '"+area_id+"%' " +
+					"         AND DEPOSIT.CUSTOMER_ID = CUSTOMER.CUSTOMER_ID " +
+					"         AND bank.bank_id = deposit.bank_id " +
+					"         AND BRANCH.BRANCH_ID = DEPOSIT.BRANCH_ID " +
+					"         AND ACCOUNT.ACCOUNT_NO = DEPOSIT.ACCOUNT_NO " +
+					"          AND CUS.CUSTOMER_ID = deposit.customer_id " +
+					"         AND MCC.CATEGORY_ID = CUS.CUSTOMER_CATEGORY " +
+					"         AND Deposit_Type = 1 " +
+					"         AND DEPOSIT_PURPOSE = 1 "
 					+ (whereClause.equalsIgnoreCase("") ? "" : (" And ( "
 							+ whereClause + ")")) + " " + orderByQuery;
 		else
@@ -829,7 +813,7 @@ public class DepositService {
 					+ " AND CUS.CUSTOMER_ID=deposit.customer_id "
 					+ " AND MCC.CATEGORY_ID=CUS.CUSTOMER_CATEGORY"
 					+ " And Deposit_Type=1"
-					+ " and BRANCH.AREA_ID='"+area_id+"'"
+				//	+ " and BRANCH.AREA_ID='"+area_id+"'"
 					+ (whereClause.equalsIgnoreCase("") ? "" : (" And ( "
 							+ whereClause + ")")) + " " + orderByQuery
 					+ "    )tmp1 " + "    )tmp2   "
@@ -1144,6 +1128,8 @@ public class DepositService {
 		//String sqlUpdate=" Update MST_DEPOSIT set VALID_TO=TO_DATE(?, 'DD-MM-YYYY') WHERE  DEPOSIT_ID=?";
 		String mstDepositDelete=" Delete MST_DEPOSIT WHERE  DEPOSIT_ID=?";
 		
+		String updateUserAfterDeleteBG="update BG_DELETED SET DELETING_USER=? WHERE DEPOSIT_ID=?";
+		
 		PreparedStatement stmt = null;
 			try
 			{
@@ -1168,6 +1154,11 @@ public class DepositService {
 			
 				stmt = conn.prepareStatement(mstDepositDelete);
 				stmt.setString(1,depositId);
+				stmt.execute();
+				
+				stmt = conn.prepareStatement(updateUserAfterDeleteBG);
+				stmt.setString(1,user_name);
+				stmt.setString(2,depositId);
 				stmt.execute();
 				
 				transactionManager.commit();

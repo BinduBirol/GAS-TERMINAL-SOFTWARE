@@ -169,20 +169,26 @@ public class SMSService {
 	
 	
 	static PreparedStatement stmtASUpdate = null;
-	static String sqlASUpdate = "update TEMP_SMS set status='Y', SEND_DATE=sysdate where CUSTOMER_ID=? and BILL_MONTH=? and BILL_YEAR=?";
+	//static String sqlASUpdate = "update TEMP_SMS set status='Y', SEND_DATE=sysdate where CUSTOMER_ID=? and BILL_MONTH=? and BILL_YEAR=?";
+	
+	static String sqlASUpdate = "update TEMP_SMS_LOCAL set status='Y', SEND_DATE=sysdate where CUSTOMER_ID=? ";
+	
 	
 	public static synchronized int sentCustSMS(String customerID,String billMonth, String billYear)
     {
-		Connection conn = ConnectionManager.getConnection();
+		//Connection conn = ConnectionManager.getConnection();
+		Connection conn = ConnectionManager.getConnectionStatic();
+		
+		
 		int tmp = 0;
            try {
 	            
 	            if(stmtASUpdate==null)
-	            	stmtASUpdate = ConnectionManager.getConnection().prepareStatement(sqlASUpdate);
+	            	stmtASUpdate = ConnectionManager.getConnectionStatic().prepareStatement(sqlASUpdate);
 	            int parameterIndex = 1;	            
 	            stmtASUpdate.setString(parameterIndex++, customerID);
-	            stmtASUpdate.setString(parameterIndex++, billMonth);
-	            stmtASUpdate.setString(parameterIndex++, billYear);
+	            //stmtASUpdate.setString(parameterIndex++, billMonth);
+	            //stmtASUpdate.setString(parameterIndex++, billYear);
 
 	            tmp = stmtASUpdate.executeUpdate();
 	            stmtASUpdate.clearParameters();

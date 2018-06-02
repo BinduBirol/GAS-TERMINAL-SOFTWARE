@@ -165,6 +165,13 @@
 		</result>	
 	</action>
 	
+	<action name="ministryCollectionDetails"  class="org.jgtdsl.reports.MinistryCollectionDetailsReport">
+		<result type="stream">
+				<param name="contentType">application/pdf</param>
+				<param name="inputName">inputStream</param>
+		</result>	
+	</action>
+	
 	<action name="maximumLoadExceedInfo"  class="org.jgtdsl.reports.MaximumLoadExceedReport">
 		<result type="stream">
 				<param name="contentType">application/pdf</param>

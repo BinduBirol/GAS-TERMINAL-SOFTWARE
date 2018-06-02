@@ -1,6 +1,7 @@
 package org.jgtdsl.utils.connection;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.naming.Context;
@@ -11,6 +12,14 @@ import javax.sql.DataSource;
 public class ConnectionManager {
     
 
+	static Connection connection = null;
+	static DataSource ds1 = null;	
+	static DataSource regds = null;
+	
+	private static String username = "jalalabad";
+	private static String password = "jala2iiCT";
+	private static String url = "jdbc:oracle:thin:@172.16.4.59:1521:jalalaDB";
+	
     private  static DataSource ds = null;
     
 
@@ -65,6 +74,17 @@ public class ConnectionManager {
     }
 
     
+    
+    public static Connection getConnectionStatic() {
+	      try {
+	          if(connection==null || connection.isClosed()) 
+	        	  Class.forName("oracle.jdbc.driver.OracleDriver");
+	          		connection = DriverManager.getConnection(url, username, password);
+	      } catch (Exception e) {
+	          e.printStackTrace();
+	      }
+	      return connection;
+	  }
     
     
     
