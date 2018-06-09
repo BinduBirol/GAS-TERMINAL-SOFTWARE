@@ -89,6 +89,8 @@ public class MeterReading extends BaseAction
 		setJsonResponse(mrs.getMeterReading(loggedInUser.getUserId(),mrDTO).get(0).toString());
         return null; 
 	}
+	
+	
 	//Use for next previous reading entry......
 	public String fetchReadingEntry(){
 		

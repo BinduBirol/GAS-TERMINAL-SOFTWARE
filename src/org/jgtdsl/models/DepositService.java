@@ -802,18 +802,38 @@ public class DepositService {
 					+ (whereClause.equalsIgnoreCase("") ? "" : (" And ( "
 							+ whereClause + ")")) + " " + orderByQuery;
 		else
-			sql = " Select * from ( "
-					+ " Select rownum serial,tmp1.* from "
-					+ " ( Select deposit.deposit_id,deposit.customer_id,CUSTOMER_CATEGORY,CATEGORY_NAME,FULL_NAME ,bank.bank_id,branch.branch_id,account.account_no,bank_name,branch_name,account_name,total_deposit,to_char(valid_to,'dd-MM-YYYY') valid_to,valid_to -trunc(sysdate) expire_in "
-					+ " From MST_DEPOSIT deposit,CUSTOMER_PERSONAL_INFO CUSTOMER,MST_BANK_INFO bank,MST_BRANCH_INFO branch,MST_ACCOUNT_INFO account,CUSTOMER CUS,MST_CUSTOMER_CATEGORY MCC "
-					+ " Where bank.bank_id=deposit.bank_id And deposit.customer_id=CUSTOMER.CUSTOMER_ID"
-					+ " AND BANK.AREA_ID = BRANCH.AREA_ID"
-					+ " And branch.branch_id=deposit.branch_id "
-					+ " And account.account_no=deposit.account_no "
-					+ " AND CUS.CUSTOMER_ID=deposit.customer_id "
-					+ " AND MCC.CATEGORY_ID=CUS.CUSTOMER_CATEGORY"
-					+ " And Deposit_Type=1"
-				//	+ " and BRANCH.AREA_ID='"+area_id+"'"
+			sql = "SELECT * " +
+					"  FROM (SELECT ROWNUM serial, tmp1.* " +
+					"          FROM (  SELECT deposit_id, " +
+					"                         DEPOSIT.customer_id, " +
+					"                         CUSTOMER_CATEGORY, " +
+					"                         CATEGORY_NAME, " +
+					"                         FULL_NAME, " +
+					"                         deposit.bank_id, " +
+					"                         BANK_NAME, " +
+					"                         deposit.branch_id, " +
+					"                         BRANCH_NAME, " +
+					"                         deposit.account_no, " +
+					"                         account_name, " +
+					"                         total_deposit, " +
+					"                         TO_CHAR (valid_to, 'dd-MM-YYYY') valid_to, " +
+					"                         valid_to - TRUNC (SYSDATE) expire_in " +
+					"                    FROM MST_DEPOSIT deposit, " +
+					"                         CUSTOMER_PERSONAL_INFO CUSTOMER, " +
+					"                         MST_BANK_INFO bank, " +
+					"                         MST_BRANCH_INFO branch, " +
+					"                         MST_ACCOUNT_INFO account, " +
+					"                         CUSTOMER CUS, " +
+					"                         MST_CUSTOMER_CATEGORY MCC " +
+					"                   WHERE     DEPOSIT.CUSTOMER_ID LIKE '03%' " +
+					"                         AND DEPOSIT.CUSTOMER_ID = CUSTOMER.CUSTOMER_ID " +
+					"                         AND bank.bank_id = deposit.bank_id " +
+					"                         AND BRANCH.BRANCH_ID = DEPOSIT.BRANCH_ID " +
+					"                         AND ACCOUNT.ACCOUNT_NO = DEPOSIT.ACCOUNT_NO " +
+					"                         AND CUS.CUSTOMER_ID = deposit.customer_id " +
+					"                         AND MCC.CATEGORY_ID = CUS.CUSTOMER_CATEGORY " +
+					"                         AND Deposit_Type = 1 " +
+					"                         AND DEPOSIT_PURPOSE = 1 "
 					+ (whereClause.equalsIgnoreCase("") ? "" : (" And ( "
 							+ whereClause + ")")) + " " + orderByQuery
 					+ "    )tmp1 " + "    )tmp2   "

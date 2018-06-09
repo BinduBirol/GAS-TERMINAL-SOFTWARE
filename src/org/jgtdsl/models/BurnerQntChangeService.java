@@ -705,7 +705,8 @@ public class BurnerQntChangeService {
 		CustomerApplianceDTO ministry=null;
 		ArrayList<CustomerApplianceDTO> applianceList=new ArrayList<CustomerApplianceDTO>();
 		Connection conn = ConnectionManager.getConnection();
-		String sql = "select * from APPLIANCE_RATE_HISTORY where APPLIANCE_ID IN (select distinct(APPLIANCE_ID) from APPLIANCE_RATE_HISTORY) order by APPLIANCE_ID";
+		//String sql = "select * from APPLIANCE_RATE_HISTORY where APPLIANCE_ID IN (select distinct(APPLIANCE_ID) from APPLIANCE_RATE_HISTORY) order by APPLIANCE_ID";
+		String sql=" select distinct(APPLIANCE_ID), appliance_name from appliance_info order by appliance_id ";
 		   
 		   PreparedStatement stmt = null;
 		   ResultSet r = null;

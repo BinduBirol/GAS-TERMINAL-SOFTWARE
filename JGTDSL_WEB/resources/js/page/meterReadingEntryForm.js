@@ -342,7 +342,7 @@ function controlFieldsByReadingPurpose()
 	disableField("reading_purpose_str");
 	if(reading_purpose==2){
 		//General Billing
-		if($("#measurement_type_str").val() == 1 || $("#customer_category").val()==13 ){
+		if($("#measurement_type_str").val() == 1 || $("#customer_category").val()==13 || $("#customer_category").val()==08 ){
 			enableField("actual_consumption","remarks");
 			$('#actual_consumption').show();
 			$('#actual_consumption').focus();

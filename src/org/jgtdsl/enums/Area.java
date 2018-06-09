@@ -11,7 +11,7 @@ public enum  Area {
 	SHANTHIA(7,"SH"),
 	ULLAHPARA(8,"U"),
 	//
-	SIRAJGANJ(9,"Sir"),
+	CHHATAK(9,"Chatak"),
 	GOLAPGONJ(10,"Golapgonj"),
 	PABNA(11,"P"),
 	CHATTAK(12,"Chattak"),
