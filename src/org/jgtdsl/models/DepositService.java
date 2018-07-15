@@ -419,12 +419,12 @@ public class DepositService {
 		TransactionManager transactionManager = new TransactionManager();
 		Connection conn = transactionManager.getConnection();
 //~FOR SAVING HISTORY ~SEPT 21 ~ Prince
-		String customerSecurityLedgerHistorySql = "INSERT INTO CUST_SECURITY_LEDGER_HISTORY ( CUSTOMER_ID, DEPOSIT_ID, TRANS_DATE," 
-				+" DESCRIPTION, SECURITY_AMOUNT, DEBIT, CREDIT, BALANCE, VALID_FROM, VALID_TO)" 
-				+"( SELECT CSL.CUSTOMER_ID, CSL.DEPOSIT_ID,CSL.TRANS_DATE,CSL.DESCRIPTION,CSL.SECURITY_AMOUNT,CSL.DEBIT,"
-				+" CSL.CREDIT,CSL.BALANCE, MD.VALID_FROM, MD.VALID_TO FROM CUSTOMER_SECURITY_LEDGER CSL," 
-				+" MST_DEPOSIT MD WHERE  CSL.DEPOSIT_ID = ?"
-				+" AND CSL.DEPOSIT_ID = MD.DEPOSIT_ID )";
+//		String customerSecurityLedgerHistorySql = "INSERT INTO CUST_SECURITY_LEDGER_HISTORY ( CUSTOMER_ID, DEPOSIT_ID, TRANS_DATE," 
+//				+" DESCRIPTION, SECURITY_AMOUNT, DEBIT, CREDIT, BALANCE, VALID_FROM, VALID_TO)" 
+//				+"( SELECT CSL.CUSTOMER_ID, CSL.DEPOSIT_ID,CSL.TRANS_DATE,CSL.DESCRIPTION,CSL.SECURITY_AMOUNT,CSL.DEBIT,"
+//				+" CSL.CREDIT,CSL.BALANCE, MD.VALID_FROM, MD.VALID_TO FROM CUSTOMER_SECURITY_LEDGER CSL," 
+//				+" MST_DEPOSIT MD WHERE  CSL.DEPOSIT_ID = ?"
+//				+" AND CSL.DEPOSIT_ID = MD.DEPOSIT_ID )";
 
 
 		String mstDepositSql = "Update MST_DEPOSIT Set VALID_FROM=TO_DATE(?,'DD-MM-YYYY'),VALID_TO=TO_DATE(?,'DD-MM-YYYY'),BANK_ID=?,BRANCH_ID=?,ACCOUNT_NO=?,TOTAL_DEPOSIT=? Where Deposit_ID=?";
@@ -432,7 +432,7 @@ public class DepositService {
 		String dtlDepositSql = " Insert Into DTL_DEPOSIT(DEPOSIT_ID,TYPE_ID,AMOUNT) "
 				+ " Values(?,?,?) ";
 
-		String depositLedgerSql = " Update CUSTOMER_SECURITY_LEDGER Set SECURITY_AMOUNT=?,DEBIT=?,VALID_TO=TO_DATE(?,'DD-MM-YYYY') Where DEPOSIT_ID=?";
+		//String depositLedgerSql = " Update CUSTOMER_SECURITY_LEDGER Set SECURITY_AMOUNT=?,DEBIT=?,VALID_TO=TO_DATE(?,'DD-MM-YYYY') Where DEPOSIT_ID=?";
 
 		String bankAccountLedgerSql = " Update BANK_ACCOUNT_LEDGER Set BANK_ID=?,BRANCH_ID=?,ACCOUNT_NO=?,DEBIT=?,MISCELLANEOUS=? Where REF_ID=?";
 //
@@ -446,10 +446,10 @@ public class DepositService {
 
 		try {
 			// save security history ~sept 21 ~ Prince
-			security_history_stmt = conn.prepareStatement(customerSecurityLedgerHistorySql);
-			//security_history_stmt.setString(1, deposit.getCustomer_id());
-			security_history_stmt.setString(1, deposit.getDeposit_id());
-			security_history_stmt.execute();
+//			security_history_stmt = conn.prepareStatement(customerSecurityLedgerHistorySql);
+//			//security_history_stmt.setString(1, deposit.getCustomer_id());
+//			security_history_stmt.setString(1, deposit.getDeposit_id());
+//			security_history_stmt.execute();
 			
 
 			// Update data in MST_DEPOSIT Table
@@ -484,13 +484,13 @@ public class DepositService {
 			dtl_stmt.executeBatch();
 
 			// Transaction for Customer's Security/Other Deposit Account Ledger
-			deposit_ledger_stmt = conn.prepareStatement(depositLedgerSql);
-			deposit_ledger_stmt.setDouble(1, securityMoney);
-			deposit_ledger_stmt.setString(2, deposit.getTotal_deposit());
-			//CHANGING EXPIRE DATE IN SECURITY LEDGER ~SEPT 21 ~ Prince
-			deposit_ledger_stmt.setString(3, deposit.getValid_to());
-			deposit_ledger_stmt.setString(4, deposit.getDeposit_id());
-			deposit_ledger_stmt.execute();
+//			deposit_ledger_stmt = conn.prepareStatement(depositLedgerSql);
+//			deposit_ledger_stmt.setDouble(1, securityMoney);
+//			deposit_ledger_stmt.setString(2, deposit.getTotal_deposit());
+//			//CHANGING EXPIRE DATE IN SECURITY LEDGER ~SEPT 21 ~ Prince
+//			deposit_ledger_stmt.setString(3, deposit.getValid_to());
+//			deposit_ledger_stmt.setString(4, deposit.getDeposit_id());
+//			deposit_ledger_stmt.execute();
 
 			// Transaction for Bank Account Ledger
 			if (Integer.valueOf(deposit.getStr_deposit_type()) == DepositType.CASH_BANK
@@ -825,7 +825,7 @@ public class DepositService {
 					"                         MST_ACCOUNT_INFO account, " +
 					"                         CUSTOMER CUS, " +
 					"                         MST_CUSTOMER_CATEGORY MCC " +
-					"                   WHERE     DEPOSIT.CUSTOMER_ID LIKE '03%' " +
+					"                   WHERE     DEPOSIT.CUSTOMER_ID LIKE '"+area_id+"%' " +
 					"                         AND DEPOSIT.CUSTOMER_ID = CUSTOMER.CUSTOMER_ID " +
 					"                         AND bank.bank_id = deposit.bank_id " +
 					"                         AND BRANCH.BRANCH_ID = DEPOSIT.BRANCH_ID " +

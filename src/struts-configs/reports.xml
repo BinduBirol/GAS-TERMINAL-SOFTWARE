@@ -510,6 +510,13 @@
 				<param name="inputName">inputStream</param>
 		</result>	
 	</action>
+	
+	<action name="freedomFighterInfo"  class="org.jgtdsl.reports.FreedomFighterInfo">
+		<result type="stream">
+				<param name="contentType">application/pdf</param>
+				<param name="inputName">inputStream</param>
+		</result>	
+	</action>
 <!-- [End] Security Deposit Report -->
 
 </package>

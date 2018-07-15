@@ -971,6 +971,105 @@ public class BillingService {
 
 		return billList;
 	}
+	//////////bill delete//////////////
+	
+	private String toMonthYear;
+	private String fromMonthYear;
+	
+	public String getToMonthYear() {
+		return toMonthYear;
+	}
+
+	public void setToMonthYear(String toMonthYear) {
+		this.toMonthYear = toMonthYear;
+	}
+
+	public String getFromMonthYear() {
+		return fromMonthYear;
+	}
+
+	public void setFromMonthYear(String fromMonthYear) {
+		this.fromMonthYear = fromMonthYear;
+	}
+
+	public ArrayList<MBillGridDTO> searchIndividualBill(int index,
+			int offset, String whereClause, String sortFieldName,
+			String sortOrder, int total) {
+		MBillGridDTO bill = null;
+		ArrayList<MBillGridDTO> billList = new ArrayList<MBillGridDTO>();
+		Connection conn = ConnectionManager.getConnection();
+		String sql = "";
+		String orderByQuery = "";
+		String billTable= " bill_metered ";
+		String category= whereClause.substring(18,20);
+		
+		if(category.equals("01")||category.equals("09")) billTable= "bill_non_metered";
+		
+		String newWhereClause= whereClause.replace("fromMonthYear  =", " TO_NUMBER (bill_year || LPAD (bill_month, 2, 0)) BETWEEN ");
+		String finalwhereClause= newWhereClause.replace("toMonthYear  =", " ");
+		//System.out.println(finalwhereClause);
+		
+			sql = 	" SELECT *    FROM "+billTable+"   WHERE     " +finalwhereClause+ " and status<>2 order by bill_id desc";
+					
+			
+
+		PreparedStatement stmt = null;
+		ResultSet r = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			/*
+			if (total != 0) {
+				stmt.setInt(1, index);
+				stmt.setInt(2, index + offset);
+			}*/
+			r = stmt.executeQuery();
+			
+			while (r.next()) {
+				bill = new MBillGridDTO();
+				//bill.setIs_metered(r.getString(columnIndex));
+				
+				bill.setBill_id(r.getString("BILL_ID"));
+				bill.setCustomer_id(r.getString("CUSTOMER_ID"));
+				bill.setFull_name(r.getString("CUSTOMER_NAME"));
+				//bill.setActual_consumption(r.getDouble("ACTUAL_GAS_CONSUMPTION"));
+				bill.setMonth_year(Month.values()[Integer.valueOf(r.getString("BILL_MONTH")) - 1]+", "+r.getString("BILL_YEAR"));				
+				
+				if(category.equals("01")||category.equals("09")){
+					bill.setTotal_bill_amount(r.getDouble("ACTUAL_PAYABLE_AMOUNT"));
+					bill.setCollected_amount(r.getString("COLLECTED_PAYABLE_AMOUNT"));
+					bill.setPrepeared_date(r.getString("PREPARED_ON"));
+					bill.setIs_metered("0");
+				}else{
+					bill.setTotal_bill_amount(r.getDouble("PAYABLE_AMOUNT"));
+					bill.setCollected_amount(r.getString("COLLECTED_AMOUNT"));
+					bill.setPrepeared_date(r.getString("PREPARED_DATE"));
+					bill.setIs_metered("1");
+				}
+				
+				if (r.getInt("STATUS") == 0)
+					bill.setStatus("Waiting for Approval");
+				else if (r.getInt("STATUS") == 1)
+					bill.setStatus("Approved, Not Collected");
+				else if (r.getInt("STATUS") == 2)
+					bill.setStatus("Collected");				
+
+				billList.add(bill);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				ConnectionManager.closeConnection(conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			stmt = null;
+			conn = null;
+		}
+		return billList;
+	}
+	
 
 	// ////////////////ministry///////////
 	public ArrayList<MinistryBillDTO> getMinistryBilledCustomerList(int index,

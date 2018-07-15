@@ -41,7 +41,7 @@ public class MeterInformationService {
 				stmt = getInsertStatementForNewMeterReading(conn, meter);
 				stmt.execute();
 				
-				String conn_update_sql="Update customer_connection set STATUS=1";
+				String conn_update_sql="Update customer_connection set STATUS=1 where customer_id='"+meter.getCustomer_id()+"'";
 				stmt=conn.prepareStatement(conn_update_sql);
 				stmt.execute();
 				
@@ -76,7 +76,7 @@ public class MeterInformationService {
 		 " EVC_SL_NO,EVC_MODEL,EVC_YEAR,METER_TYPE,G_RATING,CONN_SIZE,MAX_READING,INI_READING, " +
 		 " PRESSURE,TEMPERATURE,METER_RENT,INSTALLED_BY,INSTALLED_DATE,STATUS,REMARKS,VAT_REBATE,UNIT) " +
 		 " Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,to_date(?,'dd-MM-YYYY HH24:MI'),1,?,?,?)";
-		String conn_update_sql="Update customer_connection set STATUS=0";
+		//String conn_update_sql="Update customer_connection set STATUS=0";
 		
 		try {
 			stmt = conn.prepareStatement(sql_meter);

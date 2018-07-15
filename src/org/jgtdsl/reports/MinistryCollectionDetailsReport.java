@@ -171,7 +171,7 @@ public class MinistryCollectionDetailsReport extends BaseAction{
 
 			PdfPTable mTable = new PdfPTable(1);
 			mTable.setWidthPercentage(90);
-			mTable.setWidths(new float[] { 100 });
+			mTable.setWidths(new float[] { 90 });
 			pcell = new PdfPCell(new Paragraph("JALALABAD GAS T & D SYSTEM LIMITED", fonth));
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pcell.setBorder(0);
@@ -203,9 +203,8 @@ public class MinistryCollectionDetailsReport extends BaseAction{
 			document.add(headerTable);
 
 			PdfPTable dataTable = new PdfPTable(3);
-			dataTable.setWidthPercentage(70);
-			dataTable.setWidths(new float[] { (float) 0.15, (float) 1,
-					(float) 0.5 });
+			dataTable.setWidthPercentage(60);
+			//dataTable.setWidths(new float[] { (float) 0.15, (float) 1,(float) 0.5 });
 
 			pcell = new PdfPCell(new Paragraph(" "));
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -213,7 +212,7 @@ public class MinistryCollectionDetailsReport extends BaseAction{
 			pcell.setBorder(Rectangle.NO_BORDER);
 			dataTable.addCell(pcell);
 
-			pcell = new PdfPCell(new Paragraph("Ministry Customer Collection Details", font1));
+			pcell = new PdfPCell(new Paragraph("Ministry Wise Customer Collection Details", font1));
 			pcell.setColspan(3);
 			pcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pcell.setBorder(Rectangle.BOX);

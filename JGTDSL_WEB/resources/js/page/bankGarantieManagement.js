@@ -240,8 +240,9 @@ var $dialog = $('<div id="dialog-confirm"></div>')
 		}
 	});
 
-function PrintBGExpireListWithIn365Days(){
+/*function PrintBGExpireListWithIn365Days(){
 	//alert("");
+	onClick="PrintBGExpireListWithIn365Days();
 	$.ajax({
 	    url: 'printBGExpireListWithIn365Days.action',
 //	    type: 'POST',
@@ -263,7 +264,7 @@ function PrintBGExpireListWithIn365Days(){
 //        },
 	    
 	  });
-}
+}*/
 
 function deleteBankGarantieExpireChangeInfo(){
 	//alert("");

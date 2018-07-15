@@ -44,7 +44,7 @@ public class BGReport extends BaseAction {
 
 	public String execute() throws Exception {
 
-		String fileName = "BG Expire List.pdf";
+		String fileName = "BG_Expire_List.pdf";
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		Document document = new Document(PageSize.A4);
 		document.setMargins(20, 20, 30, 72);
@@ -297,7 +297,7 @@ public class BGReport extends BaseAction {
 		return servlet;
 	}
 
-	public void setServlet(ServletContext servlet) {
+	public void setServletContext(ServletContext servlet) {
 		this.servlet = servlet;
 	}
 

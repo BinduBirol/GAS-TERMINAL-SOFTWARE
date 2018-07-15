@@ -386,7 +386,7 @@ public class CollectionService {
 		if(customer.getConnectionInfo().getIsMetered_name().equalsIgnoreCase("Metered"))
 		{
 			if(bill_month.equalsIgnoreCase("") && bill_year.equalsIgnoreCase("")){
-				sql="SELECT bill.*,CALCUALTESURCHARGE_METER(bill_id, '"+collection_date+"')  ACTUAL_SURCHARGE_CAL,NVL (ACTUAL_SURCHARGE, 0)+ NVL (BILLED_AMOUNT, 0) ACTUAL_PAYABLE_AMOUNT_CAL " +
+				sql="SELECT bill.*,CALCUALTESURCHARGE_METER(bill_id, '"+collection_date+"')  ACTUAL_SURCHARGE_CAL,NVL (ACTUAL_SURCHARGE, 0) + NVL (BILLED_AMOUNT, 0) + NVL(ADJUSTMENT_AMOUNT,0) ACTUAL_PAYABLE_AMOUNT_CAL " +
 						"FROM "+tableName+" bill WHERE Customer_Id = ? AND PAYABLE_AMOUNT <> NVL (COLLECTED_AMOUNT, 0) AND Bill_Id IN (SELECT bill_id " +
 						" FROM "+tableName+" WHERE Status = 1 AND Customer_Id = ?) order by bill_month asc" ;
 						/*" Select bill.*,(calcualteSurcharge (bill_id, '"+collection_date+"')) surcharge_per_coll,(calcualteSurcharge(bill_id,'"+collection_date+"')+NVL(ACTUAL_SURCHARGE,0)) ACTUAL_SURCHARGE_CAL,(calcualteSurcharge(bill_id,'"+collection_date+"')+NVL(ACTUAL_SURCHARGE,0)+NVL(BILLED_AMOUNT,0)) ACTUAL_PAYABLE_AMOUNT_CAL From "+tableName+" bill Where Customer_Id=? And  PAYABLE_AMOUNT<>NVL(COLLECTED_AMOUNT,0) " +
@@ -394,10 +394,15 @@ public class CollectionService {
 			}
 			else
 			{
-				sql=" Select bill.*,CALCUALTESURCHARGE_METER(bill_id, '"+collection_date+"')  ACTUAL_SURCHARGE_CAL,  CALCUALTESURCHARGE_METER(bill_id, '"+collection_date+"')+NVL(BILLED_AMOUNT,0) ACTUAL_PAYABLE_AMOUNT_CAL From "+tableName+" bill Where Customer_Id=? And PAYABLE_AMOUNT<>NVL(COLLECTED_AMOUNT,0) And  " +
-						   "BILL_MONTH="+bill_month+"And BILL_YEAR="+bill_year;
-				/*" Select bill.*,(calcualteSurcharge (bill_id, '"+collection_date+"')) surcharge_per_coll,(calcualteSurcharge(bill_id,'"+collection_date+"')+NVL(ACTUAL_SURCHARGE,0)) ACTUAL_SURCHARGE_CAL,(calcualteSurcharge(bill_id,'"+collection_date+"')+NVL(ACTUAL_SURCHARGE,0)+NVL(BILLED_AMOUNT,0)) ACTUAL_PAYABLE_AMOUNT_CAL From "+tableName+" bill Where Customer_Id=? And PAYABLE_AMOUNT<>NVL(COLLECTED_AMOUNT,0) And  " +
-				   "BILL_MONTH="+bill_month+"And BILL_YEAR="+bill_year;*/
+				sql="SELECT bill.*, " +
+						"       CALCUALTESURCHARGE_METER (bill_id, '"+collection_date+"') ACTUAL_SURCHARGE_CAL, " +
+						"       NVL (ACTUAL_SURCHARGE, 0) + NVL (BILLED_AMOUNT, 0) + NVL(ADJUSTMENT_AMOUNT,0) ACTUAL_PAYABLE_AMOUNT_CAL " +
+						"  FROM "+tableName+" bill " +
+						" WHERE     Customer_Id = ? " +
+						"       AND PAYABLE_AMOUNT <> NVL (COLLECTED_AMOUNT, 0) " +
+						"       AND BILL_MONTH = "+bill_month+" "+
+						"       AND BILL_YEAR = "+bill_year+" "; 
+
 			}
 		}
 		else

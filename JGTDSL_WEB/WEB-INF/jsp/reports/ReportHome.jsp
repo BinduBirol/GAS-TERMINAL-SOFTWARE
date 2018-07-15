@@ -46,6 +46,7 @@
 					<li class="boxV" onclick="ajaxLoad('report_input_div','categoryWiseGasConsumption.action')"><span>Customer Wise Details Collection</span> </li>
 					<li class="boxV" onclick="ajaxLoad('report_input_div','monthlyCollectionCustomerTypeWise.action')"><span>Monthly Collection Customer Type Wise</span> </li>
 					<li class="boxV" onclick="ajaxLoad('report_input_div','ministryCollectionDetailsView.action')"><span>Ministry Collection</span> </li>
+					<li class="boxV" onclick="ajaxLoad('report_input_div','freedomFighterInfoForm.action')"><span>Freedom Fighter Info</span> </li>
 				</s:if>
 				<s:if test="reportType=='journal'">
 					<script  type="text/javascript">

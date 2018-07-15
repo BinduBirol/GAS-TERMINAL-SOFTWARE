@@ -213,6 +213,12 @@
 					<img src="/JGTDSL_WEB/resources/images/icons/sb_adjusment_non_meter.png" />
 					Bill Adjustment(Non-Meter)
 				</a>
+				
+				<a href="javascript:void(0)" onclick="callAction('billDelete.action')" style="color:red;" class="list-group-item">
+					<img style="width:20px;height:20px" src="/JGTDSL_WEB/resources/images/icons/bill_delete.png" />
+					Bill Delete
+				</a>
+				
 				</s:if>
 				<s:if test="#session.role=='Super Admin' || #session.role=='Manager'">
 				<!-- callAction('billCreationHome.action?bill_parameter.isMetered_str=0') -->

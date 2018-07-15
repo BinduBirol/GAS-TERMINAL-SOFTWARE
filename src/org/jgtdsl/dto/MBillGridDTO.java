@@ -13,10 +13,40 @@ public class MBillGridDTO {
 	private double actual_payable_amount;
 	private double collected_payable_amount;
 	private double non_collected_payable_amount;
+	private String prepeared_date;
+	private String month_year;
+	private String collected_amount;
 	
 	private String status;
-	private String bill_id;
+	private String bill_id;	
+	private String is_metered;
 	
+	
+	
+	public String getIs_metered() {
+		return is_metered;
+	}
+	public void setIs_metered(String is_metered) {
+		this.is_metered = is_metered;
+	}
+	public String getCollected_amount() {
+		return collected_amount;
+	}
+	public void setCollected_amount(String collected_amount) {
+		this.collected_amount = collected_amount;
+	}
+	public String getMonth_year() {
+		return month_year;
+	}
+	public void setMonth_year(String month_year) {
+		this.month_year = month_year;
+	}
+	public String getPrepeared_date() {
+		return prepeared_date;
+	}
+	public void setPrepeared_date(String prepeared_date) {
+		this.prepeared_date = prepeared_date;
+	}
 	public String getCustomer_id() {
 		return customer_id;
 	}

@@ -378,7 +378,7 @@ public class BillMeteredCustomer extends BaseAction implements
 						- bill.getPbMarginDTO().getSurcharge_amount()
 						- bill.getPbMarginDTO().getAdjustment()
 						- bill.getPbMarginDTO().getHhv_nhv_bill()
-						- bill.getPbMarginDTO().getOthers();
+						- bill.getPbMarginDTO().getOthers();				
 
 				gas_bill = gas_bill + vgas;
 
